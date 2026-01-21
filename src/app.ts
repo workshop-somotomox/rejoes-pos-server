@@ -2,6 +2,7 @@ import path from 'path';
 import express, { Request } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import cors from 'cors';
 
 import { config } from './config';
 import { prisma } from './prisma';
@@ -16,6 +17,10 @@ export async function createApp() {
   const app = express();
 
   app.use(helmet());
+  app.use(cors({
+    origin: ['https://shopify.com', 'https://*.shopify.com'],
+    credentials: true
+  }));
   app.use(morgan(config.env === 'production' ? 'combined' : 'dev'));
   app.use(
     express.json({
