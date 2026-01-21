@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+ datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Member {
+  id                String   @id @default(cuid())
+  shopifyCustomerId String   @unique
+  cardToken         String   @unique
+  tier              String   @default("BASIC")
+  status            String   @default("ACTIVE")
+  cycleStart        DateTime
+  cycleEnd          DateTime
+  itemsUsed         Int      @default(0)
+  swapsUsed         Int      @default(0)
+  itemsOut          Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  loans       Loan[]
+  auditEvents AuditEvent[]
+
+  @@index([shopifyCustomerId])
+}
+
+model Loan {
+  id            String    @id @default(cuid())
+  member        Member    @relation(fields: [memberId], references: [id])
+  memberId      String
+  storeLocation String
+  photoUrl      String
+  thumbnailUrl  String
+  checkoutAt    DateTime  @default(now())
+  dueDate       DateTime  // 30 days from checkout
+  returnedAt    DateTime?
+  createdAt     DateTime  @default(now())
+
+  @@index([memberId, returnedAt])
+}
+
+model LoanPhoto {
+  id           String   @id @default(cuid())
+  photoUrl     String
+  thumbnailUrl String
+  createdAt    DateTime @default(now())
+}
+
+model AuditEvent {
+  id        String   @id @default(cuid())
+  member    Member   @relation(fields: [memberId], references: [id])
+  memberId  String
+  action    String
+  metadata  String   @default("{}")
+  createdAt DateTime @default(now())
+}
