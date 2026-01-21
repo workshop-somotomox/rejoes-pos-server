@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 
 import { config } from './config';
+import { prisma } from './prisma';
 import membersRouter from './routes/members.routes';
 import loansRouter from './routes/loans.routes';
 import uploadsRouter from './routes/uploads.routes';
@@ -30,6 +31,28 @@ export async function createApp() {
   app.use('/uploads', express.static(path.resolve(process.cwd(), 'uploads')));
 
   app.use(idempotencyMiddleware);
+
+  app.get('/', async (req, res) => {
+    try {
+      const dbStatus = await prisma.$queryRaw`SELECT 1 as status`;
+      res.json({
+        status: 'ok',
+        server: 'ReJoEs Backend API',
+        environment: config.env,
+        database: 'connected',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      res.status(503).json({
+        status: 'error',
+        server: 'ReJoEs Backend API',
+        environment: config.env,
+        database: 'disconnected',
+        error: 'Database connection failed',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
 
   app.use('/api/members', membersRouter);
   app.use('/api/loans', loansRouter);

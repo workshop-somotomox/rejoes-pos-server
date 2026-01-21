@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-    "build": "tsc -p tsconfig.json && copyfiles -u 1 docs/openapi.yaml dist/docs",
+    "build": "tsc -p tsconfig.json",
     "start": "node dist/index.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
@@ -14,16 +14,13 @@
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
-    "copyfiles": "^2.4.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "helmet": "^7.1.0",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "sharp": "^0.33.2",
-    "swagger-ui-express": "^5.0.1",
-    "uuid": "^9.0.1",
-    "yamljs": "^0.3.0"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
@@ -31,9 +28,7 @@
     "@types/multer": "^1.4.11",
     "@types/node": "^20.11.19",
     "@types/supertest": "^2.0.16",
-    "@types/swagger-ui-express": "^4.1.8",
     "@types/uuid": "^9.0.7",
-    "@types/yamljs": "^0.2.34",
     "cross-env": "^7.0.3",
     "prisma": "^5.10.2",
     "supertest": "^6.3.3",
