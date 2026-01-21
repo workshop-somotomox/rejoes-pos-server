@@ -4,7 +4,7 @@ import { createApp } from './app';
 
 async function bootstrap() {
   const app = await createApp();
-  app.listen(config.port, () => {
+  app.listen(config.port, '0.0.0.0', () => {
     // eslint-disable-next-line no-console
     console.log(`ReJoEs backend listening on port ${config.port}`);
   });
