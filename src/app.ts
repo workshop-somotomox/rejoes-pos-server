@@ -13,7 +13,7 @@ import webhooksRouter from './routes/webhooks.routes';
 import { idempotencyMiddleware } from './middlewares/idempotency';
 import { errorHandler } from './middlewares/errorHandler';
 
-const swaggerDocument = YAML.load(path.join(__dirname, 'docs', 'openapi.yaml'));
+const swaggerDocument = YAML.load(path.join(process.cwd(), 'docs', 'openapi.yaml'));
 
 export async function createApp() {
   const app = express();
