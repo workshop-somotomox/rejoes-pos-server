@@ -1,0 +1,9 @@
+[Thu 01/22/2026  2:17:23.70] Starting API tests... 
+[Thu 01/22/2026  2:17:24.77] GET /api/members/by-card/:cardToken - Complete 
+[Thu 01/22/2026  2:17:25.52] POST /api/loans/checkout - Complete 
+[Thu 01/22/2026  2:17:26.45] POST /api/loans/return - Complete 
+[Thu 01/22/2026  2:17:27.19] POST /api/loans/swap - Complete 
+[Thu 01/22/2026  2:17:27.97] GET /api/loans/active/:memberId - Complete 
+[Thu 01/22/2026  2:17:28.73] POST /api/webhooks/subscription - Complete 
+[Thu 01/22/2026  2:17:29.65] POST /api/webhooks/customers/delete - Complete 
+[Thu 01/22/2026  2:17:29.66] POST /api/uploads/loan-photo - Skipped 

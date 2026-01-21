@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReJoEs API Tester</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .url-input {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .url-input label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .url-input input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: monospace;
+        }
+
+        .url-input input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .test-card {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .test-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .test-card.success {
+            border-color: #28a745;
+        }
+
+        .test-card.error {
+            border-color: #dc3545;
+        }
+
+        .test-card.warning {
+            border-color: #ffc107;
+        }
+
+        .test-card-header {
+            padding: 15px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .test-card-header h3 {
+            font-size: 1.1em;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+
+        .test-card-header .method {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: 600;
+            color: white;
+        }
+
+        .method.get { background: #28a745; }
+        .method.post { background: #17a2b8; }
+
+        .test-card-body {
+            padding: 15px;
+        }
+
+        .test-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .test-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .test-result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 13px;
+            display: none;
+        }
+
+        .test-result.show {
+            display: block;
+        }
+
+        .test-result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .test-result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .test-result.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .test-result pre {
+            margin: 10px 0 0 0;
+            padding: 10px;
+            background: white;
+            border-radius: 3px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        .status-badge.success {
+            background: #28a745;
+            color: white;
+        }
+
+        .status-badge.error {
+            background: #dc3545;
+            color: white;
+        }
+
+        .status-badge.warning {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .test-all-btn {
+            margin: 20px;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .test-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .test-all-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 ReJoEs API Tester</h1>
+            <p>One-click testing for all API endpoints</p>
+        </div>
+
+        <div class="url-input">
+            <label for="baseUrl">API Base URL:</label>
+            <input type="text" id="baseUrl" value="https://rejoes-pos-server-oyolloo.up.railway.app" placeholder="Enter API base URL">
+        </div>
+
+        <div style="text-align: center;">
+            <button class="test-all-btn" onclick="testAll()">🚀 Test All Endpoints</button>
+        </div>
+
+        <div class="test-grid" id="testGrid"></div>
+    </div>
+
+    <script>
+        const tests = [
+            {
+                name: 'Get Member by Card',
+                method: 'GET',
+                endpoint: '/api/members/by-card/CARD123456',
+                description: 'Look up member by card token'
+            },
+            {
+                name: 'Checkout Loan',
+                method: 'POST',
+                endpoint: '/api/loans/checkout',
+                body: {
+                    memberId: 'test-member-id',
+                    storeLocation: 'store_ny',
+                    uploadId: 'test-upload-id'
+                },
+                headers: {
+                    'x-idempotency-key': 'test-checkout-123'
+                },
+                description: 'Create new loan checkout'
+            },
+            {
+                name: 'Return Loan',
+                method: 'POST',
+                endpoint: '/api/loans/return',
+                body: {
+                    memberId: 'test-member-id',
+                    loanId: 'test-loan-id'
+                },
+                headers: {
+                    'x-idempotency-key': 'test-return-456'
+                },
+                description: 'Return a checked-out item'
+            },
+            {
+                name: 'Swap Loan',
+                method: 'POST',
+                endpoint: '/api/loans/swap',
+                body: {
+                    memberId: 'test-member-id',
+                    loanId: 'test-loan-id',
+                    storeLocation: 'store_ny',
+                    uploadId: 'test-upload-id'
+                },
+                headers: {
+                    'x-idempotency-key': 'test-swap-789'
+                },
+                description: 'Swap one item for another'
+            },
+            {
+                name: 'Get Active Loans',
+                method: 'GET',
+                endpoint: '/api/loans/active/test-member-id',
+                description: 'Get all active loans for member'
+            },
+            {
+                name: 'Upload Photo',
+                method: 'POST',
+                endpoint: '/api/uploads/loan-photo',
+                description: 'Upload item photo (multipart)',
+                skip: true // Skip file upload test
+            },
+            {
+                name: 'Subscription Webhook',
+                method: 'POST',
+                endpoint: '/api/webhooks/subscription',
+                body: {
+                    type: 'subscription_created',
+                    data: {
+                        shopifyCustomerId: 'test',
+                        cardToken: 'test',
+                        planHandle: 'basic',
+                        status: 'active',
+                        cycleStart: '2024-01-01T00:00:00Z',
+                        cycleEnd: '2024-02-01T00:00:00Z'
+                    }
+                },
+                description: 'Shopify subscription webhook'
+            },
+            {
+                name: 'Customer Delete Webhook',
+                method: 'POST',
+                endpoint: '/api/webhooks/customers/delete',
+                body: {
+                    shopifyCustomerId: 'test'
+                },
+                description: 'Shopify customer delete webhook'
+            }
+        ];
+
+        function renderTests() {
+            const grid = document.getElementById('testGrid');
+            grid.innerHTML = tests.map((test, index) => `
+                <div class="test-card" id="card-${index}">
+                    <div class="test-card-header">
+                        <h3>${test.name}</h3>
+                        <span class="method ${test.method.toLowerCase()}">${test.method}</span>
+                        <span class="status-badge" id="badge-${index}" style="display: none;"></span>
+                    </div>
+                    <div class="test-card-body">
+                        <p style="color: #6c757d; font-size: 13px; margin-bottom: 10px;">${test.description}</p>
+                        <button class="test-btn" onclick="runTest(${index})">Test</button>
+                        <div class="test-result" id="result-${index}"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function runTest(index) {
+            const test = tests[index];
+            const baseUrl = document.getElementById('baseUrl').value;
+            const url = baseUrl + test.endpoint;
+            const card = document.getElementById(`card-${index}`);
+            const resultDiv = document.getElementById(`result-${index}`);
+            const badge = document.getElementById(`badge-${index}`);
+            const btn = card.querySelector('.test-btn');
+
+            btn.disabled = true;
+            btn.textContent = 'Testing...';
+            resultDiv.className = 'test-result';
+            resultDiv.innerHTML = '';
+
+            try {
+                const options = {
+                    method: test.method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...test.headers
+                    }
+                };
+
+                if (test.body && !test.skip) {
+                    options.body = JSON.stringify(test.body);
+                }
+
+                const response = await fetch(url, options);
+                const data = await response.text();
+
+                let status, statusClass;
+                if (response.ok) {
+                    status = '✅ Success';
+                    statusClass = 'success';
+                } else if (response.status >= 400 && response.status < 500) {
+                    status = '⚠️ Client Error';
+                    statusClass = 'warning';
+                } else {
+                    status = '❌ Server Error';
+                    statusClass = 'error';
+                }
+
+                resultDiv.innerHTML = `
+                    <strong>${status} (${response.status})</strong>
+                    <pre>${data}</pre>
+                `;
+                resultDiv.classList.add('show', statusClass);
+                badge.textContent = status;
+                badge.className = `status-badge ${statusClass}`;
+                badge.style.display = 'inline-block';
+                card.className = `test-card ${statusClass}`;
+
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <strong>❌ Network Error</strong>
+                    <pre>${error.message}</pre>
+                `;
+                resultDiv.classList.add('show', 'error');
+                badge.textContent = '❌ Error';
+                badge.className = 'status-badge error';
+                badge.style.display = 'inline-block';
+                card.className = 'test-card error';
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Test';
+        }
+
+        async function testAll() {
+            for (let i = 0; i < tests.length; i++) {
+                if (!tests[i].skip) {
+                    await runTest(i);
+                }
+            }
+        }
+
+        renderTests();
+    </script>
+</body>
+</html>
