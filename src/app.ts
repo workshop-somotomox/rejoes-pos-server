@@ -46,6 +46,12 @@ export async function createApp() {
 
   app.use(idempotencyMiddleware);
 
+  // Routes
+  app.use('/api/members', membersRouter);
+  app.use('/api/loans', loansRouter);
+  app.use('/api/uploads', uploadsRouter);
+  app.use('/api/webhooks', webhooksRouter);
+
   app.get('/', async (req, res) => {
     try {
       const dbStatus = await prisma.$queryRaw`SELECT 1 as status`;
@@ -67,11 +73,6 @@ export async function createApp() {
       });
     }
   });
-
-  app.use('/api/members', membersRouter);
-  app.use('/api/loans', loansRouter);
-  app.use('/api/uploads', uploadsRouter);
-  app.use('/api/webhooks', webhooksRouter);
 
   app.use(errorHandler);
 
