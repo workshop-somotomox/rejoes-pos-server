@@ -63,17 +63,20 @@ Creates a new loan (checkout).
 {
   "memberId": "string",
   "storeLocation": "string",
-  "photoUrl": "string",
-  "thumbnailUrl": "string"
+  "uploadId": "string"
 }
 ```
 
-**Response:** Newly created loan record.
+**Response:** Newly created loan record with due date (30 days from checkout).
 
 **Rules enforced:**
 - Subscription must be active.
 - Monthly allowance and max items out must not be exceeded.
 - Counters auto-reset when a billing cycle boundary is detected.
+
+**Errors:**
+- `400` - Subscription inactive or monthly limit exceeded
+- `404` - Member or upload not found
 
 ### `POST /api/loans/return`
 Marks an existing loan as returned.
@@ -101,8 +104,7 @@ Performs a swap (return + new checkout counted as a swap).
   "memberId": "string",
   "loanId": "string",          // loan being returned
   "storeLocation": "string",
-  "photoUrl": "string",
-  "thumbnailUrl": "string"
+  "uploadId": "string"
 }
 ```
 
@@ -119,6 +121,10 @@ Performs a swap (return + new checkout counted as a swap).
 - Member must have at least one item out.
 - Items/month cap still applies (swap counts as a checkout).
 
+**Errors:**
+- `400` - Swap limit exceeded or no items to swap
+- `404` - Loan or upload not found
+
 ### `GET /api/loans/active/:memberId`
 Returns all active (not returned) loans for a member with most recent checkout first.
 
@@ -130,18 +136,23 @@ Returns all active (not returned) loans for a member with most recent checkout f
 ### `POST /api/uploads/loan-photo`
 Accepts a multipart form upload with field `photo`. Stores original + thumbnail images locally using Sharp.
 
+**Request:** `multipart/form-data`
+- `photo` (file, required): Photo file (max 5MB, JPEG/PNG)
+
 **Response:**
 ```json
 {
-  "photoUrl": "/uploads/originals/...jpg",
-  "thumbnailUrl": "/uploads/thumbnails/...jpg"
+  "uploadId": "string",
+  "photoUrl": "string",
+  "thumbnailUrl": "string"
 }
 ```
 
 **Usage guidance:**
 1. Staff captures garment photo on POS device.
 2. Upload photo via this endpoint.
-3. Use returned URLs when calling loan checkout/swap.
+3. Use returned `uploadId` when calling loan checkout/swap.
+4. Photo is automatically deleted after being used in a loan.
 
 ---
 
