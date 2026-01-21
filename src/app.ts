@@ -18,9 +18,18 @@ export async function createApp() {
 
   app.use(helmet());
   app.use(cors({
-    origin: ['https://shopify.com', 'https://*.shopify.com'],
+    origin: true, // Allow all origins for development
     credentials: true
   }));
+
+  // Ensure CORS headers are sent for all responses including errors
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, x-idempotency-key');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    next();
+  });
   app.use(morgan(config.env === 'production' ? 'combined' : 'dev'));
   app.use(
     express.json({
