@@ -41,7 +41,8 @@ export function idempotencyMiddleware(req: Request, res: Response, next: NextFun
   if (
     req.method !== 'POST' ||
     req.path.startsWith('/api/webhooks') ||
-    req.path.startsWith('/api/uploads')
+    req.path.startsWith('/api/uploads') ||
+    req.path.includes('/dev/')
   ) {
     return next();
   }
