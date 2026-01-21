@@ -2,8 +2,6 @@ import path from 'path';
 import express, { Request } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import swaggerUi from 'swagger-ui-express';
-import YAML from 'yamljs';
 
 import { config } from './config';
 import membersRouter from './routes/members.routes';
@@ -12,8 +10,6 @@ import uploadsRouter from './routes/uploads.routes';
 import webhooksRouter from './routes/webhooks.routes';
 import { idempotencyMiddleware } from './middlewares/idempotency';
 import { errorHandler } from './middlewares/errorHandler';
-
-const swaggerDocument = YAML.load(path.join(process.cwd(), 'docs', 'openapi.yaml'));
 
 export async function createApp() {
   const app = express();
@@ -39,8 +35,6 @@ export async function createApp() {
   app.use('/api/loans', loansRouter);
   app.use('/api/uploads', uploadsRouter);
   app.use('/api/webhooks', webhooksRouter);
-
-  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   app.use(errorHandler);
 
