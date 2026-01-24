@@ -74,33 +74,20 @@ function computeHmac(payload: string) {
 
 async function run() {
   try {
-    const cardToken = `e2e-${Date.now()}`;
+    const cardToken = 'E2E_TEST_CARD_001';
 
-    // 1. Create member
-    const createPayload = {
-      cardToken,
-      tier: 'PREMIUM',
-      email: 'e2e@example.com',
-      name: 'End To End',
-      phone: '18005551111',
-    };
-    const { body: createBody } = await sendJson('Create member', `${API_BASE}/api/members/dev/seed-member`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(createPayload),
-    });
-    const memberId = (createBody as any)?.member?.id;
-
-    // 2. Fetch member
-    await sendJson('Get member after create', `${API_BASE}/api/members/by-card/${cardToken}`, {
+    // 1. Get existing test member
+    await sendJson('Get test member', `${API_BASE}/api/members/by-card/${cardToken}`, {
       method: 'GET',
     });
+    const memberResponse = results[results.length - 1];
+    const memberId = (memberResponse.payload as any)?.member?.id;
 
-    // 3. Upload loan photo for checkout
+    // 2. Upload loan photo for checkout
     const { body: uploadBody } = await uploadLoanPhoto('Upload loan photo (checkout)', memberId || '', 'checkout.png');
     const uploadId = (uploadBody as any)?.uploadId;
 
-    // 3a. Checkout loan
+    // 3. Checkout loan
     const { body: checkoutBody } = await sendJson('Checkout loan', `${API_BASE}/api/loans/checkout`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-idempotency-key': crypto.randomUUID() },

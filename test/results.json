@@ -1,27 +1,73 @@
 {
   "results": [
     {
-      "step": "Create member",
-      "status": 403,
-      "success": false,
+      "step": "Get test member",
+      "status": 200,
+      "success": true,
       "payload": {
-        "message": "Endpoint not available in production"
-      }
-    },
-    {
-      "step": "Get member after create",
-      "status": 404,
-      "success": false,
-      "payload": {
-        "message": "Member not found"
+        "member": {
+          "id": "cmksj0jgt0000927ynggbykyl",
+          "cardToken": "E2E_TEST_CARD_001",
+          "tier": "PREMIUM",
+          "status": "ACTIVE",
+          "cycleStart": "2026-01-24T16:30:47.691Z",
+          "cycleEnd": "2026-02-24T16:30:47.691Z",
+          "itemsUsed": 6,
+          "swapsUsed": 1,
+          "itemsOut": 4,
+          "createdAt": "2026-01-24T16:30:47.694Z",
+          "updatedAt": "2026-01-24T16:36:27.363Z",
+          "loans": [
+            {
+              "id": "cmksj1hi2000o129boe0v61u5",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj1eb5000j129bvmqnn8y7.png"
+            },
+            {
+              "id": "cmksj70lp000w129bihc7vz5f",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj6xst000r129bthstzfaf.png"
+            },
+            {
+              "id": "cmksj7dum0014129bygbzrsb9",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7b27000z129bm4somjlv.png"
+            },
+            {
+              "id": "cmksj7t60001c129bx1ng5058",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7qe30017129bc5ra7uh3.png"
+            }
+          ]
+        },
+        "allowances": {
+          "itemsPerMonth": 10,
+          "swaps": 5,
+          "maxItemsOut": 4
+        },
+        "activeLoans": [
+          {
+            "id": "cmksj1hi2000o129boe0v61u5",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj1eb5000j129bvmqnn8y7.png"
+          },
+          {
+            "id": "cmksj70lp000w129bihc7vz5f",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj6xst000r129bthstzfaf.png"
+          },
+          {
+            "id": "cmksj7dum0014129bygbzrsb9",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7b27000z129bm4somjlv.png"
+          },
+          {
+            "id": "cmksj7t60001c129bx1ng5058",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7qe30017129bc5ra7uh3.png"
+          }
+        ]
       }
     },
     {
       "step": "Upload loan photo (checkout)",
-      "status": 400,
-      "success": false,
+      "status": 201,
+      "success": true,
       "payload": {
-        "message": "memberId is required"
+        "uploadId": "cmkspnjam0021129bmteb1dfx",
+        "status": "success"
       }
     },
     {
@@ -29,15 +75,68 @@
       "status": 400,
       "success": false,
       "payload": {
-        "message": "Missing required fields"
+        "message": "PREMIUM plan: Maximum 4 items allowed out. Return items to continue."
       }
     },
     {
       "step": "Get member after checkout",
-      "status": 404,
-      "success": false,
+      "status": 200,
+      "success": true,
       "payload": {
-        "message": "Member not found"
+        "member": {
+          "id": "cmksj0jgt0000927ynggbykyl",
+          "cardToken": "E2E_TEST_CARD_001",
+          "tier": "PREMIUM",
+          "status": "ACTIVE",
+          "cycleStart": "2026-01-24T16:30:47.691Z",
+          "cycleEnd": "2026-02-24T16:30:47.691Z",
+          "itemsUsed": 6,
+          "swapsUsed": 1,
+          "itemsOut": 4,
+          "createdAt": "2026-01-24T16:30:47.694Z",
+          "updatedAt": "2026-01-24T16:36:27.363Z",
+          "loans": [
+            {
+              "id": "cmksj1hi2000o129boe0v61u5",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj1eb5000j129bvmqnn8y7.png"
+            },
+            {
+              "id": "cmksj70lp000w129bihc7vz5f",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj6xst000r129bthstzfaf.png"
+            },
+            {
+              "id": "cmksj7dum0014129bygbzrsb9",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7b27000z129bm4somjlv.png"
+            },
+            {
+              "id": "cmksj7t60001c129bx1ng5058",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7qe30017129bc5ra7uh3.png"
+            }
+          ]
+        },
+        "allowances": {
+          "itemsPerMonth": 10,
+          "swaps": 5,
+          "maxItemsOut": 4
+        },
+        "activeLoans": [
+          {
+            "id": "cmksj1hi2000o129boe0v61u5",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj1eb5000j129bvmqnn8y7.png"
+          },
+          {
+            "id": "cmksj70lp000w129bihc7vz5f",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj6xst000r129bthstzfaf.png"
+          },
+          {
+            "id": "cmksj7dum0014129bygbzrsb9",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7b27000z129bm4somjlv.png"
+          },
+          {
+            "id": "cmksj7t60001c129bx1ng5058",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7qe30017129bc5ra7uh3.png"
+          }
+        ]
       }
     },
     {
@@ -50,18 +149,72 @@
     },
     {
       "step": "Get member after return",
-      "status": 404,
-      "success": false,
+      "status": 200,
+      "success": true,
       "payload": {
-        "message": "Member not found"
+        "member": {
+          "id": "cmksj0jgt0000927ynggbykyl",
+          "cardToken": "E2E_TEST_CARD_001",
+          "tier": "PREMIUM",
+          "status": "ACTIVE",
+          "cycleStart": "2026-01-24T16:30:47.691Z",
+          "cycleEnd": "2026-02-24T16:30:47.691Z",
+          "itemsUsed": 6,
+          "swapsUsed": 1,
+          "itemsOut": 4,
+          "createdAt": "2026-01-24T16:30:47.694Z",
+          "updatedAt": "2026-01-24T16:36:27.363Z",
+          "loans": [
+            {
+              "id": "cmksj1hi2000o129boe0v61u5",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj1eb5000j129bvmqnn8y7.png"
+            },
+            {
+              "id": "cmksj70lp000w129bihc7vz5f",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj6xst000r129bthstzfaf.png"
+            },
+            {
+              "id": "cmksj7dum0014129bygbzrsb9",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7b27000z129bm4somjlv.png"
+            },
+            {
+              "id": "cmksj7t60001c129bx1ng5058",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7qe30017129bc5ra7uh3.png"
+            }
+          ]
+        },
+        "allowances": {
+          "itemsPerMonth": 10,
+          "swaps": 5,
+          "maxItemsOut": 4
+        },
+        "activeLoans": [
+          {
+            "id": "cmksj1hi2000o129boe0v61u5",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj1eb5000j129bvmqnn8y7.png"
+          },
+          {
+            "id": "cmksj70lp000w129bihc7vz5f",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj6xst000r129bthstzfaf.png"
+          },
+          {
+            "id": "cmksj7dum0014129bygbzrsb9",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7b27000z129bm4somjlv.png"
+          },
+          {
+            "id": "cmksj7t60001c129bx1ng5058",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7qe30017129bc5ra7uh3.png"
+          }
+        ]
       }
     },
     {
       "step": "Upload loan photo (swap base)",
-      "status": 400,
-      "success": false,
+      "status": 201,
+      "success": true,
       "payload": {
-        "message": "memberId is required"
+        "uploadId": "cmkspnnye0025129bvufjruis",
+        "status": "success"
       }
     },
     {
@@ -69,15 +222,16 @@
       "status": 400,
       "success": false,
       "payload": {
-        "message": "Missing required fields"
+        "message": "PREMIUM plan: Maximum 4 items allowed out. Return items to continue."
       }
     },
     {
       "step": "Upload loan photo (swap new)",
-      "status": 400,
-      "success": false,
+      "status": 201,
+      "success": true,
       "payload": {
-        "message": "memberId is required"
+        "uploadId": "cmkspnqrn0029129bimnkkn21",
+        "status": "success"
       }
     },
     {
@@ -90,18 +244,75 @@
     },
     {
       "step": "Get member after swap",
-      "status": 404,
-      "success": false,
+      "status": 200,
+      "success": true,
       "payload": {
-        "message": "Member not found"
+        "member": {
+          "id": "cmksj0jgt0000927ynggbykyl",
+          "cardToken": "E2E_TEST_CARD_001",
+          "tier": "PREMIUM",
+          "status": "ACTIVE",
+          "cycleStart": "2026-01-24T16:30:47.691Z",
+          "cycleEnd": "2026-02-24T16:30:47.691Z",
+          "itemsUsed": 6,
+          "swapsUsed": 1,
+          "itemsOut": 4,
+          "createdAt": "2026-01-24T16:30:47.694Z",
+          "updatedAt": "2026-01-24T16:36:27.363Z",
+          "loans": [
+            {
+              "id": "cmksj1hi2000o129boe0v61u5",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj1eb5000j129bvmqnn8y7.png"
+            },
+            {
+              "id": "cmksj70lp000w129bihc7vz5f",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj6xst000r129bthstzfaf.png"
+            },
+            {
+              "id": "cmksj7dum0014129bygbzrsb9",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7b27000z129bm4somjlv.png"
+            },
+            {
+              "id": "cmksj7t60001c129bx1ng5058",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7qe30017129bc5ra7uh3.png"
+            }
+          ]
+        },
+        "allowances": {
+          "itemsPerMonth": 10,
+          "swaps": 5,
+          "maxItemsOut": 4
+        },
+        "activeLoans": [
+          {
+            "id": "cmksj1hi2000o129boe0v61u5",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj1eb5000j129bvmqnn8y7.png"
+          },
+          {
+            "id": "cmksj70lp000w129bihc7vz5f",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj6xst000r129bthstzfaf.png"
+          },
+          {
+            "id": "cmksj7dum0014129bygbzrsb9",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7b27000z129bm4somjlv.png"
+          },
+          {
+            "id": "cmksj7t60001c129bx1ng5058",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7qe30017129bc5ra7uh3.png"
+          }
+        ]
       }
     },
     {
       "step": "LoanPhoto linked to swapped loan",
-      "status": 400,
+      "status": 200,
       "success": false,
       "payload": {
-        "error": "Upload failed, no uploadId"
+        "id": "cmkspnqrn0029129bimnkkn21",
+        "r2Key": "loans/cmksj0jgt0000927ynggbykyl/cmkspnqrn0029129bimnkkn21.png",
+        "metadata": "{\"originalName\":\"swap-new.png\",\"mimeType\":\"image/png\",\"size\":67}",
+        "loanId": null,
+        "createdAt": "2026-01-24T19:36:47.940Z"
       }
     }
   ]

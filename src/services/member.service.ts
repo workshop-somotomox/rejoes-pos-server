@@ -9,6 +9,7 @@ type DbClient = Prisma.TransactionClient | typeof prisma;
 type MemberRecord = {
   id: string;
   cardToken: string;
+  shopifyCustomerId: string | null;
   tier: string;
   status: string;
   cycleStart: Date;

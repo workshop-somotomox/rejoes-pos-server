@@ -8,17 +8,18 @@ generator client {
 }
 
 model Member {
-  id                String   @id @default(cuid())
-  cardToken         String   @unique
-  tier              String
-  status            String
-  cycleStart        DateTime
-  cycleEnd          DateTime
-  itemsUsed         Int      @default(0)
-  swapsUsed         Int      @default(0)
-  itemsOut          Int      @default(0)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id                 String   @id @default(cuid())
+  cardToken          String   @unique
+  shopifyCustomerId  String?  @unique
+  tier               String
+  status             String
+  cycleStart         DateTime
+  cycleEnd           DateTime
+  itemsUsed          Int      @default(0)
+  swapsUsed          Int      @default(0)
+  itemsOut           Int      @default(0)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 
   loans       Loan[]
   auditEvents AuditEvent[]
