@@ -39,6 +39,7 @@
   "member": {
     "id": "string",
     "cardToken": "string",
+    "shopifyCustomerId": "string|null",
     "tier": "string",
     "status": "string",
     "cycleStart": "datetime",
@@ -64,7 +65,7 @@
 
 ### POST /uploads/loan-photo
 **Headers:** Content-Type: multipart/form-data
-**Body:** FormData with file field
+**Body:** FormData with file field and memberId
 **Success (201):**
 ```json
 {
@@ -75,6 +76,27 @@
 **Errors:** 400 (no file), 500 (upload failed)
 
 ## Loans
+
+### GET /loans/active/:memberId
+**Headers:** None
+**Body:** None
+**Success (200):**
+```json
+[
+  {
+    "id": "string",
+    "memberId": "string",
+    "storeLocation": "string",
+    "photoUrl": "string",
+    "thumbnailUrl": "string",
+    "checkoutAt": "datetime",
+    "dueDate": "datetime",
+    "returnedAt": null,
+    "createdAt": "datetime"
+  }
+]
+```
+**Errors:** 400 (missing memberId), 404 (member not found)
 
 ### POST /loans/checkout
 **Headers:** x-idempotency-key: string
@@ -102,9 +124,15 @@
 ```
 **Errors:** 400 (missing fields), 404 (member/upload not found)
 
-### POST /loans/:loanId/return
+### POST /loans/return
 **Headers:** x-idempotency-key: string
-**Body:** None
+**Body:**
+```json
+{
+  "memberId": "string",
+  "loanId": "string"
+}
+```
 **Success (200):**
 ```json
 {
@@ -119,15 +147,17 @@
   "createdAt": "datetime"
 }
 ```
-**Errors:** 404 (loan not found)
+**Errors:** 400 (missing fields), 404 (loan not found)
 
-### POST /loans/:loanId/swap
+### POST /loans/swap
 **Headers:** x-idempotency-key: string
 **Body:**
 ```json
 {
-  "newUploadId": "string",
-  "storeLocation": "string"
+  "memberId": "string",
+  "loanId": "string",
+  "storeLocation": "string",
+  "uploadId": "string"
 }
 ```
 **Success (200):**
@@ -158,3 +188,4 @@
 }
 ```
 **Errors:** 400 (missing fields), 404 (loan/upload not found)
+

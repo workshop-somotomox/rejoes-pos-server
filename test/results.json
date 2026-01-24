@@ -66,7 +66,7 @@
       "status": 201,
       "success": true,
       "payload": {
-        "uploadId": "cmkspnjam0021129bmteb1dfx",
+        "uploadId": "cmkspqnf5002c129b51lor5zv",
         "status": "success"
       }
     },
@@ -213,7 +213,7 @@
       "status": 201,
       "success": true,
       "payload": {
-        "uploadId": "cmkspnnye0025129bvufjruis",
+        "uploadId": "cmkspqs3x002g129by2me3h87",
         "status": "success"
       }
     },
@@ -230,7 +230,7 @@
       "status": 201,
       "success": true,
       "payload": {
-        "uploadId": "cmkspnqrn0029129bimnkkn21",
+        "uploadId": "cmkspqve2002k129b9ffonb2f",
         "status": "success"
       }
     },
@@ -308,11 +308,11 @@
       "status": 200,
       "success": false,
       "payload": {
-        "id": "cmkspnqrn0029129bimnkkn21",
-        "r2Key": "loans/cmksj0jgt0000927ynggbykyl/cmkspnqrn0029129bimnkkn21.png",
+        "id": "cmkspqve2002k129b9ffonb2f",
+        "r2Key": "loans/cmksj0jgt0000927ynggbykyl/cmkspqve2002k129b9ffonb2f.png",
         "metadata": "{\"originalName\":\"swap-new.png\",\"mimeType\":\"image/png\",\"size\":67}",
         "loanId": null,
-        "createdAt": "2026-01-24T19:36:47.940Z"
+        "createdAt": "2026-01-24T19:39:13.898Z"
       }
     }
   ]
