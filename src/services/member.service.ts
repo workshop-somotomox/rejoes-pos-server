@@ -9,8 +9,8 @@ type DbClient = Prisma.TransactionClient | typeof prisma;
 type MemberRecord = {
   id: string;
   cardToken: string;
-  tier: MemberTier;
-  status: MemberStatus;
+  tier: string;
+  status: string;
   cycleStart: Date;
   cycleEnd: Date;
   itemsUsed: number;
@@ -53,7 +53,7 @@ export async function getMemberByCard(cardToken: string) {
     loans,
   };
 
-  const allowances = getTierConfig(normalizedMember.tier);
+  const allowances = getTierConfig(normalizedMember.tier as MemberTier);
   const activeLoans = loans.map((loan: ActiveLoanThumbnail) => ({
     id: loan.id,
     thumbnailUrl: loan.thumbnailUrl,
@@ -110,8 +110,8 @@ export function validateMemberCanCheckout(member: MemberRecord) {
     return;
   }
   
-  validateMemberActive(member);
-  const allowances = getTierConfig(member.tier);
+  validateMemberActive({ status: member.status as MemberStatus });
+  const allowances = getTierConfig(member.tier as MemberTier);
 
   if (member.itemsUsed >= allowances.itemsPerMonth) {
     const remaining = allowances.itemsPerMonth - member.itemsUsed;
@@ -124,8 +124,8 @@ export function validateMemberCanCheckout(member: MemberRecord) {
 }
 
 export function validateSwapAllowance(member: MemberRecord) {
-  validateMemberActive(member);
-  const allowances = getTierConfig(member.tier);
+  validateMemberActive({ status: member.status as MemberStatus });
+  const allowances = getTierConfig(member.tier as MemberTier);
   if (member.swapsUsed >= allowances.swaps) {
     const remaining = allowances.swaps - member.swapsUsed;
     throw new AppError(400, `${member.tier} plan: ${remaining} of ${allowances.swaps} swaps remaining this month`);

@@ -8,17 +8,18 @@ const getClient = (client?: DbClient) => client ?? prisma;
 export interface LoanPhotoRecord {
   id: string;
   r2Key: string;
-  metadata: object;
+  metadata: string;
 }
 
 export async function createLoanPhoto(r2Key: string, metadata: object): Promise<LoanPhotoRecord> {
-  return prisma.loanPhoto.create({
+  const result = await prisma.loanPhoto.create({
     data: { 
       r2Key, 
       metadata: JSON.stringify(metadata) 
     },
     select: { id: true, r2Key: true, metadata: true },
   });
+  return result as LoanPhotoRecord;
 }
 
 export async function updateLoanId(uploadId: string, loanId: string, client?: DbClient): Promise<void> {
