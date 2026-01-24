@@ -1,0 +1,230 @@
+{
+  "results": [
+    {
+      "step": "Create member",
+      "status": 200,
+      "success": true,
+      "payload": {
+        "message": "Test member created successfully",
+        "member": {
+          "id": "cmksc2bfj0000huce53jx1p47",
+          "cardToken": "e2e-1769260571637",
+          "tier": "PREMIUM",
+          "status": "ACTIVE",
+          "cycleStart": "2026-01-24T13:16:13.278Z",
+          "cycleEnd": "2026-02-24T13:16:13.278Z",
+          "itemsUsed": 0,
+          "swapsUsed": 0,
+          "itemsOut": 0
+        }
+      }
+    },
+    {
+      "step": "Get member after create",
+      "status": 200,
+      "success": true,
+      "payload": {
+        "member": {
+          "id": "cmksc2bfj0000huce53jx1p47",
+          "shopifyCustomerId": "dev-1769260573278",
+          "cardToken": "e2e-1769260571637",
+          "tier": "PREMIUM",
+          "status": "ACTIVE",
+          "cycleStart": "2026-01-24T13:16:13.278Z",
+          "cycleEnd": "2026-02-24T13:16:13.278Z",
+          "itemsUsed": 0,
+          "swapsUsed": 0,
+          "itemsOut": 0,
+          "createdAt": "2026-01-24T13:16:13.280Z",
+          "updatedAt": "2026-01-24T13:16:13.280Z",
+          "loans": []
+        },
+        "allowances": {
+          "itemsPerMonth": 10,
+          "swaps": 5,
+          "maxItemsOut": 4
+        },
+        "activeLoans": []
+      }
+    },
+    {
+      "step": "Upload loan photo (checkout)",
+      "status": 201,
+      "success": true,
+      "payload": {
+        "uploadId": "cmksc2cky0001hucegto4v5v5",
+        "status": "success"
+      }
+    },
+    {
+      "step": "Checkout loan",
+      "status": 500,
+      "success": false,
+      "payload": {
+        "message": "Internal server error"
+      }
+    },
+    {
+      "step": "Get member after checkout",
+      "status": 200,
+      "success": true,
+      "payload": {
+        "member": {
+          "id": "cmksc2bfj0000huce53jx1p47",
+          "shopifyCustomerId": "dev-1769260573278",
+          "cardToken": "e2e-1769260571637",
+          "tier": "PREMIUM",
+          "status": "ACTIVE",
+          "cycleStart": "2026-01-24T13:16:13.278Z",
+          "cycleEnd": "2026-02-24T13:16:13.278Z",
+          "itemsUsed": 0,
+          "swapsUsed": 0,
+          "itemsOut": 0,
+          "createdAt": "2026-01-24T13:16:13.280Z",
+          "updatedAt": "2026-01-24T13:16:13.280Z",
+          "loans": []
+        },
+        "allowances": {
+          "itemsPerMonth": 10,
+          "swaps": 5,
+          "maxItemsOut": 4
+        },
+        "activeLoans": []
+      }
+    },
+    {
+      "step": "Return loan",
+      "status": 400,
+      "success": false,
+      "payload": {
+        "message": "Missing required fields"
+      }
+    },
+    {
+      "step": "Get member after return",
+      "status": 200,
+      "success": true,
+      "payload": {
+        "member": {
+          "id": "cmksc2bfj0000huce53jx1p47",
+          "shopifyCustomerId": "dev-1769260573278",
+          "cardToken": "e2e-1769260571637",
+          "tier": "PREMIUM",
+          "status": "ACTIVE",
+          "cycleStart": "2026-01-24T13:16:13.278Z",
+          "cycleEnd": "2026-02-24T13:16:13.278Z",
+          "itemsUsed": 0,
+          "swapsUsed": 0,
+          "itemsOut": 0,
+          "createdAt": "2026-01-24T13:16:13.280Z",
+          "updatedAt": "2026-01-24T13:16:13.280Z",
+          "loans": []
+        },
+        "allowances": {
+          "itemsPerMonth": 10,
+          "swaps": 5,
+          "maxItemsOut": 4
+        },
+        "activeLoans": []
+      }
+    },
+    {
+      "step": "Upload loan photo (swap base)",
+      "status": 201,
+      "success": true,
+      "payload": {
+        "uploadId": "cmksc2fml0005hucen4mmlkrg",
+        "status": "success"
+      }
+    },
+    {
+      "step": "Checkout loan for swap",
+      "status": 400,
+      "success": false,
+      "payload": {
+        "message": "Missing idempotency key"
+      }
+    },
+    {
+      "step": "Upload loan photo (swap new)",
+      "status": 201,
+      "success": true,
+      "payload": {
+        "uploadId": "cmksc2h130008hucea4diaegw",
+        "status": "success"
+      }
+    },
+    {
+      "step": "Swap loan",
+      "status": 400,
+      "success": false,
+      "payload": {
+        "message": "Missing required fields"
+      }
+    },
+    {
+      "step": "Get member after swap",
+      "status": 200,
+      "success": true,
+      "payload": {
+        "member": {
+          "id": "cmksc2bfj0000huce53jx1p47",
+          "shopifyCustomerId": "dev-1769260573278",
+          "cardToken": "e2e-1769260571637",
+          "tier": "PREMIUM",
+          "status": "ACTIVE",
+          "cycleStart": "2026-01-24T13:16:13.278Z",
+          "cycleEnd": "2026-02-24T13:16:13.278Z",
+          "itemsUsed": 0,
+          "swapsUsed": 0,
+          "itemsOut": 0,
+          "createdAt": "2026-01-24T13:16:13.280Z",
+          "updatedAt": "2026-01-24T13:16:13.280Z",
+          "loans": []
+        },
+        "allowances": {
+          "itemsPerMonth": 10,
+          "swaps": 5,
+          "maxItemsOut": 4
+        },
+        "activeLoans": []
+      }
+    },
+    {
+      "step": "LoanPhoto linked to swapped loan",
+      "status": 200,
+      "success": false,
+      "payload": {
+        "id": "cmksc2h130008hucea4diaegw",
+        "r2Key": "/uploads/originals/c0b87da2-499e-40fb-975e-5fdb1855d574-original.jpg",
+        "metadata": "{\"originalName\":\"swap-new.png\",\"mimeType\":\"image/png\",\"size\":67,\"originalUrl\":\"/uploads/originals/c0b87da2-499e-40fb-975e-5fdb1855d574-original.jpg\",\"thumbnailUrl\":\"/uploads/thumbnails/33af3e8b-eb22-4c52-a819-4fcda3cc5846-thumb.jpg\",\"localOriginalUrl\":\"/uploads/originals/c0b87da2-499e-40fb-975e-5fdb1855d574-original.jpg\",\"localThumbnailUrl\":\"/uploads/thumbnails/33af3e8b-eb22-4c52-a819-4fcda3cc5846-thumb.jpg\"}",
+        "loanId": null,
+        "createdAt": "2026-01-24T13:16:20.535Z"
+      }
+    },
+    {
+      "step": "Webhook subscription active",
+      "status": 200,
+      "success": true,
+      "payload": {
+        "status": "ok"
+      }
+    },
+    {
+      "step": "Webhook subscription paused",
+      "status": 200,
+      "success": true,
+      "payload": {
+        "status": "ok"
+      }
+    },
+    {
+      "step": "Webhook subscription cancelled",
+      "status": 200,
+      "success": true,
+      "payload": {
+        "status": "ok"
+      }
+    }
+  ]
+}

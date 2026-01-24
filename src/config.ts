@@ -1,5 +1,5 @@
-import path from 'path';
 import dotenv from 'dotenv';
+import path from 'path';
 
 dotenv.config();
 
@@ -13,7 +13,10 @@ export const config = {
     thumbnails: path.resolve(rootDir, 'uploads', 'thumbnails'),
   },
   idempotencyHeader: 'x-idempotency-key',
-  shopify: {
-    webhookSecret: process.env.SHOPIFY_WEBHOOK_SECRET || '',
+  r2: {
+    endpoint: process.env.R2_ENDPOINT || '',
+    accessKeyId: process.env.R2_ACCESS_KEY_ID || '',
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || '',
+    bucket: process.env.R2_BUCKET || '',
   },
 };

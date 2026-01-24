@@ -18,6 +18,17 @@ router.post('/checkout', async (req, res, next) => {
     const loan = await checkoutLoan({ memberId, storeLocation, uploadId });
     return res.status(201).json(loan);
   } catch (error) {
+    // Log error details in test environment
+    if (process.env.NODE_ENV === 'test') {
+      const { memberId, storeLocation, uploadId } = req.body;
+      console.error('Loan checkout error:', {
+        memberId,
+        storeLocation,
+        uploadId,
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined
+      });
+    }
     return next(error);
   }
 });

@@ -9,10 +9,9 @@ generator client {
 
 model Member {
   id                String   @id @default(cuid())
-  shopifyCustomerId String   @unique
   cardToken         String   @unique
-  tier              String   @default("BASIC")
-  status            String   @default("ACTIVE")
+  tier              String
+  status            String
   cycleStart        DateTime
   cycleEnd          DateTime
   itemsUsed         Int      @default(0)
@@ -23,8 +22,6 @@ model Member {
 
   loans       Loan[]
   auditEvents AuditEvent[]
-
-  @@index([shopifyCustomerId])
 }
 
 model Loan {
@@ -39,14 +36,18 @@ model Loan {
   returnedAt    DateTime?
   createdAt     DateTime  @default(now())
 
+  loanPhoto LoanPhoto?
+
   @@index([memberId, returnedAt])
 }
 
 model LoanPhoto {
-  id           String   @id @default(cuid())
-  photoUrl     String
-  thumbnailUrl String
-  createdAt    DateTime @default(now())
+  id       String   @id @default(cuid())
+  r2Key    String
+  metadata String
+  loanId   String?  @unique
+  loan     Loan?    @relation(fields: [loanId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model AuditEvent {

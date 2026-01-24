@@ -3,6 +3,7 @@ import { getMemberByCard } from '../services/member.service';
 import { prisma } from '../prisma';
 import { addMonths } from '../utils/dates';
 import { AppError } from '../utils/errors';
+import { MemberStatus, MemberTier } from '../types';
 
 const router = Router();
 
@@ -34,10 +35,9 @@ router.post('/dev/seed-member', async (req, res, next) => {
 
     const member = await prisma.member.create({
       data: {
-        shopifyCustomerId: `dev-${Date.now()}`, // Mock Shopify customer ID
         cardToken,
-        tier: tier.toLowerCase(),
-        status: 'active',
+        tier: MemberTier[tier.toUpperCase() as keyof typeof MemberTier] || MemberTier.BASIC,
+        status: MemberStatus.ACTIVE,
         cycleStart: now,
         cycleEnd,
         itemsUsed: 0,
@@ -51,8 +51,8 @@ router.post('/dev/seed-member', async (req, res, next) => {
       member: {
         id: member.id,
         cardToken: member.cardToken,
-        tier: member.tier.toUpperCase(),
-        status: member.status.toUpperCase(),
+        tier: member.tier,
+        status: member.status,
         cycleStart: member.cycleStart,
         cycleEnd: member.cycleEnd,
         itemsUsed: member.itemsUsed,

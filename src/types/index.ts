@@ -1,5 +1,15 @@
-export type SubscriptionTier = 'BASIC' | 'PLUS' | 'PREMIUM';
-export type MemberStatus = 'ACTIVE' | 'PAUSED' | 'CANCELLED';
+// index.ts
+export enum MemberTier {
+  BASIC = 'BASIC',
+  PLUS = 'PLUS',
+  PREMIUM = 'PREMIUM',
+}
+
+export enum MemberStatus {
+  ACTIVE = 'ACTIVE',
+  PAUSED = 'PAUSED',
+  CANCELLED = 'CANCELLED',
+}
 
 export type TierConfig = {
   itemsPerMonth: number;
@@ -7,27 +17,9 @@ export type TierConfig = {
   maxItemsOut: number;
 };
 
-export type ShopifySubscriptionEventType =
-  | 'subscription_created'
-  | 'subscription_updated'
-  | 'subscription_cancelled';
-
-export interface ShopifySubscriptionPayload {
-  type: ShopifySubscriptionEventType;
-  data: {
-    shopifyCustomerId: string;
-    cardToken: string;
-    planHandle: string;
-    status: 'active' | 'paused' | 'cancelled';
-    cycleStart: string;
-    cycleEnd: string;
-  };
-}
-
 declare global {
   namespace Express {
     interface Request {
-      rawBody?: Buffer;
       idempotencyKey?: string;
     }
   }
