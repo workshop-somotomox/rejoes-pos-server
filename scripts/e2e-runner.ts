@@ -12,7 +12,7 @@ type StepResult = {
 };
 
 const prisma = new PrismaClient();
-const baseUrl = 'http://localhost:3000';
+const API_BASE = 'https://rejoes-pos-server-oyolloo.up.railway.app';
 const tinyPng = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==',
   'base64'
@@ -47,7 +47,7 @@ async function uploadLoanPhoto(step: string, memberId: string, filename = 'photo
   form.append('memberId', memberId);
   form.append('photo', new Blob([tinyPng], { type: 'image/png' }), filename);
   try {
-    const res = await fetch(`${baseUrl}/api/uploads/loan-photo`, {
+    const res = await fetch(`${API_BASE}/api/uploads/loan-photo`, {
       method: 'POST',
       body: form,
     });
@@ -84,7 +84,7 @@ async function run() {
       name: 'End To End',
       phone: '18005551111',
     };
-    const { body: createBody } = await sendJson('Create member', `${baseUrl}/api/members/dev/seed-member`, {
+    const { body: createBody } = await sendJson('Create member', `${API_BASE}/api/members/dev/seed-member`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(createPayload),
@@ -92,7 +92,7 @@ async function run() {
     const memberId = (createBody as any)?.member?.id;
 
     // 2. Fetch member
-    await sendJson('Get member after create', `${baseUrl}/api/members/by-card/${cardToken}`, {
+    await sendJson('Get member after create', `${API_BASE}/api/members/by-card/${cardToken}`, {
       method: 'GET',
     });
 
@@ -101,7 +101,7 @@ async function run() {
     const uploadId = (uploadBody as any)?.uploadId;
 
     // 3a. Checkout loan
-    const { body: checkoutBody } = await sendJson('Checkout loan', `${baseUrl}/api/loans/checkout`, {
+    const { body: checkoutBody } = await sendJson('Checkout loan', `${API_BASE}/api/loans/checkout`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-idempotency-key': crypto.randomUUID() },
       body: JSON.stringify({
@@ -113,25 +113,25 @@ async function run() {
     const loanId = (checkoutBody as any)?.id;
 
     // 4. Get member post-checkout for counters
-    await sendJson('Get member after checkout', `${baseUrl}/api/members/by-card/${cardToken}`, {
+    await sendJson('Get member after checkout', `${API_BASE}/api/members/by-card/${cardToken}`, {
       method: 'GET',
     });
 
     // 5. Return loan
-    await sendJson('Return loan', `${baseUrl}/api/loans/return`, {
+    await sendJson('Return loan', `${API_BASE}/api/loans/return`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-idempotency-key': crypto.randomUUID() },
       body: JSON.stringify({ memberId, loanId }),
     });
 
-    await sendJson('Get member after return', `${baseUrl}/api/members/by-card/${cardToken}`, {
+    await sendJson('Get member after return', `${API_BASE}/api/members/by-card/${cardToken}`, {
       method: 'GET',
     });
 
     // 6. Checkout new loan for swap scenario
     const { body: uploadBodyForSwap } = await uploadLoanPhoto('Upload loan photo (swap base)', memberId || '', 'swap-base.png');
     const swapBaseId = (uploadBodyForSwap as any)?.uploadId;
-    const { body: checkoutSwapLoanBody } = await sendJson('Checkout loan for swap', `${baseUrl}/api/loans/checkout`, {
+    const { body: checkoutSwapLoanBody } = await sendJson('Checkout loan for swap', `${API_BASE}/api/loans/checkout`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-idempotency-key': crypto.randomUUID() },
       body: JSON.stringify({
@@ -146,7 +146,7 @@ async function run() {
     const { body: swapUploadBody } = await uploadLoanPhoto('Upload loan photo (swap new)', memberId || '', 'swap-new.png');
     const swapUploadId = (swapUploadBody as any)?.uploadId;
 
-    await sendJson('Swap loan', `${baseUrl}/api/loans/swap`, {
+    await sendJson('Swap loan', `${API_BASE}/api/loans/swap`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-idempotency-key': crypto.randomUUID() },
       body: JSON.stringify({
@@ -157,7 +157,7 @@ async function run() {
       }),
     });
 
-    await sendJson('Get member after swap', `${baseUrl}/api/members/by-card/${cardToken}`, {
+    await sendJson('Get member after swap', `${API_BASE}/api/members/by-card/${cardToken}`, {
       method: 'GET',
     });
 
