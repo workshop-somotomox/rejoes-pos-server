@@ -47,10 +47,11 @@ export async function getMemberByCard(cardToken: string) {
     throw new AppError(404, 'Member not found');
   }
 
-  const baseMember = memberWithLoans;
+  const baseMember = memberWithLoans as any;
   const { loans } = memberWithLoans;
   const normalizedMember: MemberWithLoans = {
     ...baseMember,
+    shopifyCustomerId: baseMember.shopifyCustomerId || null,
     loans,
   };
 
@@ -147,5 +148,5 @@ export async function getMemberById(memberId: string, client?: DbClient): Promis
   if (!member) {
     throw new AppError(404, 'Member not found');
   }
-  return member;
+  return member as MemberRecord;
 }
