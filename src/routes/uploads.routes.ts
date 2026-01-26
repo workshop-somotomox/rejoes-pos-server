@@ -1,6 +1,7 @@
 import path from 'path';
 import { Router } from 'express';
 import multer from 'multer';
+import fetch, { Response } from 'node-fetch';
 import { prisma } from '../prisma';
 import { uploadImage, ImageMetadata } from '../services/upload.service';
 import { createLoanPhoto } from '../services/loanPhoto.repository';
@@ -32,7 +33,7 @@ async function downloadImageFromUrl(imageUrl: string) {
     throw new AppError(400, 'Invalid imageUrl');
   }
 
-  const response = await fetch(parsedUrl.toString());
+  const response: Response = await fetch(parsedUrl.toString());
   if (!response.ok) {
     throw new AppError(400, 'Failed to download image');
   }
