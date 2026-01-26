@@ -68,7 +68,10 @@ async function downloadImageFromUrl(imageUrl: string) {
   return { buffer, metadata };
 }
 
-router.post('/loan-photo', upload.single('photo'), async (req, res, next) => {
+router.post('/loan-photo', upload.fields([
+  { name: 'photo', maxCount: 1 },
+  { name: 'file', maxCount: 1 },
+]), async (req, res, next) => {
   try {
     const { memberId, imageUrl } = req.body;
     if (!memberId) {
@@ -77,18 +80,20 @@ router.post('/loan-photo', upload.single('photo'), async (req, res, next) => {
 
     let buffer: Buffer;
     let metadata: ImageMetadata;
+    const fileField = (req.files as Record<string, Express.Multer.File[]>) || {};
+    const uploadedFile = (fileField.photo?.[0]) ?? (fileField.file?.[0]);
 
-    if (req.file) {
-      if (!allowedMimes.includes(req.file.mimetype)) {
+    if (uploadedFile) {
+      if (!allowedMimes.includes(uploadedFile.mimetype)) {
         return next(new AppError(400, 'Invalid file type'));
       }
 
       metadata = {
-        originalName: req.file.originalname,
-        mimeType: req.file.mimetype,
-        size: req.file.size,
+        originalName: uploadedFile.originalname,
+        mimeType: uploadedFile.mimetype,
+        size: uploadedFile.size,
       };
-      buffer = req.file.buffer;
+      buffer = uploadedFile.buffer;
     } else if (imageUrl) {
       const downloaded = await downloadImageFromUrl(imageUrl);
       metadata = downloaded.metadata;
