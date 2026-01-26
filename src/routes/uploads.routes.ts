@@ -78,6 +78,14 @@ router.post('/loan-photo', upload.fields([
       return next(new AppError(400, 'memberId is required'));
     }
 
+    const member = await prisma.member.findUnique({
+      where: { id: memberId },
+      select: { id: true },
+    });
+    if (!member) {
+      return next(new AppError(404, 'Member not found'));
+    }
+
     let buffer: Buffer;
     let metadata: ImageMetadata;
     const fileField = (req.files as Record<string, Express.Multer.File[]>) || {};
