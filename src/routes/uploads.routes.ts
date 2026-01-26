@@ -1,3 +1,4 @@
+import path from 'path';
 import { Router } from 'express';
 import multer from 'multer';
 import { prisma } from '../prisma';
@@ -16,33 +17,90 @@ const upload = multer({
 const router = Router();
 
 const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+async function downloadImageFromUrl(imageUrl: string) {
+  const trimmedUrl = imageUrl?.trim();
+  if (!trimmedUrl) {
+    throw new AppError(400, 'imageUrl is required when no file is uploaded');
+  }
+
+  let parsedUrl: URL;
+  try {
+    parsedUrl = new URL(trimmedUrl);
+  } catch {
+    throw new AppError(400, 'Invalid imageUrl');
+  }
+
+  const response = await fetch(parsedUrl.toString());
+  if (!response.ok) {
+    throw new AppError(400, 'Failed to download image');
+  }
+
+  const rawMime = response.headers.get('content-type') || '';
+  const mimeType = rawMime.split(';')[0];
+  if (!allowedMimes.includes(mimeType)) {
+    throw new AppError(400, 'Invalid file type');
+  }
+
+  const contentLength = response.headers.get('content-length');
+  if (contentLength && Number(contentLength) > MAX_FILE_SIZE) {
+    throw new AppError(400, 'Image exceeds size limit (5MB)');
+  }
+
+  const arrayBuffer = await response.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+  if (buffer.length > MAX_FILE_SIZE) {
+    throw new AppError(400, 'Image exceeds size limit (5MB)');
+  }
+
+  const originalNameFromPath = path.basename(parsedUrl.pathname);
+  const extensionFromMime = mimeType.split('/')[1] || 'jpg';
+  const originalName = originalNameFromPath || `remote-image.${extensionFromMime}`;
+
+  const metadata: ImageMetadata = {
+    originalName,
+    mimeType,
+    size: buffer.length,
+  };
+
+  return { buffer, metadata };
+}
 
 router.post('/loan-photo', upload.single('photo'), async (req, res, next) => {
   try {
-    if (!req.file) {
-      return next(new AppError(400, 'Photo file is required'));
-    }
-
-    const { memberId } = req.body;
+    const { memberId, imageUrl } = req.body;
     if (!memberId) {
       return next(new AppError(400, 'memberId is required'));
     }
 
-    if (!allowedMimes.includes(req.file.mimetype)) {
-      return next(new AppError(400, 'Invalid file type'));
-    }
+    let buffer: Buffer;
+    let metadata: ImageMetadata;
 
-    const metadata: ImageMetadata = {
-      originalName: req.file.originalname,
-      mimeType: req.file.mimetype,
-      size: req.file.size,
-    };
+    if (req.file) {
+      if (!allowedMimes.includes(req.file.mimetype)) {
+        return next(new AppError(400, 'Invalid file type'));
+      }
+
+      metadata = {
+        originalName: req.file.originalname,
+        mimeType: req.file.mimetype,
+        size: req.file.size,
+      };
+      buffer = req.file.buffer;
+    } else if (imageUrl) {
+      const downloaded = await downloadImageFromUrl(imageUrl);
+      metadata = downloaded.metadata;
+      buffer = downloaded.buffer;
+    } else {
+      return next(new AppError(400, 'Photo file or imageUrl is required'));
+    }
 
     // Create LoanPhoto record first
     const record = await createLoanPhoto('', metadata);
 
     // Upload to R2
-    const r2Key = await uploadImage(req.file.buffer, metadata, memberId, record.id);
+    const r2Key = await uploadImage(buffer, metadata, memberId, record.id);
 
     // Update record with r2Key and final metadata
     await prisma.loanPhoto.update({
