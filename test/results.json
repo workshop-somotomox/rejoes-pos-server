@@ -8,31 +8,20 @@
         "member": {
           "id": "cmksj0jgt0000927ynggbykyl",
           "cardToken": "E2E_TEST_CARD_001",
+          "shopifyCustomerId": "shopify-1737798647",
           "tier": "PREMIUM",
           "status": "ACTIVE",
           "cycleStart": "2026-01-24T16:30:47.691Z",
           "cycleEnd": "2026-02-24T16:30:47.691Z",
           "itemsUsed": 6,
           "swapsUsed": 1,
-          "itemsOut": 4,
+          "itemsOut": 1,
           "createdAt": "2026-01-24T16:30:47.694Z",
-          "updatedAt": "2026-01-24T16:36:27.363Z",
+          "updatedAt": "2026-01-25T12:22:23.310Z",
           "loans": [
-            {
-              "id": "cmksj1hi2000o129boe0v61u5",
-              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj1eb5000j129bvmqnn8y7.png"
-            },
             {
               "id": "cmksj70lp000w129bihc7vz5f",
               "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj6xst000r129bthstzfaf.png"
-            },
-            {
-              "id": "cmksj7dum0014129bygbzrsb9",
-              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7b27000z129bm4somjlv.png"
-            },
-            {
-              "id": "cmksj7t60001c129bx1ng5058",
-              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7qe30017129bc5ra7uh3.png"
             }
           ]
         },
@@ -43,20 +32,8 @@
         },
         "activeLoans": [
           {
-            "id": "cmksj1hi2000o129boe0v61u5",
-            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj1eb5000j129bvmqnn8y7.png"
-          },
-          {
             "id": "cmksj70lp000w129bihc7vz5f",
             "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj6xst000r129bthstzfaf.png"
-          },
-          {
-            "id": "cmksj7dum0014129bygbzrsb9",
-            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7b27000z129bm4somjlv.png"
-          },
-          {
-            "id": "cmksj7t60001c129bx1ng5058",
-            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7qe30017129bc5ra7uh3.png"
           }
         ]
       }
@@ -66,16 +43,24 @@
       "status": 201,
       "success": true,
       "payload": {
-        "uploadId": "cmkspqnf5002c129b51lor5zv",
+        "uploadId": "cmkvq61tz000014itmfm2bmhc",
         "status": "success"
       }
     },
     {
       "step": "Checkout loan",
-      "status": 400,
-      "success": false,
+      "status": 201,
+      "success": true,
       "payload": {
-        "message": "PREMIUM plan: Maximum 4 items allowed out. Return items to continue."
+        "id": "cmkvq64tq000514it371q2nnp",
+        "memberId": "cmksj0jgt0000927ynggbykyl",
+        "storeLocation": "Test Store",
+        "photoUrl": "loans/cmksj0jgt0000927ynggbykyl/cmkvq61tz000014itmfm2bmhc.png",
+        "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmkvq61tz000014itmfm2bmhc.png",
+        "checkoutAt": "2026-01-26T22:14:24.494Z",
+        "dueDate": "2026-02-25T22:14:24.493Z",
+        "returnedAt": null,
+        "createdAt": "2026-01-26T22:14:24.494Z"
       }
     },
     {
@@ -86,31 +71,24 @@
         "member": {
           "id": "cmksj0jgt0000927ynggbykyl",
           "cardToken": "E2E_TEST_CARD_001",
+          "shopifyCustomerId": "shopify-1737798647",
           "tier": "PREMIUM",
           "status": "ACTIVE",
           "cycleStart": "2026-01-24T16:30:47.691Z",
           "cycleEnd": "2026-02-24T16:30:47.691Z",
-          "itemsUsed": 6,
+          "itemsUsed": 7,
           "swapsUsed": 1,
-          "itemsOut": 4,
+          "itemsOut": 2,
           "createdAt": "2026-01-24T16:30:47.694Z",
-          "updatedAt": "2026-01-24T16:36:27.363Z",
+          "updatedAt": "2026-01-26T22:14:25.008Z",
           "loans": [
-            {
-              "id": "cmksj1hi2000o129boe0v61u5",
-              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj1eb5000j129bvmqnn8y7.png"
-            },
             {
               "id": "cmksj70lp000w129bihc7vz5f",
               "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj6xst000r129bthstzfaf.png"
             },
             {
-              "id": "cmksj7dum0014129bygbzrsb9",
-              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7b27000z129bm4somjlv.png"
-            },
-            {
-              "id": "cmksj7t60001c129bx1ng5058",
-              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7qe30017129bc5ra7uh3.png"
+              "id": "cmkvq64tq000514it371q2nnp",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmkvq61tz000014itmfm2bmhc.png"
             }
           ]
         },
@@ -121,30 +99,30 @@
         },
         "activeLoans": [
           {
-            "id": "cmksj1hi2000o129boe0v61u5",
-            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj1eb5000j129bvmqnn8y7.png"
-          },
-          {
             "id": "cmksj70lp000w129bihc7vz5f",
             "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj6xst000r129bthstzfaf.png"
           },
           {
-            "id": "cmksj7dum0014129bygbzrsb9",
-            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7b27000z129bm4somjlv.png"
-          },
-          {
-            "id": "cmksj7t60001c129bx1ng5058",
-            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7qe30017129bc5ra7uh3.png"
+            "id": "cmkvq64tq000514it371q2nnp",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmkvq61tz000014itmfm2bmhc.png"
           }
         ]
       }
     },
     {
       "step": "Return loan",
-      "status": 400,
-      "success": false,
+      "status": 200,
+      "success": true,
       "payload": {
-        "message": "Missing required fields"
+        "id": "cmkvq64tq000514it371q2nnp",
+        "memberId": "cmksj0jgt0000927ynggbykyl",
+        "storeLocation": "Test Store",
+        "photoUrl": "loans/cmksj0jgt0000927ynggbykyl/cmkvq61tz000014itmfm2bmhc.png",
+        "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmkvq61tz000014itmfm2bmhc.png",
+        "checkoutAt": "2026-01-26T22:14:24.494Z",
+        "dueDate": "2026-02-25T22:14:24.493Z",
+        "returnedAt": "2026-01-26T22:14:27.728Z",
+        "createdAt": "2026-01-26T22:14:24.494Z"
       }
     },
     {
@@ -155,31 +133,20 @@
         "member": {
           "id": "cmksj0jgt0000927ynggbykyl",
           "cardToken": "E2E_TEST_CARD_001",
+          "shopifyCustomerId": "shopify-1737798647",
           "tier": "PREMIUM",
           "status": "ACTIVE",
           "cycleStart": "2026-01-24T16:30:47.691Z",
           "cycleEnd": "2026-02-24T16:30:47.691Z",
-          "itemsUsed": 6,
+          "itemsUsed": 7,
           "swapsUsed": 1,
-          "itemsOut": 4,
+          "itemsOut": 1,
           "createdAt": "2026-01-24T16:30:47.694Z",
-          "updatedAt": "2026-01-24T16:36:27.363Z",
+          "updatedAt": "2026-01-26T22:14:27.985Z",
           "loans": [
-            {
-              "id": "cmksj1hi2000o129boe0v61u5",
-              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj1eb5000j129bvmqnn8y7.png"
-            },
             {
               "id": "cmksj70lp000w129bihc7vz5f",
               "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj6xst000r129bthstzfaf.png"
-            },
-            {
-              "id": "cmksj7dum0014129bygbzrsb9",
-              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7b27000z129bm4somjlv.png"
-            },
-            {
-              "id": "cmksj7t60001c129bx1ng5058",
-              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7qe30017129bc5ra7uh3.png"
             }
           ]
         },
@@ -190,20 +157,8 @@
         },
         "activeLoans": [
           {
-            "id": "cmksj1hi2000o129boe0v61u5",
-            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj1eb5000j129bvmqnn8y7.png"
-          },
-          {
             "id": "cmksj70lp000w129bihc7vz5f",
             "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj6xst000r129bthstzfaf.png"
-          },
-          {
-            "id": "cmksj7dum0014129bygbzrsb9",
-            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7b27000z129bm4somjlv.png"
-          },
-          {
-            "id": "cmksj7t60001c129bx1ng5058",
-            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7qe30017129bc5ra7uh3.png"
           }
         ]
       }
@@ -213,16 +168,24 @@
       "status": 201,
       "success": true,
       "payload": {
-        "uploadId": "cmkspqs3x002g129by2me3h87",
+        "uploadId": "cmkvq69iu000b14ittx31bx6k",
         "status": "success"
       }
     },
     {
       "step": "Checkout loan for swap",
-      "status": 400,
-      "success": false,
+      "status": 201,
+      "success": true,
       "payload": {
-        "message": "PREMIUM plan: Maximum 4 items allowed out. Return items to continue."
+        "id": "cmkvq6ce4000g14itp7plowvr",
+        "memberId": "cmksj0jgt0000927ynggbykyl",
+        "storeLocation": "Swap Store",
+        "photoUrl": "loans/cmksj0jgt0000927ynggbykyl/cmkvq69iu000b14ittx31bx6k.png",
+        "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmkvq69iu000b14ittx31bx6k.png",
+        "checkoutAt": "2026-01-26T22:14:34.301Z",
+        "dueDate": "2026-02-25T22:14:34.299Z",
+        "returnedAt": null,
+        "createdAt": "2026-01-26T22:14:34.301Z"
       }
     },
     {
@@ -230,16 +193,37 @@
       "status": 201,
       "success": true,
       "payload": {
-        "uploadId": "cmkspqve2002k129b9ffonb2f",
+        "uploadId": "cmkvq6e19000j14ithux59msz",
         "status": "success"
       }
     },
     {
       "step": "Swap loan",
-      "status": 400,
-      "success": false,
+      "status": 200,
+      "success": true,
       "payload": {
-        "message": "Missing required fields"
+        "returnedLoan": {
+          "id": "cmkvq6ce4000g14itp7plowvr",
+          "memberId": "cmksj0jgt0000927ynggbykyl",
+          "storeLocation": "Swap Store",
+          "photoUrl": "loans/cmksj0jgt0000927ynggbykyl/cmkvq69iu000b14ittx31bx6k.png",
+          "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmkvq69iu000b14ittx31bx6k.png",
+          "checkoutAt": "2026-01-26T22:14:34.301Z",
+          "dueDate": "2026-02-25T22:14:34.299Z",
+          "returnedAt": "2026-01-26T22:14:40.075Z",
+          "createdAt": "2026-01-26T22:14:34.301Z"
+        },
+        "newLoan": {
+          "id": "cmkvq6h8o000o14it2gj1jqmn",
+          "memberId": "cmksj0jgt0000927ynggbykyl",
+          "storeLocation": "Swap Location",
+          "photoUrl": "loans/cmksj0jgt0000927ynggbykyl/cmkvq6e19000j14ithux59msz.png",
+          "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmkvq6e19000j14ithux59msz.png",
+          "checkoutAt": "2026-01-26T22:14:40.075Z",
+          "dueDate": "2026-02-25T22:14:40.583Z",
+          "returnedAt": null,
+          "createdAt": "2026-01-26T22:14:40.584Z"
+        }
       }
     },
     {
@@ -250,31 +234,24 @@
         "member": {
           "id": "cmksj0jgt0000927ynggbykyl",
           "cardToken": "E2E_TEST_CARD_001",
+          "shopifyCustomerId": "shopify-1737798647",
           "tier": "PREMIUM",
           "status": "ACTIVE",
           "cycleStart": "2026-01-24T16:30:47.691Z",
           "cycleEnd": "2026-02-24T16:30:47.691Z",
-          "itemsUsed": 6,
-          "swapsUsed": 1,
-          "itemsOut": 4,
+          "itemsUsed": 9,
+          "swapsUsed": 2,
+          "itemsOut": 2,
           "createdAt": "2026-01-24T16:30:47.694Z",
-          "updatedAt": "2026-01-24T16:36:27.363Z",
+          "updatedAt": "2026-01-26T22:14:41.094Z",
           "loans": [
-            {
-              "id": "cmksj1hi2000o129boe0v61u5",
-              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj1eb5000j129bvmqnn8y7.png"
-            },
             {
               "id": "cmksj70lp000w129bihc7vz5f",
               "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj6xst000r129bthstzfaf.png"
             },
             {
-              "id": "cmksj7dum0014129bygbzrsb9",
-              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7b27000z129bm4somjlv.png"
-            },
-            {
-              "id": "cmksj7t60001c129bx1ng5058",
-              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7qe30017129bc5ra7uh3.png"
+              "id": "cmkvq6h8o000o14it2gj1jqmn",
+              "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmkvq6e19000j14ithux59msz.png"
             }
           ]
         },
@@ -285,20 +262,12 @@
         },
         "activeLoans": [
           {
-            "id": "cmksj1hi2000o129boe0v61u5",
-            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj1eb5000j129bvmqnn8y7.png"
-          },
-          {
             "id": "cmksj70lp000w129bihc7vz5f",
             "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj6xst000r129bthstzfaf.png"
           },
           {
-            "id": "cmksj7dum0014129bygbzrsb9",
-            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7b27000z129bm4somjlv.png"
-          },
-          {
-            "id": "cmksj7t60001c129bx1ng5058",
-            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmksj7qe30017129bc5ra7uh3.png"
+            "id": "cmkvq6h8o000o14it2gj1jqmn",
+            "thumbnailUrl": "loans/cmksj0jgt0000927ynggbykyl/cmkvq6e19000j14ithux59msz.png"
           }
         ]
       }
@@ -306,13 +275,13 @@
     {
       "step": "LoanPhoto linked to swapped loan",
       "status": 200,
-      "success": false,
+      "success": true,
       "payload": {
-        "id": "cmkspqve2002k129b9ffonb2f",
-        "r2Key": "loans/cmksj0jgt0000927ynggbykyl/cmkspqve2002k129b9ffonb2f.png",
+        "id": "cmkvq6e19000j14ithux59msz",
+        "r2Key": "loans/cmksj0jgt0000927ynggbykyl/cmkvq6e19000j14ithux59msz.png",
         "metadata": "{\"originalName\":\"swap-new.png\",\"mimeType\":\"image/png\",\"size\":67}",
-        "loanId": null,
-        "createdAt": "2026-01-24T19:39:13.898Z"
+        "loanId": "cmkvq6h8o000o14it2gj1jqmn",
+        "createdAt": "2026-01-26T22:14:36.429Z"
       }
     }
   ]
