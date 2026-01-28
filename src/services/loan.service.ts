@@ -68,7 +68,7 @@ async function consumeLoanPhotos(uploadIds: string[], client: DbClient) {
   }
 
   if (photos.length !== uploadIds.length) {
-    const missing = uploadIds.filter(id => !photos.some(p => p.id === id));
+    const missing = uploadIds.filter(id => !photos.some((p: any) => p.id === id));
     console.error('Photos not found for uploadIds:', missing);
     throw new AppError(400, 'Invalid upload reference(s)');
   }
@@ -209,7 +209,7 @@ export async function checkoutLoan(input: CheckoutInput): Promise<LoanRecord> {
       if (galleryPhotos.length > 0) {
         console.log('Linking gallery photos:', galleryPhotos.map(p => p.id));
         await Promise.all(
-          galleryPhotos.map(photo => 
+          galleryPhotos.map((photo: any) => 
             tx.loanPhoto.update({
               where: { id: photo.id },
               data: { loanId: loan.id }
@@ -335,7 +335,7 @@ export async function swapLoan(input: SwapInput) {
     // Link gallery photos to the new loan
     if (galleryPhotos.length > 0) {
       await Promise.all(
-        galleryPhotos.map(photo => 
+        galleryPhotos.map((photo: any) => 
           tx.loanPhoto.update({
             where: { id: photo.id },
             data: { loanId: newLoan.id }
@@ -387,7 +387,7 @@ export async function getActiveLoans(memberId: string): Promise<LoanRecord[]> {
     }
   });
 
-  return loans.map(loan => ({
+  return loans.map((loan: any) => ({
     ...loan,
     gallery: Array.isArray(loan.loanPhoto) ? loan.loanPhoto : (loan.loanPhoto ? [loan.loanPhoto] : [])
   }));
