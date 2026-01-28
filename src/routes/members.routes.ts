@@ -10,7 +10,7 @@ const router = Router();
 // Add member
 router.post('/add', async (req, res, next) => {
   try {
-    const { cardToken, tier = 'BASIC' } = req.body;
+    const { cardToken, tier = 'BASIC', storeLocation } = req.body;
     
     if (!cardToken) {
       return next(new AppError(400, 'cardToken is required'));
@@ -43,6 +43,7 @@ router.post('/add', async (req, res, next) => {
         itemsUsed: 0,
         swapsUsed: 0,
         itemsOut: 0,
+        shopifyCustomerId: storeLocation, // Store storeLocation in shopifyCustomerId field
       },
     });
 
@@ -51,6 +52,7 @@ router.post('/add', async (req, res, next) => {
       member: {
         id: member.id,
         cardToken: member.cardToken,
+        shopifyCustomerId: member.shopifyCustomerId,
         tier: member.tier,
         status: member.status,
         cycleStart: member.cycleStart,
@@ -58,6 +60,7 @@ router.post('/add', async (req, res, next) => {
         itemsUsed: member.itemsUsed,
         swapsUsed: member.swapsUsed,
         itemsOut: member.itemsOut,
+        storeLocation: member.shopifyCustomerId, // Return storeLocation
       }
     });
   } catch (error) {

@@ -80,10 +80,11 @@ async function run() {
     const newMemberCardToken = `E2E_MEMBER_${Date.now()}`;
     const { body: addMemberBody } = await sendJson('Add new member', `${API_BASE}/api/members/add`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-idempotency-key': crypto.randomUUID() },
       body: JSON.stringify({
         cardToken: newMemberCardToken,
-        tier: 'PREMIUM'
+        tier: 'PREMIUM',
+        storeLocation: 'Main Store'
       }),
     });
     const newMemberId = (addMemberBody as any)?.member?.id;

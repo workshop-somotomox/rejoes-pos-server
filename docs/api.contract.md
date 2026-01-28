@@ -5,7 +5,7 @@ Base url: https://rejoes-pos-server-oyolloo.up.railway.app
 # API Contract
 
 ## Overview
-This API provides complete functionality for member management, store operations, loan tracking, and image uploads. All endpoints are production-ready with no testing restrictions.
+This API provides complete functionality for member management, loan tracking, and image uploads. All endpoints are production-ready with no testing restrictions. Store locations are handled as string fields in member and loan records.
 
 ## Members
 
@@ -15,7 +15,8 @@ This API provides complete functionality for member management, store operations
 ```json
 {
   "cardToken": "string",
-  "tier": "BASIC|PLUS|PREMIUM"
+  "tier": "BASIC|PLUS|PREMIUM",
+  "storeLocation": "string"
 }
 ```
 **Success (200):**
@@ -32,7 +33,8 @@ This API provides complete functionality for member management, store operations
     "cycleEnd": "datetime",
     "itemsUsed": 0,
     "swapsUsed": 0,
-    "itemsOut": 0
+    "itemsOut": 0,
+    "storeLocation": "string"
   }
 }
 ```
@@ -57,6 +59,7 @@ This API provides complete functionality for member management, store operations
     "itemsOut": "number",
     "createdAt": "datetime",
     "updatedAt": "datetime",
+    "storeLocation": "string",
     "loans": []
   },
   "allowances": {
