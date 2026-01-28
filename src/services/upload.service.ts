@@ -1,7 +1,7 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { config } from '../config';
 
-// Create S3Client only when needed (not at module level to avoid test issues)
+// Create S3Client only when needed
 function createS3Client() {
   return new S3Client({
     region: 'auto',
@@ -35,10 +35,8 @@ export async function uploadImage(
   memberId: string,
   uploadId: string
 ): Promise<string> {
-  // Skip actual upload if R2 is not configured (test environment)
   if (!config.r2.endpoint || !config.r2.accessKeyId) {
-    const ext = getFileExtension(metadata.mimeType);
-    return `test-loans/${memberId}/${uploadId}.${ext}`;
+    throw new Error('R2 configuration is missing');
   }
 
   const ext = getFileExtension(metadata.mimeType);

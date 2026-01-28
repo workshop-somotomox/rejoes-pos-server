@@ -76,32 +76,93 @@ async function run() {
   try {
     const cardToken = 'E2E_TEST_CARD_001';
 
-    // 1. Get existing test member
+    // 1. Test adding a new member (if it doesn't exist)
+    const newMemberCardToken = `E2E_MEMBER_${Date.now()}`;
+    const { body: addMemberBody } = await sendJson('Add new member', `${API_BASE}/api/members/add`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        cardToken: newMemberCardToken,
+        tier: 'PREMIUM'
+      }),
+    });
+    const newMemberId = (addMemberBody as any)?.member?.id;
+
+    // 1a. Verify the newly created member can be retrieved
+    if (newMemberId) {
+      await sendJson('Get newly created member', `${API_BASE}/api/members/by-card/${newMemberCardToken}`, {
+        method: 'GET',
+      });
+    }
+
+    // 2. Get existing test member
     await sendJson('Get test member', `${API_BASE}/api/members/by-card/${cardToken}`, {
       method: 'GET',
     });
     const memberResponse = results[results.length - 1];
     const memberId = (memberResponse.payload as any)?.member?.id;
 
-    // 2. Upload loan photo for checkout
+    // 2. Get stores to use for testing
+    await sendJson('Get stores', `${API_BASE}/api/stores`, {
+      method: 'GET',
+    });
+    const storesResponse = results[results.length - 1];
+    const stores = (storesResponse.payload as any)?.data || [];
+    const testStoreId = stores.length > 0 ? stores[0].id : 'store_1';
+
+    // 2a. Test store details endpoint
+    if (testStoreId) {
+      await sendJson('Get store details', `${API_BASE}/api/stores/${testStoreId}`, {
+        method: 'GET',
+      });
+    }
+
+    // 2b. Test store stats endpoint
+    if (testStoreId) {
+      await sendJson('Get store stats', `${API_BASE}/api/stores/${testStoreId}/stats`, {
+        method: 'GET',
+      });
+    }
+
+    // 2c. Test creating a new store
+    const newStoreName = `E2E Test Store ${Date.now()}`;
+    const { body: createStoreBody } = await sendJson('Create new store', `${API_BASE}/api/stores/add`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-idempotency-key': crypto.randomUUID() },
+      body: JSON.stringify({
+        name: newStoreName,
+        location: 'E2E Test Location',
+        address: '123 Test St',
+        phone: '+1-555-TEST',
+        email: 'test@example.com'
+      }),
+    });
+    const newStoreId = (createStoreBody as any)?.data?.id;
+
+    // 3. Upload loan photo for checkout
     const { body: uploadBody } = await uploadLoanPhoto('Upload loan photo (checkout)', memberId || '', 'checkout.png');
     const uploadId = (uploadBody as any)?.uploadId;
 
-    // 3. Checkout loan
+    // 4. Checkout loan
     const { body: checkoutBody } = await sendJson('Checkout loan', `${API_BASE}/api/loans/checkout`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-idempotency-key': crypto.randomUUID() },
       body: JSON.stringify({
         memberId,
-        uploadId,
-        storeLocation: 'Test Store',
+        storeId: testStoreId,
+        uploadIds: [uploadId],
       }),
     });
     const loanId = (checkoutBody as any)?.id;
 
     // Only proceed with return if checkout succeeded
     if (loanId) {
-      // 4. Get member post-checkout for counters
+      // 4a. Get active loans with store information
+      await sendJson('Get active loans', `${API_BASE}/api/loans/active/${memberId}`, {
+        method: 'GET',
+      });
+
+      // 4b. Get member post-checkout for counters
       await sendJson('Get member after checkout', `${API_BASE}/api/members/by-card/${cardToken}`, {
         method: 'GET',
       });
@@ -134,8 +195,8 @@ async function run() {
       headers: { 'Content-Type': 'application/json', 'x-idempotency-key': crypto.randomUUID() },
       body: JSON.stringify({
         memberId,
-        uploadId: swapBaseId,
-        storeLocation: 'Swap Store',
+        storeId: testStoreId,
+        uploadIds: [swapBaseId],
       }),
     });
     const swapLoanId = (checkoutSwapLoanBody as any)?.id;
@@ -152,14 +213,14 @@ async function run() {
         body: JSON.stringify({
           memberId,
           loanId: swapLoanId,
-          uploadId: swapUploadId,
-          storeLocation: 'Swap Location',
+          storeId: testStoreId,
+          uploadIds: [swapUploadId],
         }),
       });
 
       await sendJson('Get member after swap', `${API_BASE}/api/members/by-card/${cardToken}`, {
-        method: 'GET',
-      });
+      method: 'GET',
+    });
     } else {
       // Skip swap tests if checkout failed
       await sendJson('Swap loan (skipped)', `${API_BASE}/api/members/by-card/${cardToken}`, {
@@ -167,6 +228,29 @@ async function run() {
       });
       await sendJson('Get member after swap (skipped)', `${API_BASE}/api/members/by-card/${cardToken}`, {
         method: 'GET',
+      });
+    }
+
+    // 8. Test invalid store validation
+    const { body: invalidUploadBody } = await uploadLoanPhoto('Upload loan photo (invalid store test)', memberId || '', 'invalid-store.png');
+    const invalidUploadId = (invalidUploadBody as any)?.uploadId;
+    
+    if (invalidUploadId) {
+      await sendJson('Test invalid store validation', `${API_BASE}/api/loans/checkout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-idempotency-key': crypto.randomUUID() },
+        body: JSON.stringify({
+          memberId,
+          storeId: 'invalid-store-id',
+          uploadIds: [invalidUploadId],
+        }),
+      });
+    }
+
+    // 9. Test deleting the created store (if it was created)
+    if (newStoreId) {
+      await sendJson('Delete test store', `${API_BASE}/api/stores/${newStoreId}`, {
+        method: 'DELETE',
       });
     }
 

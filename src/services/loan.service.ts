@@ -56,15 +56,9 @@ async function consumeLoanPhotos(uploadIds: string[], client: DbClient) {
     select: { id: true, r2Key: true, metadata: true }
   });
 
-  if (process.env.NODE_ENV === 'test') {
-    console.log('ConsumeLoanPhotos - Test Mode:', { uploadIds, photosFound: photos.length });
-    if (photos.length === 0) {
-      return uploadIds.map(id => ({
-        id: 'test-photo-id',
-        r2Key: `test-loans/test/${id}.png`,
-        metadata: '{}'
-      }));
-    }
+  console.log('ConsumeLoanPhotos:', { uploadIds, photosFound: photos.length });
+  if (photos.length === 0) {
+    throw new Error('No photos found for the provided upload IDs');
   }
 
   if (photos.length !== uploadIds.length) {
@@ -83,16 +77,8 @@ async function consumeLoanPhoto(uploadId: string, client: DbClient) {
       select: { id: true, r2Key: true }
     });
     
-    if (process.env.NODE_ENV === 'test') {
-      console.log('ConsumeLoanPhoto - Test Mode:', { uploadId, photoFound: !!photo });
-      if (!photo) {
-        console.log('Returning mock photo for test environment');
-        return { 
-          id: 'test-photo-id',
-          r2Key: `test-loans/test/${uploadId}.png`,
-          metadata: '{}'
-        };
-      }
+    if (!photo) {
+      throw new Error(`Photo not found: ${uploadId}`);
     }
     
     if (!photo) {
@@ -111,30 +97,22 @@ export async function checkoutLoan(input: CheckoutInput): Promise<LoanRecord> {
   console.log('checkoutLoan - Input:', JSON.stringify(input, null, 2));
   
   return prisma.$transaction(async (tx: DbClient) => {
-    console.log('Transaction started - Test Mode:', process.env.NODE_ENV === 'test');
+    console.log('Transaction started');
     // Debug logging for input data
-    if (process.env.NODE_ENV === 'test') {
-      console.log('Checkout Input:', { 
-        memberId: input.memberId, 
-        uploadIds: input.uploadIds, 
-        storeId: input.storeId 
-      });
-    }
+    console.log('Checkout Input:', { 
+      memberId: input.memberId, 
+      uploadIds: input.uploadIds, 
+      storeId: input.storeId 
+    });
 
     let member = await getMemberById(input.memberId, tx);
     
     // Debug logging for member object
-    if (process.env.NODE_ENV === 'test') {
-      console.log('Member object:', {
-        id: member.id,
-        tier: member.tier,
-        status: member.status,
-        itemsUsed: member.itemsUsed,
-        itemsOut: member.itemsOut,
-        cycleStart: member.cycleStart,
-        cycleEnd: member.cycleEnd
-      });
-    }
+    console.log('Member object:', {
+      id: member.id,
+      tier: member.tier,
+      status: member.status
+    });
     
     member = await resetCountersIfNewCycle(member, tx);
     
@@ -164,10 +142,8 @@ export async function checkoutLoan(input: CheckoutInput): Promise<LoanRecord> {
     const galleryPhotos = photos.slice(1);
     
     // Debug logging for upload object
-    if (process.env.NODE_ENV === 'test') {
-      console.log('Primary upload object:', primaryPhoto ? { r2Key: primaryPhoto.r2Key } : null);
-      console.log('Gallery photos count:', galleryPhotos.length);
-    }
+    console.log('Primary upload object:', primaryPhoto ? { r2Key: primaryPhoto.r2Key } : null);
+    console.log('Gallery photos count:', galleryPhotos.length);
     
     // Calculate due date (30 days from checkout)
     const dueDate = new Date();
@@ -224,10 +200,7 @@ export async function checkoutLoan(input: CheckoutInput): Promise<LoanRecord> {
         uploadId: primaryPhoto.id,
         loanId: loan.id
       });
-      // In test environment, we'll continue to see if other operations work
-      if (process.env.NODE_ENV !== 'test') {
-        throw error;
-      }
+      throw error;
     }
 
     try {
@@ -245,16 +218,11 @@ export async function checkoutLoan(input: CheckoutInput): Promise<LoanRecord> {
         error: error instanceof Error ? error.message : String(error),
         memberId: member.id
       });
-      // In test environment, we'll continue to see if other operations work
-      if (process.env.NODE_ENV !== 'test') {
-        throw error;
-      }
+      throw error;
     }
 
-    // Log audit event (skip in test environment)
-    if (process.env.NODE_ENV !== 'test') {
-      await logEvent(member.id, 'loan_checkout', { loanId: loan.id }, tx);
-    }
+    // Log audit event
+    await logEvent(member.id, 'loan_checkout', { loanId: loan.id }, tx);
     return loan;
   });
 }

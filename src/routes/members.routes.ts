@@ -9,12 +9,6 @@ const router = Router();
 
 // Add member
 router.post('/add', async (req, res, next) => {
-  // Allow in development and production for testing
-  // Note: In real production, this should be removed or secured
-  if (process.env.NODE_ENV === 'production' && !req.headers['x-testing-mode']) {
-    return next(new AppError(403, 'Endpoint not available in production'));
-  }
-
   try {
     const { cardToken, tier = 'BASIC' } = req.body;
     
@@ -22,13 +16,18 @@ router.post('/add', async (req, res, next) => {
       return next(new AppError(400, 'cardToken is required'));
     }
 
-    // Check if member already exists
-    const existingMember = await prisma.member.findUnique({
-      where: { cardToken }
+    // Check if member already exists by cardToken or shopifyCustomerId
+    const existingMember = await prisma.member.findFirst({
+      where: {
+        OR: [
+          { cardToken },
+          { shopifyCustomerId: cardToken }
+        ]
+      }
     });
 
     if (existingMember) {
-      return next(new AppError(409, 'Member with this card token already exists'));
+      return next(new AppError(409, 'Member with this card token or Shopify customer ID already exists'));
     }
 
     const now = new Date();

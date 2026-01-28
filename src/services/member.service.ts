@@ -97,20 +97,14 @@ export function validateMemberActive(member: { status: MemberStatus }) {
 }
 
 export function validateMemberCanCheckout(member: MemberRecord) {
-  if (process.env.NODE_ENV === 'test') {
-    console.log('Validating member for checkout:', {
-      id: member.id,
-      tier: member.tier,
-      status: member.status,
-      itemsUsed: member.itemsUsed,
-      itemsOut: member.itemsOut
-    });
-  }
-  
-  // Temporarily disable validation in test environment
-  if (process.env.NODE_ENV === 'test') {
-    return;
-  }
+  console.log('Validating member for checkout:', {
+    id: member.id,
+    tier: member.tier,
+    status: member.status,
+    itemsUsed: member.itemsUsed,
+    swapsUsed: member.swapsUsed,
+    itemsOut: member.itemsOut
+  });
   
   validateMemberActive({ status: member.status as MemberStatus });
   const allowances = getTierConfig(member.tier as MemberTier);

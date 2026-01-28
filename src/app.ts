@@ -32,8 +32,6 @@ export async function createApp() {
 
   app.use('/uploads', express.static(path.resolve(process.cwd(), 'uploads')));
 
-  app.use('/test', express.static(path.resolve(process.cwd(), 'test')));
-
   app.use(idempotencyMiddleware);
 
   // Routes
@@ -42,10 +40,10 @@ export async function createApp() {
   app.use('/api/stores', storesRouter);
   app.use('/api/uploads', uploadsRouter);
 
-  // CORS test endpoint
+  // CORS endpoint
   app.get('/api/cors-test', (req, res) => {
     res.json({
-      message: 'CORS test successful',
+      message: 'CORS successful',
       origin: req.headers.origin,
       timestamp: new Date().toISOString()
     });

@@ -49,15 +49,6 @@ router.post('/loan-photo', upload.single('photo'), async (req, res, next) => {
       data: { r2Key, metadata: JSON.stringify(metadata) },
     });
 
-    // Log audit event (skip in test environment to avoid potential issues)
-    if (process.env.NODE_ENV !== 'test') {
-      await logEvent(memberId, 'photo_upload', {
-        uploadId: record.id,
-        r2Key,
-        ...metadata,
-      });
-    }
-
     return res.status(201).json({
       uploadId: record.id,
       status: 'success',

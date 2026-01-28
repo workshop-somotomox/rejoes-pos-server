@@ -190,17 +190,18 @@ Base url: https://rejoes-pos-server-oyolloo.up.railway.app
   "member": {
     "id": "string",
     "cardToken": "string",
+    "shopifyCustomerId": "string|null",
     "tier": "string",
     "status": "ACTIVE",
     "cycleStart": "datetime",
     "cycleEnd": "datetime",
-    "itemsUsed": "number",
-    "swapsUsed": "number",
-    "itemsOut": "number"
+    "itemsUsed": 0,
+    "swapsUsed": 0,
+    "itemsOut": 0
   }
 }
 ```
-**Errors:** 400 (missing cardToken), 403 (production), 409 (duplicate)
+**Errors:** 400 (missing cardToken), 409 (member with cardToken or Shopify customer ID already exists)
 
 ### GET /members/by-card/:cardToken
 **Headers:** None
