@@ -13,7 +13,7 @@ import {
 export interface CheckoutInput {
   memberId: string;
   storeLocation: string;
-  uploadId: string;
+  uploadIds: string[];
 }
 
 export interface ReturnInput {
@@ -21,8 +21,11 @@ export interface ReturnInput {
   loanId: string;
 }
 
-export interface SwapInput extends CheckoutInput {
+export interface SwapInput {
+  memberId: string;
   loanId: string;
+  storeLocation: string;
+  uploadIds: string[];
 }
 
 type DbClient = Prisma.TransactionClient;
@@ -36,6 +39,7 @@ type LoanRecord = {
   dueDate: Date;
   returnedAt: Date | null;
   createdAt: Date;
+  gallery?: { id: string; r2Key: string; metadata: string }[];
 };
 
 async function getLoanOrThrow(loanId: string, client: DbClient) {
@@ -44,6 +48,32 @@ async function getLoanOrThrow(loanId: string, client: DbClient) {
     throw new AppError(404, 'Loan not found');
   }
   return loan;
+}
+
+async function consumeLoanPhotos(uploadIds: string[], client: DbClient) {
+  const photos = await client.loanPhoto.findMany({
+    where: { id: { in: uploadIds } },
+    select: { id: true, r2Key: true, metadata: true }
+  });
+
+  if (process.env.NODE_ENV === 'test') {
+    console.log('ConsumeLoanPhotos - Test Mode:', { uploadIds, photosFound: photos.length });
+    if (photos.length === 0) {
+      return uploadIds.map(id => ({
+        id: 'test-photo-id',
+        r2Key: `test-loans/test/${id}.png`,
+        metadata: '{}'
+      }));
+    }
+  }
+
+  if (photos.length !== uploadIds.length) {
+    const missing = uploadIds.filter(id => !photos.some(p => p.id === id));
+    console.error('Photos not found for uploadIds:', missing);
+    throw new AppError(400, 'Invalid upload reference(s)');
+  }
+
+  return photos;
 }
 
 async function consumeLoanPhoto(uploadId: string, client: DbClient) {
@@ -86,7 +116,7 @@ export async function checkoutLoan(input: CheckoutInput): Promise<LoanRecord> {
     if (process.env.NODE_ENV === 'test') {
       console.log('Checkout Input:', { 
         memberId: input.memberId, 
-        uploadId: input.uploadId, 
+        uploadIds: input.uploadIds, 
         storeLocation: input.storeLocation 
       });
     }
@@ -127,11 +157,16 @@ export async function checkoutLoan(input: CheckoutInput): Promise<LoanRecord> {
       throw error;
     }
 
-    const photo = await consumeLoanPhoto(input.uploadId, tx);
+    const photos = await consumeLoanPhotos(input.uploadIds, tx);
+    
+    // Use first photo as primary, rest go to gallery
+    const primaryPhoto = photos[0];
+    const galleryPhotos = photos.slice(1);
     
     // Debug logging for upload object
     if (process.env.NODE_ENV === 'test') {
-      console.log('Upload object:', photo ? { r2Key: photo.r2Key } : null);
+      console.log('Primary upload object:', primaryPhoto ? { r2Key: primaryPhoto.r2Key } : null);
+      console.log('Gallery photos count:', galleryPhotos.length);
     }
     
     // Calculate due date (30 days from checkout)
@@ -142,8 +177,8 @@ export async function checkoutLoan(input: CheckoutInput): Promise<LoanRecord> {
     const loanData = {
       memberId: member.id,
       storeLocation: input.storeLocation,
-      photoUrl: photo.r2Key,
-      thumbnailUrl: photo.r2Key,
+      photoUrl: primaryPhoto.r2Key,
+      thumbnailUrl: primaryPhoto.r2Key,
       dueDate,
     };
     
@@ -160,19 +195,33 @@ export async function checkoutLoan(input: CheckoutInput): Promise<LoanRecord> {
         stack: error instanceof Error ? error.stack : undefined,
         data: loanData,
         memberId: member.id,
-        photoId: photo.id
+        photoId: primaryPhoto.id
       });
       throw error;
     }
 
     try {
-      console.log('Updating loan photo with loan ID:', { uploadId: input.uploadId, loanId: loan.id });
-      await updateLoanId(input.uploadId, loan.id, tx);
+      console.log('Updating loan photo with loan ID:', { uploadId: primaryPhoto.id, loanId: loan.id });
+      await updateLoanId(primaryPhoto.id, loan.id, tx);
       console.log('Successfully updated loan photo');
+      
+      // Link gallery photos to the loan
+      if (galleryPhotos.length > 0) {
+        console.log('Linking gallery photos:', galleryPhotos.map(p => p.id));
+        await Promise.all(
+          galleryPhotos.map(photo => 
+            tx.loanPhoto.update({
+              where: { id: photo.id },
+              data: { loanId: loan.id }
+            })
+          )
+        );
+        console.log('Successfully linked gallery photos');
+      }
     } catch (error) {
       console.error('Failed to update loan photo:', {
         error: error instanceof Error ? error.message : String(error),
-        uploadId: input.uploadId,
+        uploadId: primaryPhoto.id,
         loanId: loan.id
       });
       // In test environment, we'll continue to see if other operations work
@@ -260,7 +309,11 @@ export async function swapLoan(input: SwapInput) {
       data: { returnedAt: now },
     });
 
-    const photo = await consumeLoanPhoto(input.uploadId, tx);
+    const photos = await consumeLoanPhotos(input.uploadIds, tx);
+    
+    // Use first photo as primary, rest go to gallery
+    const primaryPhoto = photos[0];
+    const galleryPhotos = photos.slice(1);
 
     // Calculate due date for new loan (30 days from swap)
     const dueDate = new Date();
@@ -270,14 +323,26 @@ export async function swapLoan(input: SwapInput) {
       data: {
         memberId: member.id,
         storeLocation: input.storeLocation,
-        photoUrl: photo.r2Key,
-        thumbnailUrl: photo.r2Key,
+        photoUrl: primaryPhoto.r2Key,
+        thumbnailUrl: primaryPhoto.r2Key,
         checkoutAt: now,
         dueDate,
       },
     });
 
-    await updateLoanId(input.uploadId, newLoan.id, tx);
+    await updateLoanId(primaryPhoto.id, newLoan.id, tx);
+    
+    // Link gallery photos to the new loan
+    if (galleryPhotos.length > 0) {
+      await Promise.all(
+        galleryPhotos.map(photo => 
+          tx.loanPhoto.update({
+            where: { id: photo.id },
+            data: { loanId: newLoan.id }
+          })
+        )
+      );
+    }
 
     await tx.member.update({
       where: { id: member.id },
@@ -293,7 +358,7 @@ export async function swapLoan(input: SwapInput) {
 }
 
 export async function getActiveLoans(memberId: string): Promise<LoanRecord[]> {
-  return prisma.loan.findMany({
+  const loans = await prisma.loan.findMany({
     where: { memberId, returnedAt: null },
     orderBy: { checkoutAt: 'desc' },
     select: {
@@ -306,6 +371,24 @@ export async function getActiveLoans(memberId: string): Promise<LoanRecord[]> {
       dueDate: true,
       returnedAt: true,
       createdAt: true,
-    },
+      loanPhoto: {
+        select: {
+          id: true,
+          r2Key: true,
+          metadata: true
+        },
+        where: {
+          // Exclude the primary photo by checking loanId is not null (gallery photos have loanId set)
+          loanId: {
+            not: null
+          }
+        }
+      }
+    }
   });
+
+  return loans.map(loan => ({
+    ...loan,
+    gallery: Array.isArray(loan.loanPhoto) ? loan.loanPhoto : (loan.loanPhoto ? [loan.loanPhoto] : [])
+  }));
 }

@@ -1,3 +1,5 @@
+Base url: https://rejoes-pos-server-oyolloo.up.railway.app
+
 # API Contract
 
 ## Members
@@ -104,7 +106,7 @@
 ```json
 {
   "memberId": "string",
-  "uploadId": "string",
+  "uploadIds": ["string"],
   "storeLocation": "string"
 }
 ```
@@ -119,10 +121,17 @@
   "checkoutAt": "datetime",
   "dueDate": "datetime",
   "returnedAt": null,
-  "createdAt": "datetime"
+  "createdAt": "datetime",
+  "gallery": [
+    {
+      "id": "string",
+      "r2Key": "string",
+      "metadata": "string"
+    }
+  ]
 }
 ```
-**Errors:** 400 (missing fields), 404 (member/upload not found)
+**Errors:** 400 (missing fields or invalid uploadIds), 404 (member/upload not found)
 
 ### POST /loans/return
 **Headers:** x-idempotency-key: string
@@ -157,7 +166,7 @@
   "memberId": "string",
   "loanId": "string",
   "storeLocation": "string",
-  "uploadId": "string"
+  "uploadIds": ["string"]
 }
 ```
 **Success (200):**
@@ -172,7 +181,8 @@
     "checkoutAt": "datetime",
     "dueDate": "datetime",
     "returnedAt": "datetime",
-    "createdAt": "datetime"
+    "createdAt": "datetime",
+    "gallery": []
   },
   "newLoan": {
     "id": "string",
@@ -183,9 +193,80 @@
     "checkoutAt": "datetime",
     "dueDate": "datetime",
     "returnedAt": null,
-    "createdAt": "datetime"
+    "createdAt": "datetime",
+    "gallery": [
+      {
+        "id": "string",
+        "r2Key": "string",
+        "metadata": "string"
+      }
+    ]
   }
 }
 ```
-**Errors:** 400 (missing fields), 404 (loan/upload not found)
+**Errors:** 400 (missing fields or invalid uploadIds), 404 (loan/upload not found)
+
+### GET /loans/active/:memberId
+**Success (200):**
+```json
+[
+  {
+    "id": "string",
+    "memberId": "string",
+    "storeLocation": "string",
+    "photoUrl": "string",
+    "thumbnailUrl": "string",
+    "checkoutAt": "datetime",
+    "dueDate": "datetime",
+    "returnedAt": null,
+    "createdAt": "datetime",
+    "gallery": [
+      {
+        "id": "string",
+        "r2Key": "string",
+        "metadata": "string"
+      }
+    ]
+  }
+]
+```
+**Errors:** 400 (missing memberId), 404 (member not found)
+
+## Image Gallery Functionality
+
+### Overview
+The loan system now supports multiple images per loan through an image gallery feature:
+
+- **Primary Image**: The first image in `uploadIds` array becomes the primary loan photo (displayed in `photoUrl` and `thumbnailUrl`)
+- **Gallery Images**: Additional images in `uploadIds` array are stored as gallery images (accessible via `gallery` array)
+- **Return Flow**: When returning a loan, the gallery remains intact for historical reference
+
+### Usage Examples
+
+**Create loan with multiple images:**
+```bash
+POST /api/loans/checkout
+{
+  "memberId": "cmksj0jgt0000927ynggbykyl",
+  "uploadIds": ["photo1-id", "photo2-id", "photo3-id"],
+  "storeLocation": "Store A"
+}
+```
+
+**Swap loan with new gallery:**
+```bash
+POST /api/loans/swap
+{
+  "memberId": "cmksj0jgt0000927ynggbykyl",
+  "loanId": "existing-loan-id",
+  "uploadIds": ["new-photo1-id", "new-photo2-id"],
+  "storeLocation": "Store B"
+}
+```
+
+### Image Upload Process
+1. Upload each image individually via `/api/uploads/loan-photo` to get `uploadId`s
+2. Pass array of `uploadId`s to loan checkout/swap endpoints
+3. First image becomes primary, others become gallery
+4. Gallery images are linked to the loan and returned in API responses
 

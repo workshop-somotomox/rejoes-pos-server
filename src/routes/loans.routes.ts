@@ -10,21 +10,21 @@ const router = Router();
 
 router.post('/checkout', async (req, res, next) => {
   try {
-    const { memberId, storeLocation, uploadId } = req.body;
-    if (!memberId || !storeLocation || !uploadId) {
+    const { memberId, storeLocation, uploadIds } = req.body;
+    if (!memberId || !storeLocation || !uploadIds || !Array.isArray(uploadIds)) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
-    const loan = await checkoutLoan({ memberId, storeLocation, uploadId });
+    const loan = await checkoutLoan({ memberId, storeLocation, uploadIds });
     return res.status(201).json(loan);
   } catch (error) {
     // Log error details in test environment
     if (process.env.NODE_ENV === 'test') {
-      const { memberId, storeLocation, uploadId } = req.body;
+      const { memberId, storeLocation, uploadIds } = req.body;
       console.error('Loan checkout error:', {
         memberId,
         storeLocation,
-        uploadId,
+        uploadIds,
         error: error instanceof Error ? error.message : String(error),
         stack: error instanceof Error ? error.stack : undefined
       });
@@ -49,12 +49,12 @@ router.post('/return', async (req, res, next) => {
 
 router.post('/swap', async (req, res, next) => {
   try {
-    const { memberId, loanId, storeLocation, uploadId } = req.body;
-    if (!memberId || !loanId || !storeLocation || !uploadId) {
+    const { memberId, loanId, storeLocation, uploadIds } = req.body;
+    if (!memberId || !loanId || !storeLocation || !uploadIds || !Array.isArray(uploadIds)) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
-    const result = await swapLoan({ memberId, loanId, storeLocation, uploadId });
+    const result = await swapLoan({ memberId, loanId, storeLocation, uploadIds });
     return res.json(result);
   } catch (error) {
     return next(error);
