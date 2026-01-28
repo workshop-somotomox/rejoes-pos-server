@@ -1,8 +1,8 @@
-import path from 'path';
+import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import cors from 'cors';
+import path from 'path';
 
 import { config } from './config';
 import { prisma } from './prisma';
@@ -15,20 +15,16 @@ import { errorHandler } from './middlewares/errorHandler';
 export async function createApp() {
   const app = express();
 
-  // Most permissive CORS configuration
-  app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', '*');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    
-    if (req.method === 'OPTIONS') {
-      res.sendStatus(200);
-      return;
-    }
-    
-    next();
-  });
+  // Add this early (before any routes)
+  app.use(cors({
+    origin: '*',                           // ← allow all origins (dev only)
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key', 'x-idempotency-key'],
+    credentials: true,                     // if you ever add sessions/cookies
+  }));
+
+  // Handle preflight OPTIONS requests (usually automatic with cors package)
+  app.options('*', cors());
   app.use(morgan(config.env === 'production' ? 'combined' : 'dev'));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
@@ -43,6 +39,15 @@ export async function createApp() {
   app.use('/api/members', membersRouter);
   app.use('/api/loans', loansRouter);
   app.use('/api/uploads', uploadsRouter);
+
+  // CORS test endpoint
+  app.get('/api/cors-test', (req, res) => {
+    res.json({
+      message: 'CORS test successful',
+      origin: req.headers.origin,
+      timestamp: new Date().toISOString()
+    });
+  });
 
   app.get('/', async (req, res) => {
     try {
