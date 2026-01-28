@@ -7,6 +7,20 @@ generator client {
   url      = env("DATABASE_URL")
 }
 
+model Store {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  location    String
+  address     String?
+  phone       String?
+  email       String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  loans Loan[]
+}
+
 model Member {
   id                 String   @id @default(cuid())
   cardToken          String   @unique
@@ -29,7 +43,8 @@ model Loan {
   id            String    @id @default(cuid())
   member        Member    @relation(fields: [memberId], references: [id])
   memberId      String
-  storeLocation String
+  store         Store     @relation(fields: [storeId], references: [id])
+  storeId       String
   photoUrl      String
   thumbnailUrl  String
   checkoutAt    DateTime  @default(now())

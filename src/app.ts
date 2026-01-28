@@ -8,6 +8,7 @@ import { config } from './config';
 import { prisma } from './prisma';
 import membersRouter from './routes/members.routes';
 import loansRouter from './routes/loans.routes';
+import storesRouter from './routes/stores.routes';
 import uploadsRouter from './routes/uploads.routes';
 import { idempotencyMiddleware } from './middlewares/idempotency';
 import { errorHandler } from './middlewares/errorHandler';
@@ -38,6 +39,7 @@ export async function createApp() {
   // Routes
   app.use('/api/members', membersRouter);
   app.use('/api/loans', loansRouter);
+  app.use('/api/stores', storesRouter);
   app.use('/api/uploads', uploadsRouter);
 
   // CORS test endpoint
