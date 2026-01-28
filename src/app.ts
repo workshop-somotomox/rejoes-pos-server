@@ -18,8 +18,8 @@ export async function createApp() {
   // Add this early (before any routes)
   app.use(cors({
     origin: '*',                           // ← allow all origins (dev only)
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key', 'x-idempotency-key'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowedHeaders: '*',                    // ← allow all headers
     credentials: true,                     // if you ever add sessions/cookies
   }));
 
