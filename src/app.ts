@@ -16,10 +16,36 @@ export async function createApp() {
   const app = express();
 
   app.use(helmet());
-  app.use(cors({
-    origin: true, // Allow all origins for development
-    credentials: true
-  }));
+  
+  // CORS configuration for Shopify embedded apps
+  const corsOptions = {
+    origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
+      // Allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+      
+      // Allow Shopify domains
+      if (origin.includes('shopify.com') || origin.includes('trycloudflare.com')) {
+        return callback(null, true);
+      }
+      
+      // Allow localhost for development
+      if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+        return callback(null, true);
+      }
+      
+      // Allow all origins for development/testing
+      if (process.env.NODE_ENV !== 'production') {
+        return callback(null, true);
+      }
+      
+      callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'x-idempotency-key']
+  };
+  
+  app.use(cors(corsOptions));
 
   // Ensure CORS headers are sent for all responses including errors
   app.use((req, res, next) => {
