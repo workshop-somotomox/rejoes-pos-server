@@ -207,7 +207,7 @@ export async function checkoutLoan(input: CheckoutInput): Promise<LoanRecord> {
       
       // Link gallery photos to the loan
       if (galleryPhotos.length > 0) {
-        console.log('Linking gallery photos:', galleryPhotos.map(p => p.id));
+        console.log('Linking gallery photos:', galleryPhotos.map((p: any) => p.id));
         await Promise.all(
           galleryPhotos.map((photo: any) => 
             tx.loanPhoto.update({
