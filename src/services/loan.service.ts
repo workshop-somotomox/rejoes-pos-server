@@ -12,7 +12,7 @@ import {
 
 export interface CheckoutInput {
   memberId: string;
-  storeId: string;
+  storeLocation: string;
   uploadIds: string[];
 }
 
@@ -24,7 +24,7 @@ export interface ReturnInput {
 export interface SwapInput {
   memberId: string;
   loanId: string;
-  storeId: string;
+  storeLocation: string;
   uploadIds: string[];
 }
 
@@ -32,7 +32,7 @@ type DbClient = Prisma.TransactionClient;
 type LoanRecord = {
   id: string;
   memberId: string;
-  storeId: string;
+  storeLocation: string;
   photoUrl: string;
   thumbnailUrl: string;
   checkoutAt: Date;
@@ -102,7 +102,7 @@ export async function checkoutLoan(input: CheckoutInput): Promise<LoanRecord> {
     console.log('Checkout Input:', { 
       memberId: input.memberId, 
       uploadIds: input.uploadIds, 
-      storeId: input.storeId 
+      storeLocation: input.storeLocation 
     });
 
     let member = await getMemberById(input.memberId, tx);
@@ -152,7 +152,7 @@ export async function checkoutLoan(input: CheckoutInput): Promise<LoanRecord> {
     let loan;
     const loanData = {
       memberId: member.id,
-      storeId: input.storeId,
+      storeLocation: input.storeLocation,
       photoUrl: primaryPhoto.r2Key,
       thumbnailUrl: primaryPhoto.r2Key,
       dueDate,
@@ -290,7 +290,7 @@ export async function swapLoan(input: SwapInput) {
     const newLoan = await tx.loan.create({
       data: {
         memberId: member.id,
-        storeId: input.storeId,
+        storeLocation: input.storeLocation,
         photoUrl: primaryPhoto.r2Key,
         thumbnailUrl: primaryPhoto.r2Key,
         checkoutAt: now,
@@ -332,14 +332,7 @@ export async function getActiveLoans(memberId: string): Promise<LoanRecord[]> {
     select: {
       id: true,
       memberId: true,
-      storeId: true,
-      store: {
-        select: {
-          id: true,
-          name: true,
-          location: true
-        }
-      },
+      storeLocation: true,
       photoUrl: true,
       thumbnailUrl: true,
       checkoutAt: true,

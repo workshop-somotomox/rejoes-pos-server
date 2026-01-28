@@ -4,173 +4,8 @@ Base url: https://rejoes-pos-server-oyolloo.up.railway.app
 
 # API Contract
 
-## Stores
-
-### GET /api/stores
-**Headers:** None
-**Body:** None
-**Success (200):**
-```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": "string",
-      "name": "string",
-      "location": "string",
-      "address": "string|null",
-      "phone": "string|null",
-      "email": "string|null",
-      "isActive": true,
-      "createdAt": "datetime",
-      "updatedAt": "datetime",
-      "_count": {
-        "loans": "number"
-      }
-    }
-  ]
-}
-```
-
-### GET /api/stores/:id
-**Headers:** None
-**Body:** None
-**Success (200):**
-```json
-{
-  "success": true,
-  "data": {
-    "id": "string",
-    "name": "string",
-    "location": "string",
-    "address": "string|null",
-    "phone": "string|null",
-    "email": "string|null",
-    "isActive": true,
-    "createdAt": "datetime",
-    "updatedAt": "datetime",
-    "_count": {
-      "loans": "number"
-    },
-    "loans": [
-      {
-        "id": "string",
-        "memberId": "string",
-        "storeId": "string",
-        "photoUrl": "string",
-        "thumbnailUrl": "string",
-        "checkoutAt": "datetime",
-        "dueDate": "datetime",
-        "returnedAt": "datetime|null",
-        "createdAt": "datetime",
-        "member": {
-          "id": "string",
-          "cardToken": "string",
-          "tier": "string",
-          "status": "string"
-        }
-      }
-    ]
-  }
-}
-```
-
-### POST /api/stores/add
-**Headers:** None
-**Body:**
-```json
-{
-  "name": "string",
-  "location": "string",
-  "address": "string|null",
-  "phone": "string|null",
-  "email": "string|null"
-}
-```
-**Success (201):**
-```json
-{
-  "success": true,
-  "data": {
-    "id": "string",
-    "name": "string",
-    "location": "string",
-    "address": "string|null",
-    "phone": "string|null",
-    "email": "string|null",
-    "isActive": true,
-    "createdAt": "datetime",
-    "updatedAt": "datetime"
-  },
-  "message": "Store created successfully"
-}
-```
-
-### PUT /api/stores/:id
-**Headers:** None
-**Body:**
-```json
-{
-  "name": "string",
-  "location": "string",
-  "address": "string|null",
-  "phone": "string|null",
-  "email": "string|null",
-  "isActive": true
-}
-```
-**Success (200):**
-```json
-{
-  "success": true,
-  "data": {
-    "id": "string",
-    "name": "string",
-    "location": "string",
-    "address": "string|null",
-    "phone": "string|null",
-    "email": "string|null",
-    "isActive": true,
-    "createdAt": "datetime",
-    "updatedAt": "datetime"
-  },
-  "message": "Store updated successfully"
-}
-```
-
-### DELETE /api/stores/:id
-**Headers:** None
-**Body:** None
-**Success (200):**
-```json
-{
-  "success": true,
-  "message": "Store deleted successfully"
-}
-```
-
-### GET /api/stores/:id/stats
-**Headers:** None
-**Body:** None
-**Success (200):**
-```json
-{
-  "success": true,
-  "data": {
-    "totalLoans": "number",
-    "activeLoans": "number",
-    "completedLoans": "number",
-    "stats": [
-      {
-        "returnedAt": "datetime|null",
-        "_count": {
-          "id": "number"
-        }
-      }
-    ]
-  }
-}
-```
+## Overview
+This API provides complete functionality for member management, store operations, loan tracking, and image uploads. All endpoints are production-ready with no testing restrictions.
 
 ## Members
 
@@ -259,7 +94,7 @@ Base url: https://rejoes-pos-server-oyolloo.up.railway.app
   {
     "id": "string",
     "memberId": "string",
-    "storeId": "string",
+    "storeLocation": "string",
     "photoUrl": "string",
     "thumbnailUrl": "string",
     "checkoutAt": "datetime",
@@ -278,7 +113,7 @@ Base url: https://rejoes-pos-server-oyolloo.up.railway.app
 {
   "memberId": "string",
   "uploadIds": ["string"],
-  "storeId": "string"
+  "storeLocation": "string"
 }
 ```
 **Success (201):**
@@ -286,7 +121,7 @@ Base url: https://rejoes-pos-server-oyolloo.up.railway.app
 {
   "id": "string",
   "memberId": "string",
-  "storeId": "string",
+  "storeLocation": "string",
   "photoUrl": "string",
   "thumbnailUrl": "string",
   "checkoutAt": "datetime",
@@ -318,7 +153,7 @@ Base url: https://rejoes-pos-server-oyolloo.up.railway.app
 {
   "id": "string",
   "memberId": "string",
-  "storeId": "string",
+  "storeLocation": "string",
   "photoUrl": "string",
   "thumbnailUrl": "string",
   "checkoutAt": "datetime",
@@ -336,7 +171,7 @@ Base url: https://rejoes-pos-server-oyolloo.up.railway.app
 {
   "memberId": "string",
   "loanId": "string",
-  "storeId": "string",
+  "storeLocation": "string",
   "uploadIds": ["string"]
 }
 ```
@@ -346,7 +181,7 @@ Base url: https://rejoes-pos-server-oyolloo.up.railway.app
   "returnedLoan": {
     "id": "string",
     "memberId": "string",
-    "storeId": "string",
+    "storeLocation": "string",
     "photoUrl": "string",
     "thumbnailUrl": "string",
     "checkoutAt": "datetime",
@@ -358,7 +193,7 @@ Base url: https://rejoes-pos-server-oyolloo.up.railway.app
   "newLoan": {
     "id": "string",
     "memberId": "string",
-    "storeId": "string",
+    "storeLocation": "string",
     "photoUrl": "string",
     "thumbnailUrl": "string",
     "checkoutAt": "datetime",
@@ -384,7 +219,7 @@ Base url: https://rejoes-pos-server-oyolloo.up.railway.app
   {
     "id": "string",
     "memberId": "string",
-    "storeId": "string",
+    "storeLocation": "string",
     "photoUrl": "string",
     "thumbnailUrl": "string",
     "checkoutAt": "datetime",
@@ -420,7 +255,7 @@ POST /api/loans/checkout
 {
   "memberId": "cmksj0jgt0000927ynggbykyl",
   "uploadIds": ["photo1-id", "photo2-id", "photo3-id"],
-  "storeId": "store_1"
+  "storeLocation": "Main Store"
 }
 ```
 
@@ -431,7 +266,7 @@ POST /api/loans/swap
   "memberId": "cmksj0jgt0000927ynggbykyl",
   "loanId": "existing-loan-id",
   "uploadIds": ["new-photo1-id", "new-photo2-id"],
-  "storeId": "store_2"
+  "storeLocation": "North Branch"
 }
 ```
 

@@ -102,54 +102,17 @@ async function run() {
     const memberResponse = results[results.length - 1];
     const memberId = (memberResponse.payload as any)?.member?.id;
 
-    // 2. Get stores to use for testing
-    await sendJson('Get stores', `${API_BASE}/api/stores`, {
-      method: 'GET',
-    });
-    const storesResponse = results[results.length - 1];
-    const stores = (storesResponse.payload as any)?.data || [];
-    const testStoreId = stores.length > 0 ? stores[0].id : 'store_1';
-
-    // 2a. Test store details endpoint
-    if (testStoreId) {
-      await sendJson('Get store details', `${API_BASE}/api/stores/${testStoreId}`, {
-        method: 'GET',
-      });
-    }
-
-    // 2b. Test store stats endpoint
-    if (testStoreId) {
-      await sendJson('Get store stats', `${API_BASE}/api/stores/${testStoreId}/stats`, {
-        method: 'GET',
-      });
-    }
-
-    // 2c. Test creating a new store
-    const newStoreName = `E2E Test Store ${Date.now()}`;
-    const { body: createStoreBody } = await sendJson('Create new store', `${API_BASE}/api/stores/add`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-idempotency-key': crypto.randomUUID() },
-      body: JSON.stringify({
-        name: newStoreName,
-        location: 'E2E Test Location',
-        address: '123 Test St',
-        phone: '+1-555-TEST',
-        email: 'test@example.com'
-      }),
-    });
-    const newStoreId = (createStoreBody as any)?.data?.id;
-
-    // 3. Upload loan photo for checkout
+    // 2. Upload loan photo for checkout
     const { body: uploadBody } = await uploadLoanPhoto('Upload loan photo (checkout)', memberId || '', 'checkout.png');
     const uploadId = (uploadBody as any)?.uploadId;
 
-    // 4. Checkout loan
+    // 3. Checkout loan
     const { body: checkoutBody } = await sendJson('Checkout loan', `${API_BASE}/api/loans/checkout`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-idempotency-key': crypto.randomUUID() },
       body: JSON.stringify({
         memberId,
-        storeId: testStoreId,
+        storeLocation: 'Main Store',
         uploadIds: [uploadId],
       }),
     });
@@ -157,7 +120,7 @@ async function run() {
 
     // Only proceed with return if checkout succeeded
     if (loanId) {
-      // 4a. Get active loans with store information
+      // 4a. Get active loans
       await sendJson('Get active loans', `${API_BASE}/api/loans/active/${memberId}`, {
         method: 'GET',
       });
@@ -195,7 +158,7 @@ async function run() {
       headers: { 'Content-Type': 'application/json', 'x-idempotency-key': crypto.randomUUID() },
       body: JSON.stringify({
         memberId,
-        storeId: testStoreId,
+        storeLocation: 'Swap Store',
         uploadIds: [swapBaseId],
       }),
     });
@@ -213,7 +176,7 @@ async function run() {
         body: JSON.stringify({
           memberId,
           loanId: swapLoanId,
-          storeId: testStoreId,
+          storeLocation: 'Swap Location',
           uploadIds: [swapUploadId],
         }),
       });
@@ -231,30 +194,7 @@ async function run() {
       });
     }
 
-    // 8. Test invalid store validation
-    const { body: invalidUploadBody } = await uploadLoanPhoto('Upload loan photo (invalid store test)', memberId || '', 'invalid-store.png');
-    const invalidUploadId = (invalidUploadBody as any)?.uploadId;
-    
-    if (invalidUploadId) {
-      await sendJson('Test invalid store validation', `${API_BASE}/api/loans/checkout`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-idempotency-key': crypto.randomUUID() },
-        body: JSON.stringify({
-          memberId,
-          storeId: 'invalid-store-id',
-          uploadIds: [invalidUploadId],
-        }),
-      });
-    }
-
-    // 9. Test deleting the created store (if it was created)
-    if (newStoreId) {
-      await sendJson('Delete test store', `${API_BASE}/api/stores/${newStoreId}`, {
-        method: 'DELETE',
-      });
-    }
-
-    // 8. Verify loan photo linking via Prisma
+    // 7. Verify loan photo linking via Prisma
     if (swapUploadId) {
       const loanPhotoRecord = await prisma.loanPhoto.findUnique({ where: { id: swapUploadId } });
       await recordResult('LoanPhoto linked to swapped loan', loanPhotoRecord ? 200 : 404, Boolean(loanPhotoRecord?.loanId), loanPhotoRecord);
