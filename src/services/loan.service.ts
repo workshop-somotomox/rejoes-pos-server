@@ -371,7 +371,7 @@ export async function getActiveLoans(memberId: string): Promise<LoanRecord[]> {
       dueDate: true,
       returnedAt: true,
       createdAt: true,
-      loanPhoto: {
+      loanPhotos: {
         select: {
           id: true,
           r2Key: true,

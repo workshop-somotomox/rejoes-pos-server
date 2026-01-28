@@ -37,7 +37,7 @@ model Loan {
   returnedAt    DateTime?
   createdAt     DateTime  @default(now())
 
-  loanPhoto LoanPhoto?
+  loanPhotos LoanPhoto[]
 
   @@index([memberId, returnedAt])
 }
