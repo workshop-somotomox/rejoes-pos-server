@@ -7,8 +7,8 @@ import { MemberStatus, MemberTier } from '../types';
 
 const router = Router();
 
-// DEV ONLY: Seed member for testing
-router.post('/dev/seed-member', async (req, res, next) => {
+// Add member
+router.post('/add', async (req, res, next) => {
   // Allow in development and production for testing
   // Note: In real production, this should be removed or secured
   if (process.env.NODE_ENV === 'production' && !req.headers['x-testing-mode']) {
@@ -48,7 +48,7 @@ router.post('/dev/seed-member', async (req, res, next) => {
     });
 
     res.json({
-      message: 'Test member created successfully',
+      message: 'Member created successfully',
       member: {
         id: member.id,
         cardToken: member.cardToken,

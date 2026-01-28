@@ -4,7 +4,7 @@ Base url: https://rejoes-pos-server-oyolloo.up.railway.app
 
 ## Members
 
-### POST /members/dev/seed-member
+### POST /members/add
 **Headers:** None
 **Body:**
 ```json
@@ -16,7 +16,7 @@ Base url: https://rejoes-pos-server-oyolloo.up.railway.app
 **Success (200):**
 ```json
 {
-  "message": "Test member created successfully",
+  "message": "Member created successfully",
   "member": {
     "id": "string",
     "cardToken": "string",

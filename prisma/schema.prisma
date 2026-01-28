@@ -46,7 +46,7 @@ model LoanPhoto {
   id       String   @id @default(cuid())
   r2Key    String
   metadata String
-  loanId   String?  @unique
+  loanId   String?
   loan     Loan?    @relation(fields: [loanId], references: [id])
   createdAt DateTime @default(now())
 }
