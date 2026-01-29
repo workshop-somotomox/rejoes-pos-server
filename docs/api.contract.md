@@ -16,7 +16,7 @@ This API provides complete functionality for member management, loan tracking, a
 {
   "cardToken": "string",
   "tier": "BASIC|PLUS|PREMIUM",
-  "storeLocation": "string"
+  "storeLocation": "string (optional, defaults to 'Main Store')"
 }
 ```
 **Success (200):**

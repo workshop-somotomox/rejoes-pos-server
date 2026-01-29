@@ -43,7 +43,7 @@ router.post('/add', async (req, res, next) => {
         itemsUsed: 0,
         swapsUsed: 0,
         itemsOut: 0,
-        shopifyCustomerId: storeLocation, // Store storeLocation in shopifyCustomerId field
+        shopifyCustomerId: storeLocation || 'Main Store', // Default to Main Store if not provided
       },
     });
 
@@ -60,7 +60,7 @@ router.post('/add', async (req, res, next) => {
         itemsUsed: member.itemsUsed,
         swapsUsed: member.swapsUsed,
         itemsOut: member.itemsOut,
-        storeLocation: member.shopifyCustomerId, // Return storeLocation
+        storeLocation: member.shopifyCustomerId || 'Main Store', // Return storeLocation with default
       }
     });
   } catch (error) {
