@@ -11,6 +11,7 @@ model Member {
   id                 String   @id @default(cuid())
   cardToken          String   @unique
   shopifyCustomerId  String?  @unique
+  storeLocation      String?  // Separate field for store location
   tier               String
   status             String
   cycleStart         DateTime

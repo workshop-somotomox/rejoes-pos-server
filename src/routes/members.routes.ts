@@ -10,7 +10,7 @@ const router = Router();
 // Add member
 router.post('/add', async (req, res, next) => {
   try {
-    const { cardToken, tier = 'BASIC', storeLocation } = req.body;
+    const { cardToken, tier = 'BASIC', storeLocation, shopifyCustomerId } = req.body;
     
     if (!cardToken) {
       return next(new AppError(400, 'cardToken is required'));
@@ -21,7 +21,7 @@ router.post('/add', async (req, res, next) => {
       where: {
         OR: [
           { cardToken },
-          { shopifyCustomerId: cardToken }
+          { shopifyCustomerId: shopifyCustomerId }
         ]
       }
     });
@@ -43,7 +43,8 @@ router.post('/add', async (req, res, next) => {
         itemsUsed: 0,
         swapsUsed: 0,
         itemsOut: 0,
-        shopifyCustomerId: storeLocation || 'Main Store', // Default to Main Store if not provided
+        storeLocation: storeLocation || 'Main Store', // Use separate storeLocation field
+        shopifyCustomerId: shopifyCustomerId || null, // Use separate shopifyCustomerId field
       },
     });
 
@@ -60,7 +61,7 @@ router.post('/add', async (req, res, next) => {
         itemsUsed: member.itemsUsed,
         swapsUsed: member.swapsUsed,
         itemsOut: member.itemsOut,
-        storeLocation: member.shopifyCustomerId || 'Main Store', // Return storeLocation with default
+        storeLocation: member.storeLocation, // Use separate storeLocation field
       }
     });
   } catch (error) {
