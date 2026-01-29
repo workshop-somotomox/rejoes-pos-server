@@ -344,19 +344,14 @@ export async function getActiveLoans(memberId: string): Promise<LoanRecord[]> {
           id: true,
           r2Key: true,
           metadata: true
-        },
-        where: {
-          // Exclude the primary photo by checking loanId is not null (gallery photos have loanId set)
-          loanId: {
-            not: null
-          }
         }
+        // Remove the filter to include all photos (both primary and gallery)
       }
     }
   });
 
   return loans.map((loan: any) => ({
     ...loan,
-    gallery: Array.isArray(loan.loanPhoto) ? loan.loanPhoto : (loan.loanPhoto ? [loan.loanPhoto] : [])
+    gallery: loan.loanPhotos || []
   }));
 }
