@@ -1,7 +1,5 @@
 import { withTransaction, type DbClient } from '../db/client';
 import { AppError } from '../utils/errors';
-import { logEvent } from './audit.service';
-import { updateLoanId } from './loanPhoto.repository';
 import {
   getMemberById,
   resetCountersIfNewCycle,
@@ -9,7 +7,7 @@ import {
   validateSwapAllowance,
 } from './member.service';
 
-import { CheckoutInput, ReturnInput, SwapInput, LoanResponse, type LoanRecord } from '../types/loan.types';
+import { CheckoutInput, ReturnInput, SwapInput, type LoanRecord } from '../types/loan.types';
 import { LoanRepository } from '../repositories/loan.repo';
 import { UploadRepository } from '../repositories/upload.repo';
 
