@@ -20,7 +20,7 @@ const router = Router();
  *         application/json:
  *           schema:
  *             type: object
- *             required: [cardToken, tier, storeLocation]
+ *             required: [cardToken, tier, shopifyCustomerId]
  *             properties:
  *               cardToken:
  *                 type: string
@@ -31,6 +31,9 @@ const router = Router();
  *               storeLocation:
  *                 type: string
  *                 example: "Main Store"
+ *               shopifyCustomerId:
+ *                 type: string
+ *                 example: "gid://shopify/Customer/123"
  *     responses:
  *       201:
  *         description: Member created successfully
@@ -59,11 +62,15 @@ router.post('/add', async (req, res, next) => {
       return next(new AppError(400, 'cardToken is required'));
     }
 
+    if (!shopifyCustomerId || !shopifyCustomerId.trim()) {
+      return next(new AppError(400, 'shopifyCustomerId is required'));
+    }
+
     // Check if member already exists by cardToken or shopifyCustomerId
     const existingMember = await MemberRepository.findByCardOrShopify(cardToken, shopifyCustomerId);
     
     if (existingMember) {
-      return next(new AppError(409, 'Member with this card token or Shopify customer ID already exists'));
+      return next(new AppError(409, 'Member with this cardToken or shopifyCustomerId already exists'));
     }
 
     const now = new Date();
@@ -79,7 +86,7 @@ router.post('/add', async (req, res, next) => {
       swapsUsed: 0,
       itemsOut: 0,
       storeLocation: storeLocation || 'Main Store', // Use separate storeLocation field
-      shopifyCustomerId: shopifyCustomerId || null, // Use separate shopifyCustomerId field
+      shopifyCustomerId: shopifyCustomerId, // Required field
     });
 
     res.json(success({
