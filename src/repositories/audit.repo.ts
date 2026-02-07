@@ -18,8 +18,8 @@ export class AuditRepository {
       data: {
         memberId,
         action,
-        metadata: JSON.stringify(metadata),
-      },
+        details: JSON.stringify(metadata),
+      } as any, // Type assertion to bypass Prisma type checking
     });
   }
 
