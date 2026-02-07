@@ -57,6 +57,6 @@ model AuditEvent {
   member    Member   @relation(fields: [memberId], references: [id])
   memberId  String
   action    String
-  metadata  String   @default("{}")
+  details   String   @default("{}")
   createdAt DateTime @default(now())
 }

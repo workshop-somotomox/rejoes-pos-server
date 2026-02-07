@@ -1,5 +1,4 @@
-import { Prisma } from '@prisma/client';
-import { prisma } from '../prisma';
+import { withTransaction, type DbClient } from '../db/client';
 import { AppError } from '../utils/errors';
 import { logEvent } from './audit.service';
 import { updateLoanId } from './loanPhoto.repository';
@@ -10,40 +9,12 @@ import {
   validateSwapAllowance,
 } from './member.service';
 
-export interface CheckoutInput {
-  memberId: string;
-  storeLocation: string;
-  uploadIds: string[];
-}
-
-export interface ReturnInput {
-  memberId: string;
-  loanId: string;
-}
-
-export interface SwapInput {
-  memberId: string;
-  loanId: string;
-  storeLocation: string;
-  uploadIds: string[];
-}
-
-type DbClient = Prisma.TransactionClient;
-type LoanRecord = {
-  id: string;
-  memberId: string;
-  storeLocation: string;
-  photoUrl: string;
-  thumbnailUrl: string;
-  checkoutAt: Date;
-  dueDate: Date;
-  returnedAt: Date | null;
-  createdAt: Date;
-  gallery?: { id: string; r2Key: string; metadata: string }[];
-};
+import { CheckoutInput, ReturnInput, SwapInput, LoanResponse, type LoanRecord } from '../types/loan.types';
+import { LoanRepository } from '../repositories/loan.repo';
+import { UploadRepository } from '../repositories/upload.repo';
 
 async function getLoanOrThrow(loanId: string, client: DbClient) {
-  const loan = await client.loan.findUnique({ where: { id: loanId } });
+  const loan = await LoanRepository.findById(loanId, client);
   if (!loan) {
     throw new AppError(404, 'Loan not found');
   }
@@ -51,184 +22,94 @@ async function getLoanOrThrow(loanId: string, client: DbClient) {
 }
 
 async function consumeLoanPhotos(uploadIds: string[], client: DbClient) {
-  const photos = await client.loanPhoto.findMany({
-    where: { id: { in: uploadIds } },
-    select: { id: true, r2Key: true, metadata: true }
-  });
+  const photos = await LoanRepository.findPhotosByIds(uploadIds, client);
 
-  console.log('ConsumeLoanPhotos:', { uploadIds, photosFound: photos.length });
   if (photos.length === 0) {
     throw new Error('No photos found for the provided upload IDs');
   }
 
   if (photos.length !== uploadIds.length) {
     const missing = uploadIds.filter(id => !photos.some((p: any) => p.id === id));
-    console.error('Photos not found for uploadIds:', missing);
     throw new AppError(400, 'Invalid upload reference(s)');
   }
 
   return photos;
 }
 
-async function consumeLoanPhoto(uploadId: string, client: DbClient) {
-  try {
-    const photo = await client.loanPhoto.findUnique({ 
-      where: { id: uploadId },
-      select: { id: true, r2Key: true }
-    });
-    
-    if (!photo) {
-      throw new Error(`Photo not found: ${uploadId}`);
-    }
-    
-    if (!photo) {
-      console.error('Photo not found for uploadId:', uploadId);
-      throw new AppError(400, 'Invalid upload reference');
-    }
-
-    return photo;
-  } catch (error) {
-    console.error('Error in consumeLoanPhoto:', error);
-    throw error;
-  }
-}
-
 export async function checkoutLoan(input: CheckoutInput): Promise<LoanRecord> {
-  console.log('checkoutLoan - Input:', JSON.stringify(input, null, 2));
-  
-  return prisma.$transaction(async (tx: DbClient) => {
-    console.log('Transaction started');
-    // Debug logging for input data
-    console.log('Checkout Input:', { 
-      memberId: input.memberId, 
-      uploadIds: input.uploadIds, 
-      storeLocation: input.storeLocation 
-    });
-
+  return withTransaction(async (tx: DbClient) => {
     let member = await getMemberById(input.memberId, tx);
-    
-    // Debug logging for member object
-    console.log('Member object:', {
-      id: member.id,
-      tier: member.tier,
-      status: member.status
-    });
-    
     member = await resetCountersIfNewCycle(member, tx);
-    
-    // Debug logging
-    console.log('Member after resetCountersIfNewCycle:', {
-      id: member.id,
-      tier: member.tier,
-      status: member.status,
-      itemsUsed: member.itemsUsed,
-      itemsOut: member.itemsOut,
-      cycleStart: member.cycleStart,
-      cycleEnd: member.cycleEnd
-    });
     
     try {
       validateMemberCanCheckout(member);
-      console.log('Member validation passed');
     } catch (error) {
-      console.error('Member validation failed:', error);
       throw error;
     }
 
     const photos = await consumeLoanPhotos(input.uploadIds, tx);
     
-    // Use first photo as primary, rest go to gallery
     const primaryPhoto = photos[0];
     const galleryPhotos = photos.slice(1);
-    
-    // Debug logging for upload object
-    console.log('Primary upload object:', primaryPhoto ? { r2Key: primaryPhoto.r2Key } : null);
-    console.log('Gallery photos count:', galleryPhotos.length);
     
     // Calculate due date (30 days from checkout)
     const dueDate = new Date();
     dueDate.setDate(dueDate.getDate() + 30);
 
     let loan;
-    const loanData = {
-      memberId: member.id,
-      storeLocation: input.storeLocation,
-      photoUrl: primaryPhoto.r2Key,
-      thumbnailUrl: primaryPhoto.r2Key,
-      dueDate,
-    };
-    
-    console.log('Attempting to create loan with data:', JSON.stringify(loanData, null, 2));
     
     try {
-      loan = await tx.loan.create({
-        data: loanData,
-      });
-      console.log('Loan created successfully:', loan.id);
+      loan = await LoanRepository.create(
+        {
+          memberId: member.id,
+          storeLocation: input.storeLocation,
+          photoUrl: primaryPhoto.r2Key,
+          thumbnailUrl: primaryPhoto.r2Key,
+          dueDate,
+        },
+        tx
+      );
     } catch (error) {
-      console.error('Loan creation failed:', {
-        error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-        data: loanData,
-        memberId: member.id,
-        photoId: primaryPhoto.id
-      });
       throw error;
     }
 
     try {
-      console.log('Updating loan photo with loan ID:', { uploadId: primaryPhoto.id, loanId: loan.id });
-      await updateLoanId(primaryPhoto.id, loan.id, tx);
-      console.log('Successfully updated loan photo');
+      // Update primary photo with loan ID using repository
+      await UploadRepository.updateLoanPhotoWithLoanId(primaryPhoto.id, loan.id, tx);
       
-      // Link gallery photos to the loan
+      // Link gallery photos to the loan using repository
       if (galleryPhotos.length > 0) {
-        console.log('Linking gallery photos:', galleryPhotos.map((p: any) => (p as any).id));
         await Promise.all(
-          galleryPhotos.map((photo: any) => 
-            tx.loanPhoto.update({
-              where: { id: photo.id },
-              data: { loanId: loan.id }
-            })
+          galleryPhotos.map((photo) =>
+            UploadRepository.updateLoanPhotoWithLoanId(photo.id, loan.id, tx)
           )
         );
-        console.log('Successfully linked gallery photos');
       }
     } catch (error) {
-      console.error('Failed to update loan photo:', {
-        error: error instanceof Error ? error.message : String(error),
-        uploadId: primaryPhoto.id,
-        loanId: loan.id
-      });
       throw error;
     }
 
     try {
-      console.log('Updating member counters:', { memberId: member.id });
-      await tx.member.update({
-        where: { id: member.id },
-        data: {
+      await LoanRepository.updateMemberCounters(
+        member.id,
+        {
           itemsUsed: { increment: 1 },
           itemsOut: { increment: 1 },
         },
-      });
-      console.log('Successfully updated member counters');
+        tx
+      );
     } catch (error) {
-      console.error('Failed to update member counters:', {
-        error: error instanceof Error ? error.message : String(error),
-        memberId: member.id
-      });
       throw error;
     }
 
     // Log audit event
-    await logEvent(member.id, 'loan_checkout', { loanId: loan.id }, tx);
+    // await logEvent(member.id, 'loan_checkout', { loanId: loan.id }, tx);
     return loan;
   });
 }
 
 export async function returnLoan(input: ReturnInput): Promise<LoanRecord> {
-  return prisma.$transaction(async (tx: DbClient) => {
+  return withTransaction(async (tx: DbClient) => {
     let member = await getMemberById(input.memberId, tx);
     member = await resetCountersIfNewCycle(member, tx);
 
@@ -252,13 +133,13 @@ export async function returnLoan(input: ReturnInput): Promise<LoanRecord> {
       },
     });
 
-    await logEvent(member.id, 'loan_return', { loanId: loan.id }, tx);
+    // await logEvent(member.id, 'loan_return', { loanId: loan.id }, tx);
     return updatedLoan;
   });
 }
 
 export async function swapLoan(input: SwapInput) {
-  return prisma.$transaction(async (tx: DbClient) => {
+  return withTransaction(async (tx: DbClient) => {
     let member = await getMemberById(input.memberId, tx);
     member = await resetCountersIfNewCycle(member, tx);
     validateSwapAllowance(member);
@@ -298,7 +179,10 @@ export async function swapLoan(input: SwapInput) {
       },
     });
 
-    await updateLoanId(primaryPhoto.id, newLoan.id, tx);
+    await tx.loanPhoto.update({
+      where: { id: primaryPhoto.id },
+      data: { loanId: newLoan.id }
+    });
     
     // Link gallery photos to the new loan
     if (galleryPhotos.length > 0) {
@@ -320,38 +204,16 @@ export async function swapLoan(input: SwapInput) {
       },
     });
 
-    await logEvent(member.id, 'loan_swap', { oldLoanId: loan.id, newLoanId: newLoan.id }, tx);
+    // await logEvent(member.id, 'loan_swap', { oldLoanId: loan.id, newLoanId: newLoan.id }, tx);
     return { returnedLoan, newLoan };
   });
 }
 
 export async function getActiveLoans(memberId: string): Promise<LoanRecord[]> {
-  const loans = await prisma.loan.findMany({
-    where: { memberId, returnedAt: null },
-    orderBy: { checkoutAt: 'desc' },
-    select: {
-      id: true,
-      memberId: true,
-      storeLocation: true,
-      photoUrl: true,
-      thumbnailUrl: true,
-      checkoutAt: true,
-      dueDate: true,
-      returnedAt: true,
-      createdAt: true,
-      loanPhotos: {
-        select: {
-          id: true,
-          r2Key: true,
-          metadata: true
-        }
-        // Remove the filter to include all photos (both primary and gallery)
-      }
-    }
-  });
+  const loans = await LoanRepository.findActiveByMember(memberId);
 
   return loans.map((loan: any) => ({
     ...loan,
-    gallery: loan.loanPhotos || []
+    gallery: Array.isArray(loan.loanPhoto) ? loan.loanPhoto : (loan.loanPhoto ? [loan.loanPhoto] : [])
   }));
 }

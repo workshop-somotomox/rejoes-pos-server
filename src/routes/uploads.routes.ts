@@ -1,10 +1,12 @@
 import { Router } from 'express';
 import multer from 'multer';
-import { prisma } from '../prisma';
-import { uploadImage, ImageMetadata } from '../services/upload.service';
+import { uploadImage } from '../services/upload.service';
+import { UploadRepository } from '../repositories/upload.repo';
+import { ImageMetadata } from '../types/upload.types';
 import { createLoanPhoto } from '../services/loanPhoto.repository';
 import { logEvent } from '../services/audit.service';
 import { AppError } from '../utils/errors';
+import { success } from '../types/api.types';
 
 const upload = multer({ 
   storage: multer.memoryStorage(),
@@ -16,6 +18,64 @@ const upload = multer({
 const router = Router();
 
 const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+/**
+ * @swagger
+ * /api/uploads/loan-photo:
+ *   post:
+ *     summary: Upload a loan photo
+ *     tags: [Uploads]
+ *     consumes:
+ *       - multipart/form-data
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required: [photo, memberId]
+ *             properties:
+ *               photo:
+ *                 type: string
+ *                 format: binary
+ *                 description: Image file (JPEG, PNG, GIF, WebP, max 5MB)
+ *               memberId:
+ *                 type: string
+ *                 description: Member ID to associate the photo with
+ *                 example: "cm123abc"
+ *     responses:
+ *       201:
+ *         description: Photo uploaded successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     uploadId:
+ *                       type: string
+ *                       example: "upload123"
+ *                     status:
+ *                       type: string
+ *                       example: "success"
+ *       400:
+ *         description: Bad request - missing file, memberId, or invalid file type
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Photo file is required"
+ */
 router.post('/loan-photo', upload.single('photo'), async (req, res, next) => {
   try {
     const { memberId } = req.body;
@@ -44,15 +104,15 @@ router.post('/loan-photo', upload.single('photo'), async (req, res, next) => {
     const r2Key = await uploadImage(req.file.buffer, metadata, memberId, record.id);
 
     // Update record with r2Key and final metadata
-    await prisma.loanPhoto.update({
-      where: { id: record.id },
-      data: { r2Key, metadata: JSON.stringify(metadata) },
+    await UploadRepository.updateLoanPhoto(record.id, {
+      r2Key,
+      metadata: JSON.stringify(metadata),
     });
 
-    return res.status(201).json({
+    return res.status(201).json(success({
       uploadId: record.id,
       status: 'success',
-    });
+    }));
   } catch (error) {
     return next(error);
   }

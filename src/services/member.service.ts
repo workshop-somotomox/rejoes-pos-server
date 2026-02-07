@@ -1,59 +1,19 @@
-import { Prisma } from '@prisma/client';
-import { prisma } from '../prisma';
 import { addMonths } from '../utils/dates';
 import { getTierConfig } from '../utils/tiers';
 import { AppError } from '../utils/errors';
-import { ActiveLoanThumbnail, MemberStatus, MemberTier } from '../types';
-
-type DbClient = Prisma.TransactionClient | typeof prisma;
-type MemberRecord = {
-  id: string;
-  cardToken: string;
-  shopifyCustomerId: string | null;
-  tier: string;
-  status: string;
-  cycleStart: Date;
-  cycleEnd: Date;
-  itemsUsed: number;
-  swapsUsed: number;
-  itemsOut: number;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-type MemberWithLoans = MemberRecord & {
-  loans: ActiveLoanThumbnail[];
-};
-
-function getClient(client?: DbClient) {
-  return client ?? prisma;
-}
+import { ActiveLoanThumbnail, MemberStatus, MemberTier, MemberRecord, MemberWithLoans } from '../types/member.types';
+import { type DbClient } from '../db/client';
+import { MemberRepository } from '../repositories/member.repo';
 
 export async function getMemberByCard(cardToken: string) {
-  const memberWithLoans = await prisma.member.findUnique({
-    where: { cardToken },
-    include: {
-      loans: {
-        where: { returnedAt: null },
-        select: {
-          id: true,
-          thumbnailUrl: true,
-        },
-      },
-    },
-  });
+  const memberWithLoans = await MemberRepository.findByCard(cardToken);
 
   if (!memberWithLoans) {
     throw new AppError(404, 'Member not found');
   }
 
-  const baseMember = memberWithLoans as any;
-  const { loans } = memberWithLoans;
-  const normalizedMember: MemberWithLoans = {
-    ...baseMember,
-    shopifyCustomerId: baseMember.shopifyCustomerId || null,
-    loans,
-  };
+  const normalizedMember = memberWithLoans as MemberWithLoans;
+  const { loans } = normalizedMember;
 
   const allowances = getTierConfig(normalizedMember.tier as MemberTier);
   const activeLoans = loans.map((loan: ActiveLoanThumbnail) => ({
@@ -70,19 +30,15 @@ export async function resetCountersIfNewCycle(member: MemberRecord, client?: DbC
     return member;
   }
 
-  const db = getClient(client);
   const newCycleStart = member.cycleEnd;
   const newCycleEnd = addMonths(newCycleStart, 1);
 
-  const updated = await db.member.update({
-    where: { id: member.id },
-    data: {
-      cycleStart: newCycleStart,
-      cycleEnd: newCycleEnd,
-      itemsUsed: 0,
-      swapsUsed: 0,
-    },
-  });
+  const updated = await MemberRepository.updateCounters(member.id, {
+    cycleStart: newCycleStart,
+    cycleEnd: newCycleEnd,
+    itemsUsed: 0,
+    swapsUsed: 0,
+  }, client);
 
   return updated;
 }
@@ -97,15 +53,6 @@ export function validateMemberActive(member: { status: MemberStatus }) {
 }
 
 export function validateMemberCanCheckout(member: MemberRecord) {
-  console.log('Validating member for checkout:', {
-    id: member.id,
-    tier: member.tier,
-    status: member.status,
-    itemsUsed: member.itemsUsed,
-    swapsUsed: member.swapsUsed,
-    itemsOut: member.itemsOut
-  });
-  
   validateMemberActive({ status: member.status as MemberStatus });
   const allowances = getTierConfig(member.tier as MemberTier);
 
@@ -137,8 +84,7 @@ export function validateSwapAllowance(member: MemberRecord) {
 }
 
 export async function getMemberById(memberId: string, client?: DbClient): Promise<MemberRecord> {
-  const db = getClient(client);
-  const member = await db.member.findUnique({ where: { id: memberId } });
+  const member = await MemberRepository.findById(memberId, client);
   if (!member) {
     throw new AppError(404, 'Member not found');
   }

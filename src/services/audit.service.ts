@@ -1,14 +1,10 @@
 import { Prisma } from '@prisma/client';
-import { prisma } from '../prisma';
+import type { DbClient } from '../db/client';
+import { prisma } from '../db/client';
+import { AuditRepository } from '../repositories/audit.repo';
 
 interface AuditMetadata {
   [key: string]: unknown;
-}
-
-type DbClient = Prisma.TransactionClient | typeof prisma;
-
-function getClient(client?: DbClient) {
-  return client ?? prisma;
 }
 
 export async function logEvent(
@@ -17,12 +13,5 @@ export async function logEvent(
   metadata: AuditMetadata = {},
   client?: DbClient
 ) {
-  const db = getClient(client);
-  await db.auditEvent.create({
-    data: {
-      memberId,
-      action,
-      metadata: JSON.stringify(metadata),
-    },
-  });
+  await AuditRepository.createAuditEvent(memberId, action, metadata, client);
 }

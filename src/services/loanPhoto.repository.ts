@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
-import { prisma } from '../prisma';
-
-type DbClient = Prisma.TransactionClient | typeof prisma;
+import type { DbClient } from '../db/client';
+import { prisma } from '../db/client';
+import { UploadRepository } from '../repositories/upload.repo';
 
 const getClient = (client?: DbClient) => client ?? prisma;
 
@@ -12,20 +12,9 @@ export interface LoanPhotoRecord {
 }
 
 export async function createLoanPhoto(r2Key: string, metadata: object): Promise<LoanPhotoRecord> {
-  const result = await prisma.loanPhoto.create({
-    data: { 
-      r2Key, 
-      metadata: JSON.stringify(metadata) 
-    },
-    select: { id: true, r2Key: true, metadata: true },
-  });
-  return result as LoanPhotoRecord;
+  return await UploadRepository.createLoanPhoto(r2Key, metadata);
 }
 
-export async function updateLoanId(uploadId: string, loanId: string, client?: DbClient): Promise<void> {
-  const db = getClient(client);
-  await db.loanPhoto.update({
-    where: { id: uploadId },
-    data: { loanId },
-  });
+export async function updateLoanId(photoId: string, loanId: string, client?: DbClient): Promise<void> {
+  await UploadRepository.updateLoanPhotoWithLoanId(photoId, loanId, client);
 }

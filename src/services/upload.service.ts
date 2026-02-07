@@ -1,4 +1,5 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { UploadedFile, ImageMetadata } from '../types/upload.types';
 import { config } from '../config';
 
 // Create S3Client only when needed
@@ -11,12 +12,6 @@ function createS3Client() {
       secretAccessKey: config.r2.secretAccessKey,
     },
   });
-}
-
-export interface ImageMetadata {
-  originalName: string;
-  mimeType: string;
-  size: number;
 }
 
 function getFileExtension(mimeType: string): string {

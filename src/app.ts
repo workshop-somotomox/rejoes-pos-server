@@ -3,14 +3,16 @@ import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import path from 'path';
+import swaggerUi from 'swagger-ui-express';
 
 import { config } from './config';
-import { prisma } from './prisma';
+import { prisma } from './db/client';
 import membersRouter from './routes/members.routes';
 import loansRouter from './routes/loans.routes';
 import uploadsRouter from './routes/uploads.routes';
 import { idempotencyMiddleware } from './middlewares/idempotency';
 import { errorHandler } from './middlewares/errorHandler';
+import { specs } from './docs/openapi';
 
 export async function createApp() {
   const app = express();
@@ -37,6 +39,12 @@ export async function createApp() {
   app.use('/api/members', membersRouter);
   app.use('/api/loans', loansRouter);
   app.use('/api/uploads', uploadsRouter);
+
+  // Swagger Documentation
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs, {
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'ReJoEs API Documentation',
+  }));
 
   // CORS endpoint
   app.get('/api/cors-test', (req, res) => {

@@ -4,9 +4,3 @@ export class AppError extends Error {
     this.name = 'AppError';
   }
 }
-
-export function assertCondition(condition: boolean, status: number, message: string) {
-  if (!condition) {
-    throw new AppError(status, message);
-  }
-}

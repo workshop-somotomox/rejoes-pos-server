@@ -1,4 +1,4 @@
-import { MemberTier, TierConfig } from '../types';
+import { MemberTier, TierConfig } from '../types/member.types';
 
 export const tierConfig: Record<MemberTier, TierConfig> = {
   [MemberTier.BASIC]: {
