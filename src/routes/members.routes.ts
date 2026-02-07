@@ -70,7 +70,7 @@ router.post('/add', async (req, res, next) => {
     const existingMember = await MemberRepository.findByCardOrShopify(cardToken, shopifyCustomerId);
     
     if (existingMember) {
-      return next(new AppError(409, 'Member with this cardToken or shopifyCustomerId already exists'));
+      return next(new AppError(409, 'Member with this cardToken or Customer already exists'));
     }
 
     const now = new Date();
