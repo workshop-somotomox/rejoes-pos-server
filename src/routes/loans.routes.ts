@@ -4,6 +4,7 @@ import {
   returnLoan,
   swapLoan,
   getActiveLoans,
+  getReturnedLoans,
 } from '../services/loan.service';
 import { success } from '../types/api.types';
 
@@ -415,6 +416,105 @@ router.get('/active/:memberId', async (req, res, next) => {
     }
 
     const loans = await getActiveLoans(memberId);
+    return res.json(success(loans));
+  } catch (error) {
+    return next(error);
+  }
+});
+
+/**
+ * @swagger
+ * /api/loans/returned/{memberId}:
+ *   get:
+ *     summary: Get returned loans for a member
+ *     tags: [Loans]
+ *     parameters:
+ *       - in: path
+ *         name: memberId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Member ID to get returned loans for
+ *     responses:
+ *       200:
+ *         description: Returned loans retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         example: "loan123"
+ *                       memberId:
+ *                         type: string
+ *                         example: "cm123abc"
+ *                       storeLocation:
+ *                         type: string
+ *                         example: "Main Store"
+ *                       photoUrl:
+ *                         type: string
+ *                         example: "https://example.com/photo1.jpg"
+ *                       thumbnailUrl:
+ *                         type: string
+ *                         example: "https://example.com/thumbnail1.jpg"
+ *                       checkoutAt:
+ *                         type: string
+ *                         format: date-time
+ *                       dueDate:
+ *                         type: string
+ *                         format: date-time
+ *                       returnedAt:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2023-01-15T10:30:00Z"
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *                       gallery:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             id:
+ *                               type: string
+ *                               example: "photo123"
+ *                             r2Key:
+ *                               type: string
+ *                               example: "photos/abc123.jpg"
+ *                             metadata:
+ *                               type: object
+ *                               additionalProperties: true
+ *       400:
+ *         description: Invalid request - missing memberId
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Missing memberId"
+ */
+router.get('/returned/:memberId', async (req, res, next) => {
+  try {
+    const { memberId } = req.params;
+    if (!memberId) {
+      return res.status(400).json({ success: false, message: 'Missing memberId' });
+    }
+
+    const loans = await getReturnedLoans(memberId);
     return res.json(success(loans));
   } catch (error) {
     return next(error);

@@ -130,11 +130,54 @@ This API provides complete functionality for member management, loan tracking, a
       "dueDate": "datetime",
       "returnedAt": null,
       "createdAt": "datetime",
-      "gallery": []
+      "gallery": [
+        {
+          "id": "string",
+          "r2Key": "string",
+          "metadata": "object"
+        }
+      ]
     }
   ]
 }
 ```
+**Notes:** Gallery includes ALL uploaded photos (including primary photo). The first uploaded photo appears as both `photoUrl`/`thumbnailUrl` and in the `gallery` array.
+**Errors:** 400 (missing memberId), 404 (member not found)
+
+### GET /api/loans/returned/:memberId
+**Headers:** None
+**Body:** None
+**Success (200):**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": "string",
+      "memberId": "string",
+      "storeLocation": "string",
+      "photoUrl": "string",
+      "thumbnailUrl": "string",
+      "checkoutAt": "datetime",
+      "dueDate": "datetime",
+      "returnedAt": "datetime",
+      "createdAt": "datetime",
+      "gallery": [
+        {
+          "id": "string",
+          "r2Key": "string",
+          "metadata": "object"
+        }
+      ]
+    }
+  ]
+}
+```
+**Notes:** 
+- Returns all returned loans for the specified member, sorted by `returnedAt` in descending order (most recent first).
+- Gallery includes ALL uploaded photos (including primary photo). The first uploaded photo appears as both `photoUrl`/`thumbnailUrl` and in the `gallery` array.
+- The `returnedAt` field will always have a value since this endpoint only returns returned loans.
+
 **Errors:** 400 (missing memberId), 404 (member not found)
 
 ### POST /api/loans/checkout

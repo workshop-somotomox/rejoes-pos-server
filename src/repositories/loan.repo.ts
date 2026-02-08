@@ -29,6 +29,30 @@ export class LoanRepository {
     });
   }
 
+  // Find returned loans by member
+  static async findReturnedByMember(memberId: string, client?: DbClient) {
+    const db = client || prisma;
+    return await db.loan.findMany({
+      where: { 
+        memberId, 
+        returnedAt: { not: null } 
+      },
+      orderBy: { returnedAt: 'desc' },
+      include: {
+        loanPhotos: {
+          select: {
+            id: true,
+            r2Key: true,
+            metadata: true
+          },
+          orderBy: {
+            createdAt: 'asc'
+          }
+        }
+      },
+    });
+  }
+
   // Create new loan
   static async create(data: {
     memberId: string;

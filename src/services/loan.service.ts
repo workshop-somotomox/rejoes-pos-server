@@ -226,3 +226,15 @@ export async function getActiveLoans(memberId: string): Promise<LoanRecord[]> {
     };
   });
 }
+
+export async function getReturnedLoans(memberId: string): Promise<LoanRecord[]> {
+  const loans = await LoanRepository.findReturnedByMember(memberId);
+
+  return loans.map((loan: any) => ({
+    ...loan,
+    // Include all photos in the gallery
+    gallery: loan.loanPhotos || [],
+    // Remove the loanPhotos array from the response to avoid confusion
+    loanPhotos: undefined
+  }));
+}
