@@ -16,6 +16,12 @@ export interface SwapInput {
   uploadIds: string[];
 }
 
+export interface LoanPhoto {
+  id: string;
+  r2Key: string;
+  metadata: string;
+}
+
 export interface LoanResponse {
   id: string;
   memberId: string;
@@ -39,4 +45,20 @@ export type LoanRecord = {
   returnedAt: Date | null;
   createdAt: Date;
   gallery?: { id: string; r2Key: string; metadata: string }[];
+  // Swap tracking fields
+  swappedAt?: Date | null;
+  swappedFor?: {
+    id: string;
+    photoUrl: string;
+    thumbnailUrl: string;
+    checkoutAt: Date;
+    dueDate: Date;
+  } | null;
+  swappedFrom?: {
+    id: string;
+    photoUrl: string;
+    thumbnailUrl: string;
+    checkoutAt: Date;
+    dueDate: Date;
+  } | null;
 };

@@ -36,11 +36,21 @@ model Loan {
   checkoutAt    DateTime  @default(now())
   dueDate       DateTime  // 30 days from checkout
   returnedAt    DateTime?
-  createdAt     DateTime  @default(now())
+
+  // NEW: swap tracking fields
+  swappedAt     DateTime?   // when this loan was swapped out
+  swappedForId  String?     @unique  // new loan that replaced this one (unique)
+  swappedFor    Loan?       @relation("LoanSwap", fields: [swappedForId], references: [id])
+  swappedFromId String?     @unique  // old loan that this one replaced (unique)
+  swappedFrom   Loan?       @relation("LoanSwap")
+
+  createdAt     DateTime    @default(now())
 
   loanPhotos LoanPhoto[]
 
   @@index([memberId, returnedAt])
+  @@index([swappedForId])
+  @@index([swappedFromId])
 }
 
 model LoanPhoto {

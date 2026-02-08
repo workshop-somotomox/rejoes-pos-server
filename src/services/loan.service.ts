@@ -6,10 +6,9 @@ import {
   validateMemberCanCheckout,
   validateSwapAllowance,
 } from './member.service';
-
-import { CheckoutInput, ReturnInput, SwapInput, type LoanRecord } from '../types/loan.types';
 import { LoanRepository } from '../repositories/loan.repo';
 import { UploadRepository } from '../repositories/upload.repo';
+import { CheckoutInput, ReturnInput, SwapInput, LoanPhoto, type LoanRecord } from '../types/loan.types';
 
 async function getLoanOrThrow(loanId: string, client: DbClient) {
   const loan = await LoanRepository.findById(loanId, client);
@@ -19,7 +18,7 @@ async function getLoanOrThrow(loanId: string, client: DbClient) {
   return loan;
 }
 
-async function consumeLoanPhotos(uploadIds: string[], client: DbClient) {
+async function consumeLoanPhotos(uploadIds: string[], client: DbClient): Promise<LoanPhoto[]> {
   const photos = await LoanRepository.findPhotosByIds(uploadIds, client);
 
   if (photos.length === 0) {
@@ -27,7 +26,7 @@ async function consumeLoanPhotos(uploadIds: string[], client: DbClient) {
   }
 
   if (photos.length !== uploadIds.length) {
-    const missing = uploadIds.filter(id => !photos.some((p: any) => p.id === id));
+    const missing = uploadIds.filter(id => !photos.some((p: LoanPhoto) => p.id === id));
     throw new AppError(400, 'Invalid upload reference(s)');
   }
 
@@ -39,11 +38,7 @@ export async function checkoutLoan(input: CheckoutInput): Promise<LoanRecord> {
     let member = await getMemberById(input.memberId, tx);
     member = await resetCountersIfNewCycle(member, tx);
     
-    try {
-      validateMemberCanCheckout(member);
-    } catch (error) {
-      throw error;
-    }
+    validateMemberCanCheckout(member);
 
     const photos = await consumeLoanPhotos(input.uploadIds, tx);
     
@@ -54,53 +49,38 @@ export async function checkoutLoan(input: CheckoutInput): Promise<LoanRecord> {
     const dueDate = new Date();
     dueDate.setDate(dueDate.getDate() + 30);
 
-    let loan;
+    const loan = await LoanRepository.create(
+      {
+        memberId: member.id,
+        storeLocation: input.storeLocation,
+        photoUrl: primaryPhoto.r2Key,
+        thumbnailUrl: primaryPhoto.r2Key,
+        dueDate,
+      },
+      tx
+    );
+
+    // Update primary photo with loan ID using repository
+    await UploadRepository.updateLoanPhotoWithLoanId(primaryPhoto.id, loan.id, tx);
     
-    try {
-      loan = await LoanRepository.create(
-        {
-          memberId: member.id,
-          storeLocation: input.storeLocation,
-          photoUrl: primaryPhoto.r2Key,
-          thumbnailUrl: primaryPhoto.r2Key,
-          dueDate,
-        },
-        tx
+    // Link gallery photos to the loan using repository
+    if (galleryPhotos.length > 0) {
+      await Promise.all(
+        galleryPhotos.map((photo: LoanPhoto) =>
+          UploadRepository.updateLoanPhotoWithLoanId(photo.id, loan.id, tx)
+        )
       );
-    } catch (error) {
-      throw error;
     }
 
-    try {
-      // Update primary photo with loan ID using repository
-      await UploadRepository.updateLoanPhotoWithLoanId(primaryPhoto.id, loan.id, tx);
-      
-      // Link gallery photos to the loan using repository
-      if (galleryPhotos.length > 0) {
-        await Promise.all(
-          galleryPhotos.map((photo) =>
-            UploadRepository.updateLoanPhotoWithLoanId(photo.id, loan.id, tx)
-          )
-        );
-      }
-    } catch (error) {
-      throw error;
-    }
+    await LoanRepository.updateMemberCounters(
+      member.id,
+      {
+        itemsUsed: { increment: 1 },
+        itemsOut: { increment: 1 },
+      },
+      tx
+    );
 
-    try {
-      await LoanRepository.updateMemberCounters(
-        member.id,
-        {
-          itemsUsed: { increment: 1 },
-          itemsOut: { increment: 1 },
-        },
-        tx
-      );
-    } catch (error) {
-      throw error;
-    }
-
-    // Log audit event
     // await logEvent(member.id, 'loan_checkout', { loanId: loan.id }, tx);
     return loan;
   });
@@ -119,24 +99,26 @@ export async function returnLoan(input: ReturnInput): Promise<LoanRecord> {
       throw new AppError(400, 'Loan already returned');
     }
 
-    const updatedLoan = await tx.loan.update({
-      where: { id: loan.id },
-      data: { returnedAt: new Date() },
-    });
+    const updatedLoan = await LoanRepository.update(
+      loan.id,
+      { returnedAt: new Date() },
+      tx
+    );
 
-    await tx.member.update({
-      where: { id: member.id },
-      data: {
+    await LoanRepository.updateMemberCounters(
+      member.id,
+      {
         itemsOut: { decrement: 1 },
       },
-    });
+      tx
+    );
 
     // await logEvent(member.id, 'loan_return', { loanId: loan.id }, tx);
     return updatedLoan;
   });
 }
 
-export async function swapLoan(input: SwapInput) {
+export async function swapLoan(input: SwapInput): Promise<{ returnedLoan: LoanRecord; newLoan: LoanRecord }> {
   return withTransaction(async (tx: DbClient) => {
     let member = await getMemberById(input.memberId, tx);
     member = await resetCountersIfNewCycle(member, tx);
@@ -151,11 +133,8 @@ export async function swapLoan(input: SwapInput) {
     }
 
     const now = new Date();
-    const returnedLoan = await tx.loan.update({
-      where: { id: loan.id },
-      data: { returnedAt: now },
-    });
-
+    
+    // Create new loan first
     const photos = await consumeLoanPhotos(input.uploadIds, tx);
     
     // Use first photo as primary, rest go to gallery
@@ -166,41 +145,47 @@ export async function swapLoan(input: SwapInput) {
     const dueDate = new Date();
     dueDate.setDate(dueDate.getDate() + 30);
 
-    const newLoan = await tx.loan.create({
-      data: {
-        memberId: member.id,
-        storeLocation: input.storeLocation,
-        photoUrl: primaryPhoto.r2Key,
-        thumbnailUrl: primaryPhoto.r2Key,
-        checkoutAt: now,
-        dueDate,
-      },
-    });
+    const newLoan = await LoanRepository.create({
+      memberId: member.id,
+      storeLocation: input.storeLocation,
+      photoUrl: primaryPhoto.r2Key,
+      thumbnailUrl: primaryPhoto.r2Key,
+      checkoutAt: now,
+      dueDate,
+      swappedFromId: loan.id, // Link to the old loan
+    }, tx);
 
-    await tx.loanPhoto.update({
-      where: { id: primaryPhoto.id },
-      data: { loanId: newLoan.id }
-    });
+    // Now update the old loan with swap information
+    const returnedLoan = await LoanRepository.update(
+      loan.id,
+      { 
+        returnedAt: now,
+        swappedAt: now,        // Mark when it was swapped
+        swappedForId: newLoan.id // Link to the new loan
+      },
+      tx
+    );
+
+    // Update primary photo with loan ID
+    await LoanRepository.updateLoanPhoto(primaryPhoto.id, newLoan.id, tx);
     
     // Link gallery photos to the new loan
     if (galleryPhotos.length > 0) {
       await Promise.all(
-        galleryPhotos.map((photo: any) => 
-          tx.loanPhoto.update({
-            where: { id: photo.id },
-            data: { loanId: newLoan.id }
-          })
+        galleryPhotos.map((photo: LoanPhoto) => 
+          LoanRepository.updateLoanPhoto(photo.id, newLoan.id, tx)
         )
       );
     }
 
-    await tx.member.update({
-      where: { id: member.id },
-      data: {
+    await LoanRepository.updateMemberCounters(
+      member.id,
+      {
         swapsUsed: { increment: 1 },
         itemsUsed: { increment: 1 },
       },
-    });
+      tx
+    );
 
     // await logEvent(member.id, 'loan_swap', { oldLoanId: loan.id, newLoanId: newLoan.id }, tx);
     return { returnedLoan, newLoan };
@@ -222,7 +207,11 @@ export async function getActiveLoans(memberId: string): Promise<LoanRecord[]> {
       ...loan,
       gallery,
       // Remove the loanPhotos array from the response to avoid confusion
-      loanPhotos: undefined
+      loanPhotos: undefined,
+      // Include swap relationships if they exist
+      swappedAt: loan.swappedAt || null,
+      swappedFor: loan.swappedFor || null,
+      swappedFrom: loan.swappedFrom || null,
     };
   });
 }
@@ -235,6 +224,10 @@ export async function getReturnedLoans(memberId: string): Promise<LoanRecord[]> 
     // Include all photos in the gallery
     gallery: loan.loanPhotos || [],
     // Remove the loanPhotos array from the response to avoid confusion
-    loanPhotos: undefined
+    loanPhotos: undefined,
+    // Include swap relationships
+    swappedAt: loan.swappedAt || null,
+    swappedFor: loan.swappedFor || null,
+    swappedFrom: loan.swappedFrom || null,
   }));
 }
