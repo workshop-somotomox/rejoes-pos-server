@@ -23,7 +23,7 @@ async function consumeLoanPhotos(uploadIds: string[], client: DbClient) {
   const photos = await LoanRepository.findPhotosByIds(uploadIds, client);
 
   if (photos.length === 0) {
-    throw new Error('No photos found for the provided upload IDs');
+    throw new AppError(400, 'No photos found for the provided upload IDs');
   }
 
   if (photos.length !== uploadIds.length) {
