@@ -45,6 +45,43 @@ async function sendJson(test: string, url: string, options: RequestInit): Promis
   }
 }
 
+async function uploadPhotos(test: string, memberId: string, count = 1): Promise<string[]> {
+  const form = new FormData();
+  form.append('memberId', memberId);
+  
+  // Add multiple photos
+  for (let i = 0; i < count; i++) {
+    form.append('photos', new Blob([tinyPng], { type: 'image/png' }), `photo-${i + 1}.png`);
+  }
+  
+  try {
+    const res = await fetch(`${API_BASE}/api/uploads/loan-photos`, {
+      method: 'POST',
+      body: form,
+    });
+    const text = await res.text();
+    let body: unknown = text;
+    try {
+      body = text ? JSON.parse(text) : text;
+    } catch {
+      // ignore
+    }
+    
+    const isSuccess = res.ok && (body as any)?.success === true;
+    await recordResult(test, res.status, isSuccess, body);
+    
+    const uploadIds = (body as any)?.data?.uploadIds;
+    if (!uploadIds || !Array.isArray(uploadIds) || uploadIds.length === 0) {
+      throw new Error('No uploadIds in response');
+    }
+    return uploadIds;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    await recordResult(test, 0, false, undefined, message);
+    throw error;
+  }
+}
+
 async function uploadPhoto(test: string, memberId: string, filename = 'photo.png'): Promise<string> {
   const form = new FormData();
   form.append('memberId', memberId);
@@ -88,7 +125,8 @@ async function testCreateMember(): Promise<{ memberId: string; cardToken: string
     body: JSON.stringify({
       cardToken,
       tier: 'PREMIUM',
-      storeLocation: 'E2E Test Store'
+      storeLocation: 'E2E Test Store',
+      shopifyCustomerId: `gid://shopify/Customer/E2E_${Date.now()}`
     }),
   });
   
@@ -112,8 +150,28 @@ async function testUploadPhoto(memberId: string): Promise<string> {
   return uploadId;
 }
 
-async function testCheckoutLoan(memberId: string, uploadId: string): Promise<string> {
+async function testBulkUploadPhotos(memberId: string, count = 3): Promise<string[]> {
+  console.log(`\n🧪 Testing bulk upload of ${count} photos...`);
+  
+  try {
+    const uploadIds = await uploadPhotos(`Upload ${count} loan photos at once`, memberId, count);
+    return uploadIds;
+  } catch (error) {
+    // If bulk upload is not available (404), fall back to individual uploads
+    console.log('⚠️ Bulk upload not available, falling back to individual uploads...');
+    const uploadIds: string[] = [];
+    for (let i = 0; i < count; i++) {
+      const id = await uploadPhoto(`Upload photo ${i + 1} individually`, memberId, `photo-${i + 1}.png`);
+      uploadIds.push(id);
+    }
+    return uploadIds;
+  }
+}
+
+async function testCheckoutLoan(memberId: string, uploadIds: string | string[]): Promise<string> {
   console.log('\n🧪 Testing loan checkout...');
+  
+  const ids = Array.isArray(uploadIds) ? uploadIds : [uploadIds];
   
   const { body } = await sendJson('Checkout loan', `${API_BASE}/api/loans/checkout`, {
     method: 'POST',
@@ -121,7 +179,7 @@ async function testCheckoutLoan(memberId: string, uploadId: string): Promise<str
     body: JSON.stringify({
       memberId,
       storeLocation: 'E2E Store',
-      uploadIds: [uploadId],
+      uploadIds: ids,
     }),
   });
   
@@ -199,23 +257,28 @@ async function runAllTests() {
     // 1. Create a test member
     const { memberId, cardToken } = await testCreateMember();
     
-    // 2. Upload photo and checkout loan
+    // 2. Test single photo upload and checkout
     const uploadId = await testUploadPhoto(memberId);
     const loanId = await testCheckoutLoan(memberId, uploadId);
     
-    // 3. Get active loans
+    // 3. Test bulk upload with multiple photos
+    const bulkUploadIds = await testBulkUploadPhotos(memberId, 5);
+    const bulkLoanId = await testCheckoutLoan(memberId, bulkUploadIds);
+    
+    // 4. Get active loans
     await testGetActiveLoans(memberId);
     
-    // 4. Return the loan
+    // 5. Return the loans
     await testReturnLoan(memberId, loanId);
+    await testReturnLoan(memberId, bulkLoanId);
     
-    // 5. Test swap flow (creates its own photos internally)
+    // 6. Test swap flow (creates its own photos internally)
     const newLoanId = await testSwapLoan(memberId);
     
-    // 6. Verify photo linking (indirectly through swap success)
+    // 7. Verify photo linking (indirectly through swap success)
     await testLoanPhotoLinking();
     
-    // 7. Final member check
+    // 8. Final member check
     await sendJson('Final member check', `${API_BASE}/api/members/by-card/${cardToken}`, {
       method: 'GET',
     });

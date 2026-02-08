@@ -93,6 +93,23 @@ This API provides complete functionality for member management, loan tracking, a
 ```
 **Errors:** 400 (no file), 500 (upload failed)
 
+### POST /api/uploads/loan-photos
+**Headers:** Content-Type: multipart/form-data
+**Body:** FormData with array of files and memberId
+**Success (201):**
+```json
+{
+  "success": true,
+  "data": {
+    "uploadIds": ["string"],
+    "count": "number",
+    "status": "success"
+  }
+}
+```
+**Errors:** 400 (no files or invalid file types), 500 (upload failed)
+**Limits:** Max 10 files, 5MB per file, supports JPEG, PNG, GIF, WebP
+
 ## Loans
 
 ### GET /api/loans/active/:memberId
@@ -268,10 +285,31 @@ POST /api/loans/swap
 ```
 
 ### Image Upload Process
-1. Upload each image individually via `/api/uploads/loan-photo` to get `uploadId`s
+1. Upload images individually via `/api/uploads/loan-photo` OR upload multiple at once via `/api/uploads/loan-photos` to get `uploadId`s
 2. Pass array of `uploadId`s to loan checkout/swap endpoints
 3. First image becomes primary, others become gallery
 4. Gallery images are linked to the loan and returned in API responses
+
+### Bulk Upload Example
+```bash
+# Upload multiple images at once (faster)
+POST /api/uploads/loan-photos
+Content-Type: multipart/form-data
+
+FormData:
+- memberId: "cmksj0jgt0000927ynggbykyl"
+- photos: [file1.jpg, file2.jpg, file3.jpg]
+
+Response:
+{
+  "success": true,
+  "data": {
+    "uploadIds": ["upload1-id", "upload2-id", "upload3-id"],
+    "count": 3,
+    "status": "success"
+  }
+}
+```
 
 ## Response Format
 
