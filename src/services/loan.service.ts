@@ -210,8 +210,19 @@ export async function swapLoan(input: SwapInput) {
 export async function getActiveLoans(memberId: string): Promise<LoanRecord[]> {
   const loans = await LoanRepository.findActiveByMember(memberId);
 
-  return loans.map((loan: any) => ({
-    ...loan,
-    gallery: Array.isArray(loan.loanPhoto) ? loan.loanPhoto : (loan.loanPhoto ? [loan.loanPhoto] : [])
-  }));
+  return loans.map((loan: any) => {
+    // The primary photo is the first one (based on photoUrl match)
+    const primaryPhotoR2Key = loan.photoUrl;
+    const allPhotos = loan.loanPhotos || [];
+    
+    // Gallery includes ALL photos (including primary)
+    const gallery = allPhotos;
+    
+    return {
+      ...loan,
+      gallery,
+      // Remove the loanPhotos array from the response to avoid confusion
+      loanPhotos: undefined
+    };
+  });
 }

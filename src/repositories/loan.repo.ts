@@ -14,16 +14,17 @@ export class LoanRepository {
     return await db.loan.findMany({
       where: { memberId, returnedAt: null },
       orderBy: { checkoutAt: 'desc' },
-      select: {
-        id: true,
-        memberId: true,
-        storeLocation: true,
-        checkoutAt: true,
-        dueDate: true,
-        returnedAt: true,
-        photoUrl: true,
-        thumbnailUrl: true,
-        createdAt: true,
+      include: {
+        loanPhotos: {
+          select: {
+            id: true,
+            r2Key: true,
+            metadata: true
+          },
+          orderBy: {
+            createdAt: 'asc'
+          }
+        }
       },
     });
   }
