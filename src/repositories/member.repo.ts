@@ -8,6 +8,15 @@ export class MemberRepository {
     // console.log("DEBUG MemberRepository.findByCard called with:", cardToken);
     const result = await db.member.findUnique({
       where: { cardToken },
+      include: {
+        loans: {
+          where: { returnedAt: null },
+          select: {
+            id: true,
+            thumbnailUrl: true,
+          },
+        },
+      },
     });
     // console.log("DEBUG MemberRepository.findByCard result:", result && {
     //   id: result.id,
