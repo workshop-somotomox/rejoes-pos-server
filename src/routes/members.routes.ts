@@ -59,6 +59,8 @@ router.post('/add', async (req, res, next) => {
   try {
     let { cardToken, tier = 'BASIC', storeLocation, shopifyCustomerId } = req.body;
 
+    console.log("RUNNING..1", req.body);
+
     // Accept both numbers and strings, convert to string, then trim.
     // Do NOT auto-generate any token.
     if (cardToken !== undefined && cardToken !== null) {
@@ -66,6 +68,10 @@ router.post('/add', async (req, res, next) => {
     } else {
       cardToken = '';
     }
+    
+    // Right after reading and normalizing from req.body
+    console.log("DEBUG /api/members/add incoming body:", req.body);
+    console.log("DEBUG /api/members/add normalized cardToken:", cardToken);
     
     // Validation should be:
     if (!cardToken) {
@@ -76,17 +82,16 @@ router.post('/add', async (req, res, next) => {
       return next(new AppError(400, 'shopifyCustomerId is required'));
     }
 
-    // Check if member already exists by cardToken or shopifyCustomerId
-    const existingMember = await MemberRepository.findByCardOrShopify(cardToken, shopifyCustomerId.trim());
+    // Check if member already exists by cardToken (one card = one member)
+    const existingByCard = await MemberRepository.findByCard(cardToken);
+    console.log("DEBUG /api/members/add duplicate check:", {
+      cardToken,
+      existingByCard,
+    });
     
-    if (existingMember) {
-      if (existingMember.cardToken === cardToken) {
-        return next(new AppError(400, 'This card number is already in use'));
-      }
-      if (existingMember.shopifyCustomerId === shopifyCustomerId.trim()) {
-        return next(new AppError(400, 'This Shopify customer is already registered'));
-      }
-      return next(new AppError(409, 'Member with this cardToken or Customer already exists'));
+    if (existingByCard) {
+      console.log("DEBUG /api/members/add duplicate branch taken");
+      return next(new AppError(400, 'This card number is already in use'));
     }
 
     const now = new Date();

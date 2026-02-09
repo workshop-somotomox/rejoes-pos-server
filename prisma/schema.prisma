@@ -10,7 +10,7 @@ generator client {
 model Member {
   id                 String   @id @default(cuid())
   cardToken          String   @unique
-  shopifyCustomerId  String?  @unique
+  shopifyCustomerId  String?
   storeLocation      String?  // Separate field for store location
   tier               String
   status             String
