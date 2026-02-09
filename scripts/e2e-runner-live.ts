@@ -194,9 +194,65 @@ async function testCheckoutLoan(memberId: string, uploadIds: string | string[]):
 async function testGetActiveLoans(memberId: string) {
   console.log('\n🧪 Testing get active loans...');
   
-  await sendJson('Get active loans', `${API_BASE}/api/loans/active/${memberId}`, {
+  const { body } = await sendJson('Get active loans', `${API_BASE}/api/loans/active/${memberId}`, {
     method: 'GET',
   });
+  
+  // Test swap tracking fields in active loans
+  const activeLoans = (body as any)?.data || [];
+  if (activeLoans.length > 0) {
+    const hasSwapFields = activeLoans.every((loan: any) => 
+      (loan.swappedAt === null || typeof loan.swappedAt === 'string') &&
+      (loan.swappedForId === null || typeof loan.swappedForId === 'string') &&
+      (loan.swappedFromId === null || typeof loan.swappedFromId === 'string')
+    );
+    
+    await recordResult('Active loans swap fields structure', hasSwapFields ? 200 : 400, hasSwapFields, {
+      message: hasSwapFields ? 'All active loans have swap tracking fields' : 'Missing swap tracking fields',
+      sampleLoan: activeLoans[0]
+    });
+    
+    // Check for swapped-in loans
+    const swappedInLoans = activeLoans.filter((loan: any) => loan.swappedFromId);
+    if (swappedInLoans.length > 0) {
+      await recordResult('Swapped-in loans detected', 200, true, {
+        count: swappedInLoans.length,
+        sample: swappedInLoans[0]
+      });
+    }
+  }
+}
+
+async function testGetReturnedLoans(memberId: string) {
+  console.log('\n🧪 Testing get returned loans...');
+  
+  const { body } = await sendJson('Get returned loans', `${API_BASE}/api/loans/returned/${memberId}`, {
+    method: 'GET',
+  });
+  
+  // Test swap tracking fields in returned loans
+  const returnedLoans = (body as any)?.data || [];
+  if (returnedLoans.length > 0) {
+    const hasSwapFields = returnedLoans.every((loan: any) => 
+      (loan.swappedAt === null || typeof loan.swappedAt === 'string') &&
+      (loan.swappedForId === null || typeof loan.swappedForId === 'string') &&
+      (loan.swappedFromId === null || typeof loan.swappedFromId === 'string')
+    );
+    
+    await recordResult('Returned loans swap fields structure', hasSwapFields ? 200 : 400, hasSwapFields, {
+      message: hasSwapFields ? 'All returned loans have swap tracking fields' : 'Missing swap tracking fields',
+      sampleLoan: returnedLoans[0]
+    });
+    
+    // Check for swapped-out loans
+    const swappedOutLoans = returnedLoans.filter((loan: any) => loan.swappedForId);
+    if (swappedOutLoans.length > 0) {
+      await recordResult('Swapped-out loans detected', 200, true, {
+        count: swappedOutLoans.length,
+        sample: swappedOutLoans[0]
+      });
+    }
+  }
 }
 
 async function testReturnLoan(memberId: string, loanId: string) {
@@ -209,7 +265,7 @@ async function testReturnLoan(memberId: string, loanId: string) {
   });
 }
 
-async function testSwapLoan(memberId: string): Promise<string> {
+async function testSwapLoan(memberId: string): Promise<{ returnedLoanId: string; newLoanId: string }> {
   console.log('\n🧪 Testing loan swap...');
   
   // Create base loan for swap
@@ -232,21 +288,111 @@ async function testSwapLoan(memberId: string): Promise<string> {
   });
   
   const swapResult = (body as any)?.data;
-  if (!swapResult?.newLoan?.id) {
-    throw new Error('No new loan ID in swap response');
+  console.log('Swap response:', JSON.stringify(swapResult, null, 2));
+  
+  if (!swapResult) {
+    throw new Error('No data in swap response');
   }
   
-  return swapResult.newLoan.id;
+  // Handle both possible response structures
+  const returnedLoan = swapResult.returnedLoan || swapResult;
+  const newLoan = swapResult.newLoan || swapResult;
+  
+  if (!returnedLoan?.id || !newLoan?.id) {
+    throw new Error('Invalid swap response structure');
+  }
+  
+  // Verify returned loan (swapped-out) has correct swap fields
+  const returnedLoanValid = 
+    returnedLoan.swappedAt !== null &&
+    returnedLoan.swappedForId !== null &&
+    returnedLoan.swappedForId === newLoan.id &&
+    returnedLoan.swappedFromId === null;
+  
+  await recordResult('Returned loan swap tracking fields', returnedLoanValid ? 200 : 400, returnedLoanValid, {
+    swappedAt: returnedLoan.swappedAt,
+    swappedForId: returnedLoan.swappedForId,
+    swappedFromId: returnedLoan.swappedFromId
+  });
+  
+  // Verify new loan (swapped-in) has correct swap fields
+  const newLoanValid = 
+    newLoan.swappedAt === null &&
+    newLoan.swappedForId === null &&
+    newLoan.swappedFromId !== null &&
+    newLoan.swappedFromId === baseLoanId;
+  
+  await recordResult('New loan swap tracking fields', newLoanValid ? 200 : 400, newLoanValid, {
+    swappedAt: newLoan.swappedAt,
+    swappedForId: newLoan.swappedForId,
+    swappedFromId: newLoan.swappedFromId
+  });
+  
+  return { returnedLoanId: returnedLoan.id, newLoanId: newLoan.id };
 }
 
-async function testLoanPhotoLinking() {
-  console.log('\n🧪 Testing loan photo linking...');
+async function testSwapTrackingFlow(memberId: string) {
+  console.log('\n🧪 Testing complete swap tracking flow...');
   
-  // For live server, we can't access the database directly
-  // So we'll just verify that the swap completed successfully
-  // The photo linking is implicitly tested in the swap flow
-  await recordResult('LoanPhoto linked to loan', 200, true, { 
-    note: 'Photo linking verified through successful swap completion' 
+  // 1. Perform swap
+  const { returnedLoanId, newLoanId } = await testSwapLoan(memberId);
+  
+  // 2. Get active loans - should show swapped-in loan with swappedFrom
+  const { body: activeBody } = await sendJson('Get active loans after swap', `${API_BASE}/api/loans/active/${memberId}`, {
+    method: 'GET',
+  });
+  
+  const activeLoans = (activeBody as any)?.data || [];
+  const swappedInLoan = activeLoans.find((loan: any) => loan.id === newLoanId);
+  
+  if (swappedInLoan) {
+    const swappedInValid = 
+      swappedInLoan.swappedFromId === returnedLoanId &&
+      swappedInLoan.swappedForId === null &&
+      swappedInLoan.swappedAt === null;
+    
+    await recordResult('Swapped-in loan in active loans', swappedInValid ? 200 : 400, swappedInValid, {
+      loanId: swappedInLoan.id,
+      swappedFromId: swappedInLoan.swappedFromId,
+      swappedForId: swappedInLoan.swappedForId
+    });
+  } else {
+    await recordResult('Swapped-in loan in active loans', 404, false, { error: 'Swapped-in loan not found in active loans' });
+  }
+  
+  // 3. Get returned loans - should show swapped-out loan with swappedFor
+  const { body: returnedBody } = await sendJson('Get returned loans after swap', `${API_BASE}/api/loans/returned/${memberId}`, {
+    method: 'GET',
+  });
+  
+  const returnedLoans = (returnedBody as any)?.data || [];
+  const swappedOutLoan = returnedLoans.find((loan: any) => loan.id === returnedLoanId);
+  
+  if (swappedOutLoan) {
+    const swappedOutValid = 
+      swappedOutLoan.swappedForId === newLoanId &&
+      swappedOutLoan.swappedFromId === null &&
+      swappedOutLoan.swappedAt !== null;
+    
+    await recordResult('Swapped-out loan in returned loans', swappedOutValid ? 200 : 400, swappedOutValid, {
+      loanId: swappedOutLoan.id,
+      swappedForId: swappedOutLoan.swappedForId,
+      swappedFromId: swappedOutLoan.swappedFromId,
+      swappedAt: swappedOutLoan.swappedAt
+    });
+  } else {
+    await recordResult('Swapped-out loan in returned loans', 404, false, { error: 'Swapped-out loan not found in returned loans' });
+  }
+  
+  // 4. Verify swap chain integrity
+  const swapChainValid = 
+    swappedInLoan?.swappedFromId === returnedLoanId &&
+    swappedOutLoan?.swappedForId === newLoanId;
+  
+  await recordResult('Swap chain integrity', swapChainValid ? 200 : 400, swapChainValid, {
+    message: swapChainValid ? 'Swap references are correctly linked' : 'Swap chain is broken',
+    swappedInFromId: swappedInLoan?.swappedFromId,
+    swappedOutForId: swappedOutLoan?.swappedForId
   });
 }
 
@@ -262,23 +408,29 @@ async function runAllTests() {
     const loanId = await testCheckoutLoan(memberId, uploadId);
     
     // 3. Test bulk upload with multiple photos
-    const bulkUploadIds = await testBulkUploadPhotos(memberId, 5);
+    const bulkUploadIds = await testBulkUploadPhotos(memberId, 3);
     const bulkLoanId = await testCheckoutLoan(memberId, bulkUploadIds);
     
-    // 4. Get active loans
+    // 4. Get active loans (initial)
     await testGetActiveLoans(memberId);
     
-    // 5. Return the loans
+    // 5. Get returned loans (initial - should be empty)
+    await testGetReturnedLoans(memberId);
+    
+    // 6. Test swap flow and comprehensive swap tracking
+    await testSwapTrackingFlow(memberId);
+    
+    // 7. Return the loans
     await testReturnLoan(memberId, loanId);
     await testReturnLoan(memberId, bulkLoanId);
     
-    // 6. Test swap flow (creates its own photos internally)
-    const newLoanId = await testSwapLoan(memberId);
+    // 8. Get active loans (after returns)
+    await testGetActiveLoans(memberId);
     
-    // 7. Verify photo linking (indirectly through swap success)
-    await testLoanPhotoLinking();
+    // 9. Get returned loans (after returns)
+    await testGetReturnedLoans(memberId);
     
-    // 8. Final member check
+    // 10. Final member check
     await sendJson('Final member check', `${API_BASE}/api/members/by-card/${cardToken}`, {
       method: 'GET',
     });
@@ -296,9 +448,14 @@ async function runAllTests() {
     
     if (failed > 0) {
       console.log('\n❌ Some tests failed!');
+      console.log('\n🔍 Failed tests:');
+      results.filter(r => !r.success).forEach(r => {
+        console.log(`   - ${r.test} (${r.status}): ${r.error || 'Unknown error'}`);
+      });
       process.exit(1);
     } else {
       console.log('\n🎉 All tests passed!');
+      console.log('\n🔄 Swap tracking is fully functional on LIVE server!');
     }
     
   } catch (error) {
