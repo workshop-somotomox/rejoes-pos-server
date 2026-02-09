@@ -5,15 +5,15 @@ export class MemberRepository {
   // Find member by card token
   static async findByCard(cardToken: string, client?: DbClient) {
     const db = client || prisma;
-    console.log("DEBUG MemberRepository.findByCard called with:", cardToken);
+    // console.log("DEBUG MemberRepository.findByCard called with:", cardToken);
     const result = await db.member.findUnique({
       where: { cardToken },
     });
-    console.log("DEBUG MemberRepository.findByCard result:", result && {
-      id: result.id,
-      cardToken: result.cardToken,
-      shopifyCustomerId: result.shopifyCustomerId,
-    });
+    // console.log("DEBUG MemberRepository.findByCard result:", result && {
+    //   id: result.id,
+    //   cardToken: result.cardToken,
+    //   shopifyCustomerId: result.shopifyCustomerId,
+    // });
     return result;
   }
 

@@ -59,7 +59,7 @@ router.post('/add', async (req, res, next) => {
   try {
     let { cardToken, tier = 'BASIC', storeLocation, shopifyCustomerId } = req.body;
 
-    console.log("RUNNING..1", req.body);
+    // console.log("RUNNING..1", req.body);
 
     // Accept both numbers and strings, convert to string, then trim.
     // Do NOT auto-generate any token.
@@ -70,8 +70,8 @@ router.post('/add', async (req, res, next) => {
     }
     
     // Right after reading and normalizing from req.body
-    console.log("DEBUG /api/members/add incoming body:", req.body);
-    console.log("DEBUG /api/members/add normalized cardToken:", cardToken);
+    // console.log("DEBUG /api/members/add incoming body:", req.body);
+    // console.log("DEBUG /api/members/add normalized cardToken:", cardToken);
     
     // Validation should be:
     if (!cardToken) {
@@ -84,13 +84,13 @@ router.post('/add', async (req, res, next) => {
 
     // Check if member already exists by cardToken (one card = one member)
     const existingByCard = await MemberRepository.findByCard(cardToken);
-    console.log("DEBUG /api/members/add duplicate check:", {
-      cardToken,
-      existingByCard,
-    });
+    // console.log("DEBUG /api/members/add duplicate check:", {
+    //   cardToken,
+    //   existingByCard,
+    // });
     
     if (existingByCard) {
-      console.log("DEBUG /api/members/add duplicate branch taken");
+      // console.log("DEBUG /api/members/add duplicate branch taken");
       return next(new AppError(400, 'This card number is already in use'));
     }
 
