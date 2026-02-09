@@ -9,13 +9,13 @@
         "data": {
           "message": "Member created successfully",
           "member": {
-            "id": "cmldskt250000mp0qn00ihejo",
-            "cardToken": "E2E_MEMBER_1770558095890",
-            "shopifyCustomerId": "gid://shopify/Customer/E2E_1770558095891",
+            "id": "cmlfb4j6n0006mh0q3o80vd47",
+            "cardToken": "E2E_MEMBER_1770649716379",
+            "shopifyCustomerId": "gid://shopify/Customer/E2E_1770649716380",
             "tier": "PREMIUM",
             "status": "ACTIVE",
-            "cycleStart": "2026-02-08T13:41:39.484Z",
-            "cycleEnd": "2026-03-08T13:41:39.484Z",
+            "cycleStart": "2026-02-09T15:08:39.071Z",
+            "cycleEnd": "2026-03-09T15:08:39.071Z",
             "itemsUsed": 0,
             "swapsUsed": 0,
             "itemsOut": 0,
@@ -32,19 +32,19 @@
         "success": true,
         "data": {
           "member": {
-            "id": "cmldskt250000mp0qn00ihejo",
-            "cardToken": "E2E_MEMBER_1770558095890",
-            "shopifyCustomerId": "gid://shopify/Customer/E2E_1770558095891",
+            "id": "cmlfb4j6n0006mh0q3o80vd47",
+            "cardToken": "E2E_MEMBER_1770649716379",
+            "shopifyCustomerId": "gid://shopify/Customer/E2E_1770649716380",
             "storeLocation": "E2E Test Store",
             "tier": "PREMIUM",
             "status": "ACTIVE",
-            "cycleStart": "2026-02-08T13:41:39.484Z",
-            "cycleEnd": "2026-03-08T13:41:39.484Z",
+            "cycleStart": "2026-02-09T15:08:39.071Z",
+            "cycleEnd": "2026-03-09T15:08:39.071Z",
             "itemsUsed": 0,
             "swapsUsed": 0,
             "itemsOut": 0,
-            "createdAt": "2026-02-08T13:41:39.485Z",
-            "updatedAt": "2026-02-08T13:41:39.485Z",
+            "createdAt": "2026-02-09T15:08:39.071Z",
+            "updatedAt": "2026-02-09T15:08:39.071Z",
             "loans": []
           },
           "allowances": {
@@ -63,7 +63,7 @@
       "payload": {
         "success": true,
         "data": {
-          "uploadId": "cmldskv190001mp0qplsyaiu0",
+          "uploadId": "cmlfb4jml0007mh0q0ofn2ahk",
           "status": "success"
         }
       }
@@ -75,18 +75,18 @@
       "payload": {
         "success": true,
         "data": {
-          "id": "cmldskxdc0003mp0qpb3tqs4n",
-          "memberId": "cmldskt250000mp0qn00ihejo",
+          "id": "cmlfb4kbd0009mh0qg1f3ae60",
+          "memberId": "cmlfb4j6n0006mh0q3o80vd47",
           "storeLocation": "E2E Store",
-          "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldskv190001mp0qplsyaiu0.png",
-          "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldskv190001mp0qplsyaiu0.png",
-          "checkoutAt": "2026-02-08T13:41:45.073Z",
-          "dueDate": "2026-03-10T13:41:45.071Z",
+          "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4jml0007mh0q0ofn2ahk.png",
+          "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4jml0007mh0q0ofn2ahk.png",
+          "checkoutAt": "2026-02-09T15:08:40.537Z",
+          "dueDate": "2026-03-11T15:08:40.536Z",
           "returnedAt": null,
           "swappedAt": null,
           "swappedForId": null,
           "swappedFromId": null,
-          "createdAt": "2026-02-08T13:41:45.073Z"
+          "createdAt": "2026-02-09T15:08:40.537Z"
         }
       }
     },
@@ -98,9 +98,9 @@
         "success": true,
         "data": {
           "uploadIds": [
-            "cmldskyvh0005mp0qciq9t6m6",
-            "cmldskyvk0006mp0qnximp8h3",
-            "cmldsky9r0004mp0qjilc4x5m"
+            "cmlfb4khw000amh0q91xpx0pb",
+            "cmlfb4kkm000bmh0q3i6yjkt2",
+            "cmlfb4kkp000cmh0q91zi4oif"
           ],
           "count": 3,
           "status": "success"
@@ -114,18 +114,18 @@
       "payload": {
         "success": true,
         "data": {
-          "id": "cmldsl14z0008mp0q9dkuhtzr",
-          "memberId": "cmldskt250000mp0qn00ihejo",
+          "id": "cmlfb4l8r000emh0qa5xiv3ex",
+          "memberId": "cmlfb4j6n0006mh0q3o80vd47",
           "storeLocation": "E2E Store",
-          "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-          "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-          "checkoutAt": "2026-02-08T13:41:49.955Z",
-          "dueDate": "2026-03-10T13:41:49.954Z",
+          "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
+          "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
+          "checkoutAt": "2026-02-09T15:08:41.739Z",
+          "dueDate": "2026-03-11T15:08:41.738Z",
           "returnedAt": null,
           "swappedAt": null,
           "swappedForId": null,
           "swappedFromId": null,
-          "createdAt": "2026-02-08T13:41:49.955Z"
+          "createdAt": "2026-02-09T15:08:41.739Z"
         }
       }
     },
@@ -137,57 +137,57 @@
         "success": true,
         "data": [
           {
-            "id": "cmldsl14z0008mp0q9dkuhtzr",
-            "memberId": "cmldskt250000mp0qn00ihejo",
+            "id": "cmlfb4l8r000emh0qa5xiv3ex",
+            "memberId": "cmlfb4j6n0006mh0q3o80vd47",
             "storeLocation": "E2E Store",
-            "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-            "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-            "checkoutAt": "2026-02-08T13:41:49.955Z",
-            "dueDate": "2026-03-10T13:41:49.954Z",
+            "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
+            "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
+            "checkoutAt": "2026-02-09T15:08:41.739Z",
+            "dueDate": "2026-03-11T15:08:41.738Z",
             "returnedAt": null,
             "swappedAt": null,
             "swappedForId": null,
             "swappedFromId": null,
-            "createdAt": "2026-02-08T13:41:49.955Z",
+            "createdAt": "2026-02-09T15:08:41.739Z",
             "swappedFor": null,
             "swappedFrom": null,
             "gallery": [
               {
-                "id": "cmldsky9r0004mp0qjilc4x5m",
-                "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-                "metadata": "{\"originalName\":\"photo-3.png\",\"mimeType\":\"image/png\",\"size\":67}"
-              },
-              {
-                "id": "cmldskyvh0005mp0qciq9t6m6",
-                "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldskyvh0005mp0qciq9t6m6.png",
+                "id": "cmlfb4khw000amh0q91xpx0pb",
+                "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
                 "metadata": "{\"originalName\":\"photo-1.png\",\"mimeType\":\"image/png\",\"size\":67}"
               },
               {
-                "id": "cmldskyvk0006mp0qnximp8h3",
-                "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldskyvk0006mp0qnximp8h3.png",
+                "id": "cmlfb4kkm000bmh0q3i6yjkt2",
+                "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4kkm000bmh0q3i6yjkt2.png",
                 "metadata": "{\"originalName\":\"photo-2.png\",\"mimeType\":\"image/png\",\"size\":67}"
+              },
+              {
+                "id": "cmlfb4kkp000cmh0q91zi4oif",
+                "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4kkp000cmh0q91zi4oif.png",
+                "metadata": "{\"originalName\":\"photo-3.png\",\"mimeType\":\"image/png\",\"size\":67}"
               }
             ]
           },
           {
-            "id": "cmldskxdc0003mp0qpb3tqs4n",
-            "memberId": "cmldskt250000mp0qn00ihejo",
+            "id": "cmlfb4kbd0009mh0qg1f3ae60",
+            "memberId": "cmlfb4j6n0006mh0q3o80vd47",
             "storeLocation": "E2E Store",
-            "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldskv190001mp0qplsyaiu0.png",
-            "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldskv190001mp0qplsyaiu0.png",
-            "checkoutAt": "2026-02-08T13:41:45.073Z",
-            "dueDate": "2026-03-10T13:41:45.071Z",
+            "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4jml0007mh0q0ofn2ahk.png",
+            "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4jml0007mh0q0ofn2ahk.png",
+            "checkoutAt": "2026-02-09T15:08:40.537Z",
+            "dueDate": "2026-03-11T15:08:40.536Z",
             "returnedAt": null,
             "swappedAt": null,
             "swappedForId": null,
             "swappedFromId": null,
-            "createdAt": "2026-02-08T13:41:45.073Z",
+            "createdAt": "2026-02-09T15:08:40.537Z",
             "swappedFor": null,
             "swappedFrom": null,
             "gallery": [
               {
-                "id": "cmldskv190001mp0qplsyaiu0",
-                "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldskv190001mp0qplsyaiu0.png",
+                "id": "cmlfb4jml0007mh0q0ofn2ahk",
+                "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4jml0007mh0q0ofn2ahk.png",
                 "metadata": "{\"originalName\":\"test-photo.png\",\"mimeType\":\"image/png\",\"size\":67}"
               }
             ]
@@ -202,35 +202,35 @@
       "payload": {
         "message": "All active loans have swap tracking fields",
         "sampleLoan": {
-          "id": "cmldsl14z0008mp0q9dkuhtzr",
-          "memberId": "cmldskt250000mp0qn00ihejo",
+          "id": "cmlfb4l8r000emh0qa5xiv3ex",
+          "memberId": "cmlfb4j6n0006mh0q3o80vd47",
           "storeLocation": "E2E Store",
-          "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-          "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-          "checkoutAt": "2026-02-08T13:41:49.955Z",
-          "dueDate": "2026-03-10T13:41:49.954Z",
+          "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
+          "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
+          "checkoutAt": "2026-02-09T15:08:41.739Z",
+          "dueDate": "2026-03-11T15:08:41.738Z",
           "returnedAt": null,
           "swappedAt": null,
           "swappedForId": null,
           "swappedFromId": null,
-          "createdAt": "2026-02-08T13:41:49.955Z",
+          "createdAt": "2026-02-09T15:08:41.739Z",
           "swappedFor": null,
           "swappedFrom": null,
           "gallery": [
             {
-              "id": "cmldsky9r0004mp0qjilc4x5m",
-              "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-              "metadata": "{\"originalName\":\"photo-3.png\",\"mimeType\":\"image/png\",\"size\":67}"
-            },
-            {
-              "id": "cmldskyvh0005mp0qciq9t6m6",
-              "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldskyvh0005mp0qciq9t6m6.png",
+              "id": "cmlfb4khw000amh0q91xpx0pb",
+              "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
               "metadata": "{\"originalName\":\"photo-1.png\",\"mimeType\":\"image/png\",\"size\":67}"
             },
             {
-              "id": "cmldskyvk0006mp0qnximp8h3",
-              "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldskyvk0006mp0qnximp8h3.png",
+              "id": "cmlfb4kkm000bmh0q3i6yjkt2",
+              "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4kkm000bmh0q3i6yjkt2.png",
               "metadata": "{\"originalName\":\"photo-2.png\",\"mimeType\":\"image/png\",\"size\":67}"
+            },
+            {
+              "id": "cmlfb4kkp000cmh0q91zi4oif",
+              "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4kkp000cmh0q91zi4oif.png",
+              "metadata": "{\"originalName\":\"photo-3.png\",\"mimeType\":\"image/png\",\"size\":67}"
             }
           ]
         }
@@ -252,7 +252,7 @@
       "payload": {
         "success": true,
         "data": {
-          "uploadId": "cmldsl47e0009mp0qxgd0jq17",
+          "uploadId": "cmlfb4lrw000fmh0q9gbimju7",
           "status": "success"
         }
       }
@@ -264,18 +264,18 @@
       "payload": {
         "success": true,
         "data": {
-          "id": "cmldsl6h2000bmp0qyqxpcgv7",
-          "memberId": "cmldskt250000mp0qn00ihejo",
+          "id": "cmlfb4mum000hmh0qj30tqnii",
+          "memberId": "cmlfb4j6n0006mh0q3o80vd47",
           "storeLocation": "E2E Store",
-          "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-          "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-          "checkoutAt": "2026-02-08T13:41:56.871Z",
-          "dueDate": "2026-03-10T13:41:56.870Z",
+          "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+          "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+          "checkoutAt": "2026-02-09T15:08:43.822Z",
+          "dueDate": "2026-03-11T15:08:43.821Z",
           "returnedAt": null,
           "swappedAt": null,
           "swappedForId": null,
           "swappedFromId": null,
-          "createdAt": "2026-02-08T13:41:56.871Z"
+          "createdAt": "2026-02-09T15:08:43.822Z"
         }
       }
     },
@@ -286,7 +286,7 @@
       "payload": {
         "success": true,
         "data": {
-          "uploadId": "cmldsl7cz000cmp0qhzqjupue",
+          "uploadId": "cmlfb4n0s000imh0q712rvi3o",
           "status": "success"
         }
       }
@@ -299,32 +299,32 @@
         "success": true,
         "data": {
           "returnedLoan": {
-            "id": "cmldsl6h2000bmp0qyqxpcgv7",
-            "memberId": "cmldskt250000mp0qn00ihejo",
+            "id": "cmlfb4mum000hmh0qj30tqnii",
+            "memberId": "cmlfb4j6n0006mh0q3o80vd47",
             "storeLocation": "E2E Store",
-            "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-            "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-            "checkoutAt": "2026-02-08T13:41:56.871Z",
-            "dueDate": "2026-03-10T13:41:56.870Z",
-            "returnedAt": "2026-02-08T13:42:01.043Z",
-            "swappedAt": "2026-02-08T13:42:01.043Z",
-            "swappedForId": "cmldsl9w7000emp0qyft8z8o7",
+            "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+            "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+            "checkoutAt": "2026-02-09T15:08:43.822Z",
+            "dueDate": "2026-03-11T15:08:43.821Z",
+            "returnedAt": "2026-02-09T15:08:44.861Z",
+            "swappedAt": "2026-02-09T15:08:44.861Z",
+            "swappedForId": "cmlfb4nnk000kmh0q31lf4gv6",
             "swappedFromId": null,
-            "createdAt": "2026-02-08T13:41:56.871Z"
+            "createdAt": "2026-02-09T15:08:43.822Z"
           },
           "newLoan": {
-            "id": "cmldsl9w7000emp0qyft8z8o7",
-            "memberId": "cmldskt250000mp0qn00ihejo",
+            "id": "cmlfb4nnk000kmh0q31lf4gv6",
+            "memberId": "cmlfb4j6n0006mh0q3o80vd47",
             "storeLocation": "E2E Swap Store",
-            "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
-            "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
-            "checkoutAt": "2026-02-08T13:42:01.043Z",
-            "dueDate": "2026-03-10T13:42:01.302Z",
+            "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
+            "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
+            "checkoutAt": "2026-02-09T15:08:44.861Z",
+            "dueDate": "2026-03-11T15:08:44.863Z",
             "returnedAt": null,
             "swappedAt": null,
             "swappedForId": null,
-            "swappedFromId": "cmldsl6h2000bmp0qyqxpcgv7",
-            "createdAt": "2026-02-08T13:42:01.303Z"
+            "swappedFromId": "cmlfb4mum000hmh0qj30tqnii",
+            "createdAt": "2026-02-09T15:08:44.864Z"
           }
         }
       }
@@ -334,8 +334,8 @@
       "status": 200,
       "success": true,
       "payload": {
-        "swappedAt": "2026-02-08T13:42:01.043Z",
-        "swappedForId": "cmldsl9w7000emp0qyft8z8o7",
+        "swappedAt": "2026-02-09T15:08:44.861Z",
+        "swappedForId": "cmlfb4nnk000kmh0q31lf4gv6",
         "swappedFromId": null
       }
     },
@@ -346,7 +346,7 @@
       "payload": {
         "swappedAt": null,
         "swappedForId": null,
-        "swappedFromId": "cmldsl6h2000bmp0qyqxpcgv7"
+        "swappedFromId": "cmlfb4mum000hmh0qj30tqnii"
       }
     },
     {
@@ -357,86 +357,86 @@
         "success": true,
         "data": [
           {
-            "id": "cmldsl9w7000emp0qyft8z8o7",
-            "memberId": "cmldskt250000mp0qn00ihejo",
+            "id": "cmlfb4nnk000kmh0q31lf4gv6",
+            "memberId": "cmlfb4j6n0006mh0q3o80vd47",
             "storeLocation": "E2E Swap Store",
-            "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
-            "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
-            "checkoutAt": "2026-02-08T13:42:01.043Z",
-            "dueDate": "2026-03-10T13:42:01.302Z",
+            "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
+            "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
+            "checkoutAt": "2026-02-09T15:08:44.861Z",
+            "dueDate": "2026-03-11T15:08:44.863Z",
             "returnedAt": null,
             "swappedAt": null,
             "swappedForId": null,
-            "swappedFromId": "cmldsl6h2000bmp0qyqxpcgv7",
-            "createdAt": "2026-02-08T13:42:01.303Z",
+            "swappedFromId": "cmlfb4mum000hmh0qj30tqnii",
+            "createdAt": "2026-02-09T15:08:44.864Z",
             "swappedFor": null,
             "swappedFrom": {
-              "id": "cmldsl6h2000bmp0qyqxpcgv7",
-              "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-              "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-              "checkoutAt": "2026-02-08T13:41:56.871Z",
-              "dueDate": "2026-03-10T13:41:56.870Z"
+              "id": "cmlfb4mum000hmh0qj30tqnii",
+              "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+              "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+              "checkoutAt": "2026-02-09T15:08:43.822Z",
+              "dueDate": "2026-03-11T15:08:43.821Z"
             },
             "gallery": [
               {
-                "id": "cmldsl7cz000cmp0qhzqjupue",
-                "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
+                "id": "cmlfb4n0s000imh0q712rvi3o",
+                "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
                 "metadata": "{\"originalName\":\"swap-photo.png\",\"mimeType\":\"image/png\",\"size\":67}"
               }
             ]
           },
           {
-            "id": "cmldsl14z0008mp0q9dkuhtzr",
-            "memberId": "cmldskt250000mp0qn00ihejo",
+            "id": "cmlfb4l8r000emh0qa5xiv3ex",
+            "memberId": "cmlfb4j6n0006mh0q3o80vd47",
             "storeLocation": "E2E Store",
-            "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-            "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-            "checkoutAt": "2026-02-08T13:41:49.955Z",
-            "dueDate": "2026-03-10T13:41:49.954Z",
+            "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
+            "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
+            "checkoutAt": "2026-02-09T15:08:41.739Z",
+            "dueDate": "2026-03-11T15:08:41.738Z",
             "returnedAt": null,
             "swappedAt": null,
             "swappedForId": null,
             "swappedFromId": null,
-            "createdAt": "2026-02-08T13:41:49.955Z",
+            "createdAt": "2026-02-09T15:08:41.739Z",
             "swappedFor": null,
             "swappedFrom": null,
             "gallery": [
               {
-                "id": "cmldsky9r0004mp0qjilc4x5m",
-                "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-                "metadata": "{\"originalName\":\"photo-3.png\",\"mimeType\":\"image/png\",\"size\":67}"
-              },
-              {
-                "id": "cmldskyvh0005mp0qciq9t6m6",
-                "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldskyvh0005mp0qciq9t6m6.png",
+                "id": "cmlfb4khw000amh0q91xpx0pb",
+                "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
                 "metadata": "{\"originalName\":\"photo-1.png\",\"mimeType\":\"image/png\",\"size\":67}"
               },
               {
-                "id": "cmldskyvk0006mp0qnximp8h3",
-                "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldskyvk0006mp0qnximp8h3.png",
+                "id": "cmlfb4kkm000bmh0q3i6yjkt2",
+                "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4kkm000bmh0q3i6yjkt2.png",
                 "metadata": "{\"originalName\":\"photo-2.png\",\"mimeType\":\"image/png\",\"size\":67}"
+              },
+              {
+                "id": "cmlfb4kkp000cmh0q91zi4oif",
+                "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4kkp000cmh0q91zi4oif.png",
+                "metadata": "{\"originalName\":\"photo-3.png\",\"mimeType\":\"image/png\",\"size\":67}"
               }
             ]
           },
           {
-            "id": "cmldskxdc0003mp0qpb3tqs4n",
-            "memberId": "cmldskt250000mp0qn00ihejo",
+            "id": "cmlfb4kbd0009mh0qg1f3ae60",
+            "memberId": "cmlfb4j6n0006mh0q3o80vd47",
             "storeLocation": "E2E Store",
-            "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldskv190001mp0qplsyaiu0.png",
-            "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldskv190001mp0qplsyaiu0.png",
-            "checkoutAt": "2026-02-08T13:41:45.073Z",
-            "dueDate": "2026-03-10T13:41:45.071Z",
+            "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4jml0007mh0q0ofn2ahk.png",
+            "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4jml0007mh0q0ofn2ahk.png",
+            "checkoutAt": "2026-02-09T15:08:40.537Z",
+            "dueDate": "2026-03-11T15:08:40.536Z",
             "returnedAt": null,
             "swappedAt": null,
             "swappedForId": null,
             "swappedFromId": null,
-            "createdAt": "2026-02-08T13:41:45.073Z",
+            "createdAt": "2026-02-09T15:08:40.537Z",
             "swappedFor": null,
             "swappedFrom": null,
             "gallery": [
               {
-                "id": "cmldskv190001mp0qplsyaiu0",
-                "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldskv190001mp0qplsyaiu0.png",
+                "id": "cmlfb4jml0007mh0q0ofn2ahk",
+                "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4jml0007mh0q0ofn2ahk.png",
                 "metadata": "{\"originalName\":\"test-photo.png\",\"mimeType\":\"image/png\",\"size\":67}"
               }
             ]
@@ -449,8 +449,8 @@
       "status": 200,
       "success": true,
       "payload": {
-        "loanId": "cmldsl9w7000emp0qyft8z8o7",
-        "swappedFromId": "cmldsl6h2000bmp0qyqxpcgv7",
+        "loanId": "cmlfb4nnk000kmh0q31lf4gv6",
+        "swappedFromId": "cmlfb4mum000hmh0qj30tqnii",
         "swappedForId": null
       }
     },
@@ -462,30 +462,30 @@
         "success": true,
         "data": [
           {
-            "id": "cmldsl6h2000bmp0qyqxpcgv7",
-            "memberId": "cmldskt250000mp0qn00ihejo",
+            "id": "cmlfb4mum000hmh0qj30tqnii",
+            "memberId": "cmlfb4j6n0006mh0q3o80vd47",
             "storeLocation": "E2E Store",
-            "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-            "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-            "checkoutAt": "2026-02-08T13:41:56.871Z",
-            "dueDate": "2026-03-10T13:41:56.870Z",
-            "returnedAt": "2026-02-08T13:42:01.043Z",
-            "swappedAt": "2026-02-08T13:42:01.043Z",
-            "swappedForId": "cmldsl9w7000emp0qyft8z8o7",
+            "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+            "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+            "checkoutAt": "2026-02-09T15:08:43.822Z",
+            "dueDate": "2026-03-11T15:08:43.821Z",
+            "returnedAt": "2026-02-09T15:08:44.861Z",
+            "swappedAt": "2026-02-09T15:08:44.861Z",
+            "swappedForId": "cmlfb4nnk000kmh0q31lf4gv6",
             "swappedFromId": null,
-            "createdAt": "2026-02-08T13:41:56.871Z",
+            "createdAt": "2026-02-09T15:08:43.822Z",
             "swappedFor": {
-              "id": "cmldsl9w7000emp0qyft8z8o7",
-              "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
-              "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
-              "checkoutAt": "2026-02-08T13:42:01.043Z",
-              "dueDate": "2026-03-10T13:42:01.302Z"
+              "id": "cmlfb4nnk000kmh0q31lf4gv6",
+              "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
+              "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
+              "checkoutAt": "2026-02-09T15:08:44.861Z",
+              "dueDate": "2026-03-11T15:08:44.863Z"
             },
             "swappedFrom": null,
             "gallery": [
               {
-                "id": "cmldsl47e0009mp0qxgd0jq17",
-                "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
+                "id": "cmlfb4lrw000fmh0q9gbimju7",
+                "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
                 "metadata": "{\"originalName\":\"base-photo.png\",\"mimeType\":\"image/png\",\"size\":67}"
               }
             ]
@@ -498,10 +498,10 @@
       "status": 200,
       "success": true,
       "payload": {
-        "loanId": "cmldsl6h2000bmp0qyqxpcgv7",
-        "swappedForId": "cmldsl9w7000emp0qyft8z8o7",
+        "loanId": "cmlfb4mum000hmh0qj30tqnii",
+        "swappedForId": "cmlfb4nnk000kmh0q31lf4gv6",
         "swappedFromId": null,
-        "swappedAt": "2026-02-08T13:42:01.043Z"
+        "swappedAt": "2026-02-09T15:08:44.861Z"
       }
     },
     {
@@ -510,8 +510,8 @@
       "success": true,
       "payload": {
         "message": "Swap references are correctly linked",
-        "swappedInFromId": "cmldsl6h2000bmp0qyqxpcgv7",
-        "swappedOutForId": "cmldsl9w7000emp0qyft8z8o7"
+        "swappedInFromId": "cmlfb4mum000hmh0qj30tqnii",
+        "swappedOutForId": "cmlfb4nnk000kmh0q31lf4gv6"
       }
     },
     {
@@ -521,18 +521,18 @@
       "payload": {
         "success": true,
         "data": {
-          "id": "cmldskxdc0003mp0qpb3tqs4n",
-          "memberId": "cmldskt250000mp0qn00ihejo",
+          "id": "cmlfb4kbd0009mh0qg1f3ae60",
+          "memberId": "cmlfb4j6n0006mh0q3o80vd47",
           "storeLocation": "E2E Store",
-          "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldskv190001mp0qplsyaiu0.png",
-          "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldskv190001mp0qplsyaiu0.png",
-          "checkoutAt": "2026-02-08T13:41:45.073Z",
-          "dueDate": "2026-03-10T13:41:45.071Z",
-          "returnedAt": "2026-02-08T13:42:06.691Z",
+          "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4jml0007mh0q0ofn2ahk.png",
+          "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4jml0007mh0q0ofn2ahk.png",
+          "checkoutAt": "2026-02-09T15:08:40.537Z",
+          "dueDate": "2026-03-11T15:08:40.536Z",
+          "returnedAt": "2026-02-09T15:08:45.557Z",
           "swappedAt": null,
           "swappedForId": null,
           "swappedFromId": null,
-          "createdAt": "2026-02-08T13:41:45.073Z"
+          "createdAt": "2026-02-09T15:08:40.537Z"
         }
       }
     },
@@ -543,18 +543,18 @@
       "payload": {
         "success": true,
         "data": {
-          "id": "cmldsl14z0008mp0q9dkuhtzr",
-          "memberId": "cmldskt250000mp0qn00ihejo",
+          "id": "cmlfb4l8r000emh0qa5xiv3ex",
+          "memberId": "cmlfb4j6n0006mh0q3o80vd47",
           "storeLocation": "E2E Store",
-          "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-          "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-          "checkoutAt": "2026-02-08T13:41:49.955Z",
-          "dueDate": "2026-03-10T13:41:49.954Z",
-          "returnedAt": "2026-02-08T13:42:08.362Z",
+          "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
+          "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
+          "checkoutAt": "2026-02-09T15:08:41.739Z",
+          "dueDate": "2026-03-11T15:08:41.738Z",
+          "returnedAt": "2026-02-09T15:08:45.792Z",
           "swappedAt": null,
           "swappedForId": null,
           "swappedFromId": null,
-          "createdAt": "2026-02-08T13:41:49.955Z"
+          "createdAt": "2026-02-09T15:08:41.739Z"
         }
       }
     },
@@ -566,30 +566,30 @@
         "success": true,
         "data": [
           {
-            "id": "cmldsl9w7000emp0qyft8z8o7",
-            "memberId": "cmldskt250000mp0qn00ihejo",
+            "id": "cmlfb4nnk000kmh0q31lf4gv6",
+            "memberId": "cmlfb4j6n0006mh0q3o80vd47",
             "storeLocation": "E2E Swap Store",
-            "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
-            "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
-            "checkoutAt": "2026-02-08T13:42:01.043Z",
-            "dueDate": "2026-03-10T13:42:01.302Z",
+            "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
+            "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
+            "checkoutAt": "2026-02-09T15:08:44.861Z",
+            "dueDate": "2026-03-11T15:08:44.863Z",
             "returnedAt": null,
             "swappedAt": null,
             "swappedForId": null,
-            "swappedFromId": "cmldsl6h2000bmp0qyqxpcgv7",
-            "createdAt": "2026-02-08T13:42:01.303Z",
+            "swappedFromId": "cmlfb4mum000hmh0qj30tqnii",
+            "createdAt": "2026-02-09T15:08:44.864Z",
             "swappedFor": null,
             "swappedFrom": {
-              "id": "cmldsl6h2000bmp0qyqxpcgv7",
-              "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-              "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-              "checkoutAt": "2026-02-08T13:41:56.871Z",
-              "dueDate": "2026-03-10T13:41:56.870Z"
+              "id": "cmlfb4mum000hmh0qj30tqnii",
+              "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+              "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+              "checkoutAt": "2026-02-09T15:08:43.822Z",
+              "dueDate": "2026-03-11T15:08:43.821Z"
             },
             "gallery": [
               {
-                "id": "cmldsl7cz000cmp0qhzqjupue",
-                "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
+                "id": "cmlfb4n0s000imh0q712rvi3o",
+                "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
                 "metadata": "{\"originalName\":\"swap-photo.png\",\"mimeType\":\"image/png\",\"size\":67}"
               }
             ]
@@ -604,30 +604,30 @@
       "payload": {
         "message": "All active loans have swap tracking fields",
         "sampleLoan": {
-          "id": "cmldsl9w7000emp0qyft8z8o7",
-          "memberId": "cmldskt250000mp0qn00ihejo",
+          "id": "cmlfb4nnk000kmh0q31lf4gv6",
+          "memberId": "cmlfb4j6n0006mh0q3o80vd47",
           "storeLocation": "E2E Swap Store",
-          "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
-          "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
-          "checkoutAt": "2026-02-08T13:42:01.043Z",
-          "dueDate": "2026-03-10T13:42:01.302Z",
+          "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
+          "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
+          "checkoutAt": "2026-02-09T15:08:44.861Z",
+          "dueDate": "2026-03-11T15:08:44.863Z",
           "returnedAt": null,
           "swappedAt": null,
           "swappedForId": null,
-          "swappedFromId": "cmldsl6h2000bmp0qyqxpcgv7",
-          "createdAt": "2026-02-08T13:42:01.303Z",
+          "swappedFromId": "cmlfb4mum000hmh0qj30tqnii",
+          "createdAt": "2026-02-09T15:08:44.864Z",
           "swappedFor": null,
           "swappedFrom": {
-            "id": "cmldsl6h2000bmp0qyqxpcgv7",
-            "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-            "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-            "checkoutAt": "2026-02-08T13:41:56.871Z",
-            "dueDate": "2026-03-10T13:41:56.870Z"
+            "id": "cmlfb4mum000hmh0qj30tqnii",
+            "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+            "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+            "checkoutAt": "2026-02-09T15:08:43.822Z",
+            "dueDate": "2026-03-11T15:08:43.821Z"
           },
           "gallery": [
             {
-              "id": "cmldsl7cz000cmp0qhzqjupue",
-              "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
+              "id": "cmlfb4n0s000imh0q712rvi3o",
+              "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
               "metadata": "{\"originalName\":\"swap-photo.png\",\"mimeType\":\"image/png\",\"size\":67}"
             }
           ]
@@ -641,30 +641,30 @@
       "payload": {
         "count": 1,
         "sample": {
-          "id": "cmldsl9w7000emp0qyft8z8o7",
-          "memberId": "cmldskt250000mp0qn00ihejo",
+          "id": "cmlfb4nnk000kmh0q31lf4gv6",
+          "memberId": "cmlfb4j6n0006mh0q3o80vd47",
           "storeLocation": "E2E Swap Store",
-          "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
-          "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
-          "checkoutAt": "2026-02-08T13:42:01.043Z",
-          "dueDate": "2026-03-10T13:42:01.302Z",
+          "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
+          "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
+          "checkoutAt": "2026-02-09T15:08:44.861Z",
+          "dueDate": "2026-03-11T15:08:44.863Z",
           "returnedAt": null,
           "swappedAt": null,
           "swappedForId": null,
-          "swappedFromId": "cmldsl6h2000bmp0qyqxpcgv7",
-          "createdAt": "2026-02-08T13:42:01.303Z",
+          "swappedFromId": "cmlfb4mum000hmh0qj30tqnii",
+          "createdAt": "2026-02-09T15:08:44.864Z",
           "swappedFor": null,
           "swappedFrom": {
-            "id": "cmldsl6h2000bmp0qyqxpcgv7",
-            "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-            "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-            "checkoutAt": "2026-02-08T13:41:56.871Z",
-            "dueDate": "2026-03-10T13:41:56.870Z"
+            "id": "cmlfb4mum000hmh0qj30tqnii",
+            "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+            "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+            "checkoutAt": "2026-02-09T15:08:43.822Z",
+            "dueDate": "2026-03-11T15:08:43.821Z"
           },
           "gallery": [
             {
-              "id": "cmldsl7cz000cmp0qhzqjupue",
-              "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
+              "id": "cmlfb4n0s000imh0q712rvi3o",
+              "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
               "metadata": "{\"originalName\":\"swap-photo.png\",\"mimeType\":\"image/png\",\"size\":67}"
             }
           ]
@@ -679,86 +679,86 @@
         "success": true,
         "data": [
           {
-            "id": "cmldsl14z0008mp0q9dkuhtzr",
-            "memberId": "cmldskt250000mp0qn00ihejo",
+            "id": "cmlfb4l8r000emh0qa5xiv3ex",
+            "memberId": "cmlfb4j6n0006mh0q3o80vd47",
             "storeLocation": "E2E Store",
-            "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-            "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-            "checkoutAt": "2026-02-08T13:41:49.955Z",
-            "dueDate": "2026-03-10T13:41:49.954Z",
-            "returnedAt": "2026-02-08T13:42:08.362Z",
+            "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
+            "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
+            "checkoutAt": "2026-02-09T15:08:41.739Z",
+            "dueDate": "2026-03-11T15:08:41.738Z",
+            "returnedAt": "2026-02-09T15:08:45.792Z",
             "swappedAt": null,
             "swappedForId": null,
             "swappedFromId": null,
-            "createdAt": "2026-02-08T13:41:49.955Z",
+            "createdAt": "2026-02-09T15:08:41.739Z",
             "swappedFor": null,
             "swappedFrom": null,
             "gallery": [
               {
-                "id": "cmldsky9r0004mp0qjilc4x5m",
-                "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-                "metadata": "{\"originalName\":\"photo-3.png\",\"mimeType\":\"image/png\",\"size\":67}"
-              },
-              {
-                "id": "cmldskyvh0005mp0qciq9t6m6",
-                "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldskyvh0005mp0qciq9t6m6.png",
+                "id": "cmlfb4khw000amh0q91xpx0pb",
+                "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
                 "metadata": "{\"originalName\":\"photo-1.png\",\"mimeType\":\"image/png\",\"size\":67}"
               },
               {
-                "id": "cmldskyvk0006mp0qnximp8h3",
-                "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldskyvk0006mp0qnximp8h3.png",
+                "id": "cmlfb4kkm000bmh0q3i6yjkt2",
+                "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4kkm000bmh0q3i6yjkt2.png",
                 "metadata": "{\"originalName\":\"photo-2.png\",\"mimeType\":\"image/png\",\"size\":67}"
+              },
+              {
+                "id": "cmlfb4kkp000cmh0q91zi4oif",
+                "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4kkp000cmh0q91zi4oif.png",
+                "metadata": "{\"originalName\":\"photo-3.png\",\"mimeType\":\"image/png\",\"size\":67}"
               }
             ]
           },
           {
-            "id": "cmldskxdc0003mp0qpb3tqs4n",
-            "memberId": "cmldskt250000mp0qn00ihejo",
+            "id": "cmlfb4kbd0009mh0qg1f3ae60",
+            "memberId": "cmlfb4j6n0006mh0q3o80vd47",
             "storeLocation": "E2E Store",
-            "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldskv190001mp0qplsyaiu0.png",
-            "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldskv190001mp0qplsyaiu0.png",
-            "checkoutAt": "2026-02-08T13:41:45.073Z",
-            "dueDate": "2026-03-10T13:41:45.071Z",
-            "returnedAt": "2026-02-08T13:42:06.691Z",
+            "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4jml0007mh0q0ofn2ahk.png",
+            "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4jml0007mh0q0ofn2ahk.png",
+            "checkoutAt": "2026-02-09T15:08:40.537Z",
+            "dueDate": "2026-03-11T15:08:40.536Z",
+            "returnedAt": "2026-02-09T15:08:45.557Z",
             "swappedAt": null,
             "swappedForId": null,
             "swappedFromId": null,
-            "createdAt": "2026-02-08T13:41:45.073Z",
+            "createdAt": "2026-02-09T15:08:40.537Z",
             "swappedFor": null,
             "swappedFrom": null,
             "gallery": [
               {
-                "id": "cmldskv190001mp0qplsyaiu0",
-                "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldskv190001mp0qplsyaiu0.png",
+                "id": "cmlfb4jml0007mh0q0ofn2ahk",
+                "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4jml0007mh0q0ofn2ahk.png",
                 "metadata": "{\"originalName\":\"test-photo.png\",\"mimeType\":\"image/png\",\"size\":67}"
               }
             ]
           },
           {
-            "id": "cmldsl6h2000bmp0qyqxpcgv7",
-            "memberId": "cmldskt250000mp0qn00ihejo",
+            "id": "cmlfb4mum000hmh0qj30tqnii",
+            "memberId": "cmlfb4j6n0006mh0q3o80vd47",
             "storeLocation": "E2E Store",
-            "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-            "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-            "checkoutAt": "2026-02-08T13:41:56.871Z",
-            "dueDate": "2026-03-10T13:41:56.870Z",
-            "returnedAt": "2026-02-08T13:42:01.043Z",
-            "swappedAt": "2026-02-08T13:42:01.043Z",
-            "swappedForId": "cmldsl9w7000emp0qyft8z8o7",
+            "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+            "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+            "checkoutAt": "2026-02-09T15:08:43.822Z",
+            "dueDate": "2026-03-11T15:08:43.821Z",
+            "returnedAt": "2026-02-09T15:08:44.861Z",
+            "swappedAt": "2026-02-09T15:08:44.861Z",
+            "swappedForId": "cmlfb4nnk000kmh0q31lf4gv6",
             "swappedFromId": null,
-            "createdAt": "2026-02-08T13:41:56.871Z",
+            "createdAt": "2026-02-09T15:08:43.822Z",
             "swappedFor": {
-              "id": "cmldsl9w7000emp0qyft8z8o7",
-              "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
-              "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
-              "checkoutAt": "2026-02-08T13:42:01.043Z",
-              "dueDate": "2026-03-10T13:42:01.302Z"
+              "id": "cmlfb4nnk000kmh0q31lf4gv6",
+              "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
+              "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
+              "checkoutAt": "2026-02-09T15:08:44.861Z",
+              "dueDate": "2026-03-11T15:08:44.863Z"
             },
             "swappedFrom": null,
             "gallery": [
               {
-                "id": "cmldsl47e0009mp0qxgd0jq17",
-                "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
+                "id": "cmlfb4lrw000fmh0q9gbimju7",
+                "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
                 "metadata": "{\"originalName\":\"base-photo.png\",\"mimeType\":\"image/png\",\"size\":67}"
               }
             ]
@@ -773,35 +773,35 @@
       "payload": {
         "message": "All returned loans have swap tracking fields",
         "sampleLoan": {
-          "id": "cmldsl14z0008mp0q9dkuhtzr",
-          "memberId": "cmldskt250000mp0qn00ihejo",
+          "id": "cmlfb4l8r000emh0qa5xiv3ex",
+          "memberId": "cmlfb4j6n0006mh0q3o80vd47",
           "storeLocation": "E2E Store",
-          "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-          "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-          "checkoutAt": "2026-02-08T13:41:49.955Z",
-          "dueDate": "2026-03-10T13:41:49.954Z",
-          "returnedAt": "2026-02-08T13:42:08.362Z",
+          "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
+          "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
+          "checkoutAt": "2026-02-09T15:08:41.739Z",
+          "dueDate": "2026-03-11T15:08:41.738Z",
+          "returnedAt": "2026-02-09T15:08:45.792Z",
           "swappedAt": null,
           "swappedForId": null,
           "swappedFromId": null,
-          "createdAt": "2026-02-08T13:41:49.955Z",
+          "createdAt": "2026-02-09T15:08:41.739Z",
           "swappedFor": null,
           "swappedFrom": null,
           "gallery": [
             {
-              "id": "cmldsky9r0004mp0qjilc4x5m",
-              "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldsky9r0004mp0qjilc4x5m.png",
-              "metadata": "{\"originalName\":\"photo-3.png\",\"mimeType\":\"image/png\",\"size\":67}"
-            },
-            {
-              "id": "cmldskyvh0005mp0qciq9t6m6",
-              "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldskyvh0005mp0qciq9t6m6.png",
+              "id": "cmlfb4khw000amh0q91xpx0pb",
+              "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4khw000amh0q91xpx0pb.png",
               "metadata": "{\"originalName\":\"photo-1.png\",\"mimeType\":\"image/png\",\"size\":67}"
             },
             {
-              "id": "cmldskyvk0006mp0qnximp8h3",
-              "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldskyvk0006mp0qnximp8h3.png",
+              "id": "cmlfb4kkm000bmh0q3i6yjkt2",
+              "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4kkm000bmh0q3i6yjkt2.png",
               "metadata": "{\"originalName\":\"photo-2.png\",\"mimeType\":\"image/png\",\"size\":67}"
+            },
+            {
+              "id": "cmlfb4kkp000cmh0q91zi4oif",
+              "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4kkp000cmh0q91zi4oif.png",
+              "metadata": "{\"originalName\":\"photo-3.png\",\"mimeType\":\"image/png\",\"size\":67}"
             }
           ]
         }
@@ -814,30 +814,30 @@
       "payload": {
         "count": 1,
         "sample": {
-          "id": "cmldsl6h2000bmp0qyqxpcgv7",
-          "memberId": "cmldskt250000mp0qn00ihejo",
+          "id": "cmlfb4mum000hmh0qj30tqnii",
+          "memberId": "cmlfb4j6n0006mh0q3o80vd47",
           "storeLocation": "E2E Store",
-          "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-          "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
-          "checkoutAt": "2026-02-08T13:41:56.871Z",
-          "dueDate": "2026-03-10T13:41:56.870Z",
-          "returnedAt": "2026-02-08T13:42:01.043Z",
-          "swappedAt": "2026-02-08T13:42:01.043Z",
-          "swappedForId": "cmldsl9w7000emp0qyft8z8o7",
+          "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+          "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
+          "checkoutAt": "2026-02-09T15:08:43.822Z",
+          "dueDate": "2026-03-11T15:08:43.821Z",
+          "returnedAt": "2026-02-09T15:08:44.861Z",
+          "swappedAt": "2026-02-09T15:08:44.861Z",
+          "swappedForId": "cmlfb4nnk000kmh0q31lf4gv6",
           "swappedFromId": null,
-          "createdAt": "2026-02-08T13:41:56.871Z",
+          "createdAt": "2026-02-09T15:08:43.822Z",
           "swappedFor": {
-            "id": "cmldsl9w7000emp0qyft8z8o7",
-            "photoUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
-            "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png",
-            "checkoutAt": "2026-02-08T13:42:01.043Z",
-            "dueDate": "2026-03-10T13:42:01.302Z"
+            "id": "cmlfb4nnk000kmh0q31lf4gv6",
+            "photoUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
+            "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png",
+            "checkoutAt": "2026-02-09T15:08:44.861Z",
+            "dueDate": "2026-03-11T15:08:44.863Z"
           },
           "swappedFrom": null,
           "gallery": [
             {
-              "id": "cmldsl47e0009mp0qxgd0jq17",
-              "r2Key": "loans/cmldskt250000mp0qn00ihejo/cmldsl47e0009mp0qxgd0jq17.png",
+              "id": "cmlfb4lrw000fmh0q9gbimju7",
+              "r2Key": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4lrw000fmh0q9gbimju7.png",
               "metadata": "{\"originalName\":\"base-photo.png\",\"mimeType\":\"image/png\",\"size\":67}"
             }
           ]
@@ -852,23 +852,23 @@
         "success": true,
         "data": {
           "member": {
-            "id": "cmldskt250000mp0qn00ihejo",
-            "cardToken": "E2E_MEMBER_1770558095890",
-            "shopifyCustomerId": "gid://shopify/Customer/E2E_1770558095891",
+            "id": "cmlfb4j6n0006mh0q3o80vd47",
+            "cardToken": "E2E_MEMBER_1770649716379",
+            "shopifyCustomerId": "gid://shopify/Customer/E2E_1770649716380",
             "storeLocation": "E2E Test Store",
             "tier": "PREMIUM",
             "status": "ACTIVE",
-            "cycleStart": "2026-02-08T13:41:39.484Z",
-            "cycleEnd": "2026-03-08T13:41:39.484Z",
+            "cycleStart": "2026-02-09T15:08:39.071Z",
+            "cycleEnd": "2026-03-09T15:08:39.071Z",
             "itemsUsed": 4,
             "swapsUsed": 1,
             "itemsOut": 1,
-            "createdAt": "2026-02-08T13:41:39.485Z",
-            "updatedAt": "2026-02-08T13:42:07.652Z",
+            "createdAt": "2026-02-09T15:08:39.071Z",
+            "updatedAt": "2026-02-09T15:08:45.793Z",
             "loans": [
               {
-                "id": "cmldsl9w7000emp0qyft8z8o7",
-                "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png"
+                "id": "cmlfb4nnk000kmh0q31lf4gv6",
+                "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png"
               }
             ]
           },
@@ -879,8 +879,8 @@
           },
           "activeLoans": [
             {
-              "id": "cmldsl9w7000emp0qyft8z8o7",
-              "thumbnailUrl": "loans/cmldskt250000mp0qn00ihejo/cmldsl7cz000cmp0qhzqjupue.png"
+              "id": "cmlfb4nnk000kmh0q31lf4gv6",
+              "thumbnailUrl": "loans/cmlfb4j6n0006mh0q3o80vd47/cmlfb4n0s000imh0q712rvi3o.png"
             }
           ]
         }

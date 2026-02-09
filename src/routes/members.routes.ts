@@ -57,16 +57,19 @@ const router = Router();
  */
 router.post('/add', async (req, res, next) => {
   try {
-    const { cardToken, tier = 'BASIC', storeLocation, shopifyCustomerId } = req.body;
-    
-    // Enhanced card token validation
-    if (!cardToken || typeof cardToken !== 'string' || cardToken.trim().length === 0) {
-      return next(new AppError(400, 'Card number is required'));
-    }
+    let { cardToken, tier = 'BASIC', storeLocation, shopifyCustomerId } = req.body;
 
-    // Optional: Add basic format validation (adjust as needed)
-    if (cardToken.trim().length < 4) {
-      return next(new AppError(400, 'Card number must be at least 4 characters long'));
+    // Accept both numbers and strings, convert to string, then trim.
+    // Do NOT auto-generate any token.
+    if (cardToken !== undefined && cardToken !== null) {
+      cardToken = String(cardToken).trim();
+    } else {
+      cardToken = '';
+    }
+    
+    // Validation should be:
+    if (!cardToken) {
+      return next(new AppError(400, 'Card number is required'));
     }
 
     if (!shopifyCustomerId || !shopifyCustomerId.trim()) {
@@ -74,10 +77,10 @@ router.post('/add', async (req, res, next) => {
     }
 
     // Check if member already exists by cardToken or shopifyCustomerId
-    const existingMember = await MemberRepository.findByCardOrShopify(cardToken.trim(), shopifyCustomerId.trim());
+    const existingMember = await MemberRepository.findByCardOrShopify(cardToken, shopifyCustomerId.trim());
     
     if (existingMember) {
-      if (existingMember.cardToken === cardToken.trim()) {
+      if (existingMember.cardToken === cardToken) {
         return next(new AppError(400, 'This card number is already in use'));
       }
       if (existingMember.shopifyCustomerId === shopifyCustomerId.trim()) {
@@ -91,7 +94,7 @@ router.post('/add', async (req, res, next) => {
 
     try {
       const member = await MemberRepository.create({
-        cardToken: cardToken.trim(),
+        cardToken,
         tier: MemberTier[tier.toUpperCase() as keyof typeof MemberTier] || MemberTier.BASIC,
         status: MemberStatus.ACTIVE,
         cycleStart: now,
