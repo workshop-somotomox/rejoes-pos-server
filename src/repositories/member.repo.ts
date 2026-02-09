@@ -20,7 +20,7 @@ export class MemberRepository {
   // Find member by Shopify customer ID
   static async findByShopifyCustomerId(shopifyCustomerId: string, client?: DbClient) {
     const db = client || prisma;
-    return await db.member.findUnique({
+    return await db.member.findFirst({
       where: { shopifyCustomerId },
     });
   }
