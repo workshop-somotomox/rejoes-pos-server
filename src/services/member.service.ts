@@ -13,7 +13,7 @@ export async function getMemberByCard(cardToken: string) {
   }
 
   const normalizedMember = memberWithLoans as MemberWithLoans;
-  const { loans } = normalizedMember;
+  const { loans = [] } = normalizedMember;
 
   const allowances = getTierConfig(normalizedMember.tier as MemberTier);
   const activeLoans = loans.map((loan: ActiveLoanThumbnail) => ({
