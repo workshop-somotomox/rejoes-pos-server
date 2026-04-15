@@ -7,13 +7,13 @@ export const tierConfig: Record<MemberTier, TierConfig> = {
     maxItemsOut: 1,
   },
   [MemberTier.PLUS]: {
-    itemsPerMonth: 5,
+    itemsPerMonth: 3,
     swaps: 2,
     maxItemsOut: 2,
   },
   [MemberTier.PREMIUM]: {
-    itemsPerMonth: 10,
-    swaps: 5,
+    itemsPerMonth: 6,
+    swaps: 3,
     maxItemsOut: 4,
   },
 };
