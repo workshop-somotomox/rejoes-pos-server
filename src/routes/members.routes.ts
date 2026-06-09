@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getMemberByCard } from '../services/member.service';
+import { getMemberByCard, listActiveMembers } from '../services/member.service';
 import { MemberRepository } from '../repositories/member.repo';
 import { addMonths } from '../utils/dates';
 import { AppError } from '../utils/errors';
@@ -181,6 +181,48 @@ router.post('/add', async (req, res, next) => {
  *                       items:
  *                         type: object
  */
+/**
+ * @swagger
+ * /api/members/active:
+ *   get:
+ *     summary: List all active members (status=ACTIVE AND cycleEnd > now)
+ *     tags: [Members]
+ *     parameters:
+ *       - in: query
+ *         name: limit
+ *         schema: { type: integer, default: 50, minimum: 1, maximum: 100 }
+ *       - in: query
+ *         name: offset
+ *         schema: { type: integer, default: 0, minimum: 0 }
+ *       - in: query
+ *         name: storeLocation
+ *         schema: { type: string }
+ *         description: Optional exact-match filter on Member.storeLocation
+ *       - in: query
+ *         name: tier
+ *         schema: { type: string, enum: [BASIC, PLUS, PREMIUM] }
+ *     responses:
+ *       200:
+ *         description: List of active members with active loan counts, sorted by cycleEnd ascending
+ */
+router.get('/active', async (req, res, next) => {
+  try {
+    const limit = Math.min(Math.max(parseInt(String(req.query.limit ?? '50'), 10) || 50, 1), 100);
+    const offset = Math.max(parseInt(String(req.query.offset ?? '0'), 10) || 0, 0);
+    const storeLocation = typeof req.query.storeLocation === 'string' && req.query.storeLocation.trim().length > 0
+      ? req.query.storeLocation.trim()
+      : undefined;
+    const tier = typeof req.query.tier === 'string' && req.query.tier.trim().length > 0
+      ? req.query.tier.trim().toUpperCase()
+      : undefined;
+
+    const result = await listActiveMembers({ limit, offset, storeLocation, tier });
+    res.json(success(result));
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/by-card/:cardToken', async (req, res, next) => {
   try {
     const { cardToken } = req.params;

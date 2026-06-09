@@ -5,6 +5,7 @@ import {
   swapLoan,
   getActiveLoans,
   getReturnedLoans,
+  listOutstandingLoans,
 } from '../services/loan.service';
 import { success } from '../types/api.types';
 
@@ -408,6 +409,42 @@ router.post('/swap', async (req, res, next) => {
  *                   type: string
  *                   example: "Missing memberId"
  */
+/**
+ * @swagger
+ * /api/loans/outstanding:
+ *   get:
+ *     summary: List all outstanding loans across all members (returnedAt IS NULL)
+ *     tags: [Loans]
+ *     parameters:
+ *       - in: query
+ *         name: limit
+ *         schema: { type: integer, default: 50, minimum: 1, maximum: 100 }
+ *       - in: query
+ *         name: offset
+ *         schema: { type: integer, default: 0, minimum: 0 }
+ *       - in: query
+ *         name: storeLocation
+ *         schema: { type: string }
+ *         description: Optional exact-match filter on Loan.storeLocation
+ *     responses:
+ *       200:
+ *         description: List of outstanding loans with member info, sorted by dueDate ascending
+ */
+router.get('/outstanding', async (req, res, next) => {
+  try {
+    const limit = Math.min(Math.max(parseInt(String(req.query.limit ?? '50'), 10) || 50, 1), 100);
+    const offset = Math.max(parseInt(String(req.query.offset ?? '0'), 10) || 0, 0);
+    const storeLocation = typeof req.query.storeLocation === 'string' && req.query.storeLocation.trim().length > 0
+      ? req.query.storeLocation.trim()
+      : undefined;
+
+    const result = await listOutstandingLoans({ limit, offset, storeLocation });
+    return res.json(success(result));
+  } catch (error) {
+    return next(error);
+  }
+});
+
 router.get('/active/:memberId', async (req, res, next) => {
   try {
     const { memberId } = req.params;

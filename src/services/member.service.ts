@@ -90,3 +90,45 @@ export async function getMemberById(memberId: string, client?: DbClient): Promis
   }
   return member as MemberRecord;
 }
+
+export interface ActiveMemberListItem {
+  id: string;
+  cardToken: string;
+  shopifyCustomerId: string | null;
+  tier: string;
+  status: string;
+  storeLocation: string | null;
+  cycleStart: Date;
+  cycleEnd: Date;
+  itemsUsed: number;
+  swapsUsed: number;
+  itemsOut: number;
+  activeLoanCount: number;
+  createdAt: Date;
+}
+
+export async function listActiveMembers(params: {
+  limit: number;
+  offset: number;
+  storeLocation?: string;
+  tier?: string;
+}): Promise<{ items: ActiveMemberListItem[]; total: number; limit: number; offset: number }> {
+  const { rows, total } = await MemberRepository.findAllActive(params);
+  const items: ActiveMemberListItem[] = rows.map((m: any) => ({
+    id: m.id,
+    cardToken: m.cardToken,
+    shopifyCustomerId: m.shopifyCustomerId ?? null,
+    tier: m.tier,
+    status: m.status,
+    storeLocation: m.storeLocation ?? null,
+    cycleStart: m.cycleStart,
+    cycleEnd: m.cycleEnd,
+    itemsUsed: m.itemsUsed,
+    swapsUsed: m.swapsUsed,
+    itemsOut: m.itemsOut,
+    activeLoanCount: m._count?.loans ?? 0,
+    createdAt: m.createdAt,
+  }));
+
+  return { items, total, limit: params.limit, offset: params.offset };
+}

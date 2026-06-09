@@ -216,6 +216,47 @@ export async function getActiveLoans(memberId: string): Promise<LoanRecord[]> {
   });
 }
 
+export interface OutstandingLoanListItem {
+  id: string;
+  memberId: string;
+  storeLocation: string;
+  thumbnailUrl: string;
+  photoUrl: string;
+  checkoutAt: Date;
+  dueDate: Date;
+  isOverdue: boolean;
+  member: {
+    id: string;
+    cardToken: string;
+    shopifyCustomerId: string | null;
+    tier: string;
+    status: string;
+    storeLocation: string | null;
+  };
+}
+
+export async function listOutstandingLoans(params: {
+  limit: number;
+  offset: number;
+  storeLocation?: string;
+}): Promise<{ items: OutstandingLoanListItem[]; total: number; limit: number; offset: number }> {
+  const { rows, total } = await LoanRepository.findAllOutstanding(params);
+  const now = Date.now();
+  const items: OutstandingLoanListItem[] = rows.map((loan: any) => ({
+    id: loan.id,
+    memberId: loan.memberId,
+    storeLocation: loan.storeLocation,
+    thumbnailUrl: loan.thumbnailUrl,
+    photoUrl: loan.photoUrl,
+    checkoutAt: loan.checkoutAt,
+    dueDate: loan.dueDate,
+    isOverdue: loan.dueDate ? new Date(loan.dueDate).getTime() < now : false,
+    member: loan.member,
+  }));
+
+  return { items, total, limit: params.limit, offset: params.offset };
+}
+
 export async function getReturnedLoans(memberId: string): Promise<LoanRecord[]> {
   const loans = await LoanRepository.findReturnedByMember(memberId);
 

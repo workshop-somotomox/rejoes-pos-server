@@ -47,6 +47,44 @@ export class LoanRepository {
     });
   }
 
+  // Find all outstanding loans across all members (returnedAt IS NULL),
+  // optionally filtered by store location. Includes joined member info so
+  // the admin table can render without N+1 lookups.
+  static async findAllOutstanding(
+    params: { limit: number; offset: number; storeLocation?: string },
+    client?: DbClient
+  ): Promise<{ rows: any[]; total: number }> {
+    const db = client || prisma;
+    const where: any = { returnedAt: null };
+    if (params.storeLocation) {
+      where.storeLocation = params.storeLocation;
+    }
+
+    const [rows, total] = await Promise.all([
+      db.loan.findMany({
+        where,
+        orderBy: { dueDate: 'asc' },
+        skip: params.offset,
+        take: params.limit,
+        include: {
+          member: {
+            select: {
+              id: true,
+              cardToken: true,
+              shopifyCustomerId: true,
+              tier: true,
+              status: true,
+              storeLocation: true,
+            },
+          },
+        },
+      }),
+      db.loan.count({ where }),
+    ]);
+
+    return { rows, total };
+  }
+
   // Find returned loans by member
   static async findReturnedByMember(memberId: string, client?: DbClient): Promise<any[]> {
     const db = client || prisma;

@@ -79,4 +79,43 @@ export class MemberRepository {
     const db = client || prisma;
     return await db.member.findUnique({ where: { id: memberId } });
   }
+
+  // Find all active members (status=ACTIVE AND cycleEnd > now),
+  // optionally filtered by store location and/or tier. Returns active loan
+  // count alongside each member so the admin table can render directly.
+  static async findAllActive(
+    params: { limit: number; offset: number; storeLocation?: string; tier?: string },
+    client?: DbClient
+  ): Promise<{ rows: any[]; total: number }> {
+    const db = client || prisma;
+    const where: any = {
+      status: 'ACTIVE',
+      cycleEnd: { gt: new Date() },
+    };
+    if (params.storeLocation) {
+      where.storeLocation = params.storeLocation;
+    }
+    if (params.tier) {
+      where.tier = params.tier;
+    }
+
+    const [rows, total] = await Promise.all([
+      db.member.findMany({
+        where,
+        orderBy: { cycleEnd: 'asc' },
+        skip: params.offset,
+        take: params.limit,
+        include: {
+          _count: {
+            select: {
+              loans: { where: { returnedAt: null } },
+            },
+          },
+        },
+      }),
+      db.member.count({ where }),
+    ]);
+
+    return { rows, total };
+  }
 }
