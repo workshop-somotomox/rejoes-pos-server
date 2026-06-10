@@ -80,6 +80,15 @@ export class MemberRepository {
     return await db.member.findUnique({ where: { id: memberId } });
   }
 
+  // Update a member's status (ACTIVE, PAUSED, CANCELLED)
+  static async updateStatus(memberId: string, status: string, client?: DbClient) {
+    const db = client || prisma;
+    return await db.member.update({
+      where: { id: memberId },
+      data: { status },
+    });
+  }
+
   // Find all active members (status=ACTIVE AND cycleEnd > now),
   // optionally filtered by store location and/or tier. Returns active loan
   // count alongside each member so the admin table can render directly.

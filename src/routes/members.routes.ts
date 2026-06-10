@@ -205,6 +205,51 @@ router.post('/add', async (req, res, next) => {
  *       200:
  *         description: List of active members with active loan counts, sorted by cycleEnd ascending
  */
+/**
+ * @swagger
+ * /api/members/{memberId}/cancel:
+ *   patch:
+ *     summary: Cancel a member's subscription (sets status to CANCELLED)
+ *     tags: [Members]
+ *     parameters:
+ *       - in: path
+ *         name: memberId
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Membership cancelled successfully
+ */
+router.patch('/:memberId/cancel', async (req, res, next) => {
+  try {
+    const { memberId } = req.params;
+    if (!memberId) {
+      return res.status(400).json({ success: false, message: 'Missing memberId' });
+    }
+
+    const member = await MemberRepository.findById(memberId);
+    if (!member) {
+      return next(new AppError(404, 'Member not found'));
+    }
+
+    if (member.status === 'CANCELLED') {
+      return res.status(400).json({ success: false, message: 'Membership is already cancelled' });
+    }
+
+    const updated = await MemberRepository.updateStatus(memberId, MemberStatus.CANCELLED);
+    res.json(success({
+      message: 'Membership cancelled successfully',
+      member: {
+        id: updated.id,
+        cardToken: updated.cardToken,
+        status: updated.status,
+      },
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/active', async (req, res, next) => {
   try {
     const limit = Math.min(Math.max(parseInt(String(req.query.limit ?? '50'), 10) || 50, 1), 100);
