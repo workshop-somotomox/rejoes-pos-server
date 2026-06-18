@@ -6,6 +6,8 @@ import {
   getActiveLoans,
   getReturnedLoans,
   listOutstandingLoans,
+  extendLoan,
+  getActiveLoansByCustomer,
 } from '../services/loan.service';
 import { success } from '../types/api.types';
 
@@ -430,6 +432,32 @@ router.post('/swap', async (req, res, next) => {
  *       200:
  *         description: List of outstanding loans with member info, sorted by dueDate ascending
  */
+router.post('/extend/:loanId', async (req, res, next) => {
+  try {
+    const { loanId } = req.params;
+    if (!loanId) {
+      return res.status(400).json({ success: false, message: 'Missing loanId' });
+    }
+    const loan = await extendLoan(loanId);
+    return res.json(success(loan));
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.get('/active-by-customer/:shopifyCustomerId', async (req, res, next) => {
+  try {
+    const { shopifyCustomerId } = req.params;
+    if (!shopifyCustomerId) {
+      return res.status(400).json({ success: false, message: 'Missing shopifyCustomerId' });
+    }
+    const loans = await getActiveLoansByCustomer(shopifyCustomerId);
+    return res.json(success(loans));
+  } catch (error) {
+    return next(error);
+  }
+});
+
 router.get('/outstanding', async (req, res, next) => {
   try {
     const limit = Math.min(Math.max(parseInt(String(req.query.limit ?? '50'), 10) || 50, 1), 100);

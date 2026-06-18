@@ -37,6 +37,10 @@ model Loan {
   dueDate       DateTime  // 30 days from checkout
   returnedAt    DateTime?
 
+  // Extension tracking
+  extendedCount   Int       @default(0)
+  originalDueDate DateTime?
+
   // NEW: swap tracking fields
   swappedAt     DateTime?   // when this loan was swapped out
   swappedForId  String?     @unique  // new loan that replaced this one (unique)
@@ -69,4 +73,11 @@ model AuditEvent {
   action    String
   details   String   @default("{}")
   createdAt DateTime @default(now())
+}
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
 }

@@ -146,6 +146,9 @@ export class LoanRepository {
     loanId: string,
     data: {
       returnedAt?: Date;
+      dueDate?: Date;
+      originalDueDate?: Date;
+      extendedCount?: number | { increment: number };
       swappedAt?: Date;
       swappedForId?: string;
       swappedFromId?: string;
@@ -156,6 +159,28 @@ export class LoanRepository {
     return await db.loan.update({
       where: { id: loanId },
       data,
+    });
+  }
+
+  // Find active loans by shopifyCustomerId (via member relation)
+  static async findActiveByCustomer(shopifyCustomerId: string, client?: DbClient): Promise<any[]> {
+    const db = client || prisma;
+    return await db.loan.findMany({
+      where: {
+        returnedAt: null,
+        member: { shopifyCustomerId },
+      },
+      orderBy: { dueDate: 'asc' },
+      include: {
+        member: {
+          select: {
+            id: true,
+            cardToken: true,
+            tier: true,
+            status: true,
+          },
+        },
+      },
     });
   }
 

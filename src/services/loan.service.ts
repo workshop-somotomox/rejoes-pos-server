@@ -257,6 +257,59 @@ export async function listOutstandingLoans(params: {
   return { items, total, limit: params.limit, offset: params.offset };
 }
 
+export async function extendLoan(loanId: string): Promise<LoanRecord> {
+  const { getLoanExtendSettings } = await import('./settings.service');
+  const settings = await getLoanExtendSettings();
+
+  const loan = await LoanRepository.findById(loanId);
+  if (!loan) {
+    throw new AppError(404, 'Loan not found');
+  }
+  if (loan.returnedAt) {
+    throw new AppError(400, 'Cannot extend a returned loan');
+  }
+
+  if (!settings.allowOverdueExtend && loan.dueDate && new Date(loan.dueDate).getTime() < Date.now()) {
+    throw new AppError(400, 'Cannot extend an overdue loan');
+  }
+
+  if (loan.extendedCount >= settings.maxExtends) {
+    throw new AppError(400, `Maximum extensions reached (${settings.maxExtends})`);
+  }
+
+  const now = new Date();
+  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+
+  const updated = await LoanRepository.update(loanId, {
+    originalDueDate: loan.originalDueDate || loan.dueDate,
+    dueDate: endOfMonth,
+    extendedCount: { increment: 1 },
+  });
+
+  return updated;
+}
+
+export async function getActiveLoansByCustomer(shopifyCustomerId: string) {
+  const loans = await LoanRepository.findActiveByCustomer(shopifyCustomerId);
+  const { getLoanExtendSettings } = await import('./settings.service');
+  const settings = await getLoanExtendSettings();
+  const now = Date.now();
+
+  return loans.map((loan: any) => ({
+    id: loan.id,
+    storeLocation: loan.storeLocation,
+    photoUrl: loan.photoUrl,
+    thumbnailUrl: loan.thumbnailUrl,
+    checkoutAt: loan.checkoutAt,
+    dueDate: loan.dueDate,
+    extendedCount: loan.extendedCount,
+    isOverdue: loan.dueDate ? new Date(loan.dueDate).getTime() < now : false,
+    canExtend: loan.extendedCount < settings.maxExtends
+      && (!loan.dueDate || settings.allowOverdueExtend || new Date(loan.dueDate).getTime() >= now),
+    member: loan.member,
+  }));
+}
+
 export async function getReturnedLoans(memberId: string): Promise<LoanRecord[]> {
   const loans = await LoanRepository.findReturnedByMember(memberId);
 

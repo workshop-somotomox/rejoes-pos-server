@@ -10,6 +10,7 @@ import { prisma } from './db/client';
 import membersRouter from './routes/members.routes';
 import loansRouter from './routes/loans.routes';
 import uploadsRouter from './routes/uploads.routes';
+import settingsRouter from './routes/settings.routes';
 import { idempotencyMiddleware } from './middlewares/idempotency';
 import { errorHandler } from './middlewares/errorHandler';
 import { specs } from './docs/openapi';
@@ -39,6 +40,7 @@ export async function createApp() {
   app.use('/api/members', membersRouter);
   app.use('/api/loans', loansRouter);
   app.use('/api/uploads', uploadsRouter);
+  app.use('/api/settings', settingsRouter);
 
   // Swagger Documentation
   app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs, {
