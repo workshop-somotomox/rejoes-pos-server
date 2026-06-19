@@ -19,6 +19,10 @@ export type TierConfig = {
 export interface ActiveLoanThumbnail {
   id: string;
   thumbnailUrl: string;
+  photoUrl: string;
+  storeLocation: string;
+  checkoutAt: Date;
+  dueDate: Date;
 }
 
 export type MemberRecord = {

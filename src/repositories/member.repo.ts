@@ -14,6 +14,10 @@ export class MemberRepository {
           select: {
             id: true,
             thumbnailUrl: true,
+            photoUrl: true,
+            storeLocation: true,
+            checkoutAt: true,
+            dueDate: true,
           },
         },
       },

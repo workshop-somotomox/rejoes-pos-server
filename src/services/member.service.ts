@@ -19,6 +19,10 @@ export async function getMemberByCard(cardToken: string) {
   const activeLoans = loans.map((loan: ActiveLoanThumbnail) => ({
     id: loan.id,
     thumbnailUrl: loan.thumbnailUrl,
+    photoUrl: loan.photoUrl,
+    storeLocation: loan.storeLocation,
+    checkoutAt: loan.checkoutAt,
+    dueDate: loan.dueDate,
   }));
 
   return { member: normalizedMember, allowances, activeLoans };

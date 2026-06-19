@@ -20,10 +20,9 @@ export async function createApp() {
 
   // Add this early (before any routes)
   app.use(cors({
-    origin: '*',                           // ← allow all origins (dev only)
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-    allowedHeaders: '*',                    // ← allow all headers
-    credentials: true,                     // if you ever add sessions/cookies
+    allowedHeaders: '*',
   }));
 
   // Handle preflight OPTIONS requests (usually automatic with cors package)
